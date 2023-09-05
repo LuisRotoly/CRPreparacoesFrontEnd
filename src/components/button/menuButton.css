@@ -1,0 +1,48 @@
+.menu-button {
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+  background: black;
+  border-color: white;
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 30px;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.menu-button:hover {
+  background-color: red;
+  color: black;
+}
+
+.menu-button:active {
+  background-color: red;
+  color: black;
+  border-color: red;
+}
+
+.menu-button-enable {
+  font-weight: 600;
+  font-size: 18px;
+  color: black;
+  background: red;
+  border-color: red;
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 30px;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.menu-button-enable:hover {
+  background-color: red;
+  color: black;
+  border-color: white;
+}
+
+.menu-button-enable:active {
+  background-color: red;
+  color: black;
+  border-color: red;
+}
