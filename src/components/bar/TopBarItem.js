@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 function TopBarItem(props) {
   const location = useLocation();
 
-  function getButtonClassname(pageUrl, url) {
+  function isButtonActive(pageUrl, url) {
     if (pageUrl === url && url === "/") {
       return "menu-button-enable";
     } else {
@@ -19,7 +19,7 @@ function TopBarItem(props) {
     <Link to={props.url}>
       <MenuButton
         title={props.title}
-        buttonCss={getButtonClassname(location.pathname, props.url)}
+        buttonCss={isButtonActive(location.pathname, props.url)}
       ></MenuButton>
     </Link>
   );
