@@ -9,9 +9,16 @@ import DefaultLayout from "./pages/DefaultLayout";
 import HomePage from "./pages/HomePage";
 import ClientPage from "./pages/client/ClientPage";
 import BikePage from "./pages/bike/BikePage";
-import PartPage from "./pages/part/PartPage";
+import BikePartPage from "./pages/bikePart/BikePartPage";
 import EditClientPage from "./pages/client/EditClientPage";
 import CreateClientPage from "./pages/client/CreateClientPage";
+import CreateBikePage from "./pages/bike/CreateBikePage";
+import EditBikePage from "./pages/bike/EditBikePage";
+import CreateBikePartPage from "./pages/bikePart/CreateBikePartPage";
+import EditBikePartPage from "./pages/bikePart/EditBikePartPage";
+import SupplierPage from "./pages/supplier/SupplierPage";
+import CreateSupplierPage from "./pages/supplier/CreateSuplierPage";
+import EditSupplierPage from "./pages/supplier/EditSupplierPage";
 
 function App() {
   return (
@@ -25,7 +32,14 @@ function App() {
             <Route path="/client/edit/:id" element={<EditClientPage />} />
             <Route path="/client/create" element={<CreateClientPage />} />
             <Route path="/bike" element={<BikePage />} />
-            <Route path="/part" element={<PartPage />} />
+            <Route path="/bike/create" element={<CreateBikePage />} />
+            <Route path="/bike/edit/:id" element={<EditBikePage />} />
+            <Route path="/part" element={<BikePartPage />} />
+            <Route path="/part/create" element={<CreateBikePartPage />} />
+            <Route path="/part/edit/:id" element={<EditBikePartPage />} />
+            <Route path="/supplier" element={<SupplierPage />} />
+            <Route path="/supplier/create" element={<CreateSupplierPage />} />
+            <Route path="/supplier/edit/:id" element={<EditSupplierPage />} />
           </Route>
         </Routes>
       </Router>

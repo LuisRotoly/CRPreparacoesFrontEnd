@@ -2,20 +2,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import {
-  getBikeListRequest,
-  filterBikeListRequest,
-} from "../../services/bikeService";
+  getBikePartListRequest,
+  filterBikePartListRequest,
+} from "../../services/bikePartService";
 import EditIcon from "@mui/icons-material/Edit";
 import { isEmpty } from "../../stringHelper";
 
-function BikePage() {
+function BikePartPage() {
   const navigate = useNavigate();
   const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    getBikeListRequest().then((response) => {
+    getBikePartListRequest().then((response) => {
       setData(response.data);
       setOriginalData(response.data);
     });
@@ -24,7 +24,7 @@ function BikePage() {
   function handleSearchChange(event) {
     setSearch(event.target.value);
     if (!isEmpty(event.target.value)) {
-      filterBikeListRequest(event.target.value).then((response) => {
+      filterBikePartListRequest(event.target.value).then((response) => {
         setData(response.data);
       });
     } else {
@@ -33,13 +33,13 @@ function BikePage() {
   }
 
   function gotoCreatePage() {
-    navigate("/bike/create");
+    navigate("/part/create");
   }
 
   return (
     <div>
       <div className="text-center div-title">
-        <p className="page-title">Lista de Motos</p>
+        <p className="page-title">Lista de Peças</p>
         <span className="font-size-18">Pesquisar: </span>
         <input
           maxLength="100"
@@ -49,14 +49,17 @@ function BikePage() {
           className="me-5"
         />
         <button className="btn btn-outline-primary" onClick={gotoCreatePage}>
-          Criar Nova Moto
+          Criar Nova Peça
         </button>
       </div>
       <div className="align-center">
         <Table className="table-preferences">
           <thead>
             <tr>
-              <th>Nome</th>
+              <th>Peça</th>
+              <th>Valor</th>
+              <th>Qtd Estoque</th>
+              <th>Moto</th>
               <th>Marca</th>
               <th>Cilindrada</th>
               <th>Ano</th>
@@ -64,14 +67,17 @@ function BikePage() {
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, bikeBrand, engineCapacity, year }) => (
+            {data.map(({ id, name, value, stockQuantity, bike }) => (
               <tr key={id}>
                 <td>{name}</td>
-                <td>{bikeBrand.name}</td>
-                <td>{engineCapacity}</td>
-                <td>{year}</td>
+                <td>R$ {value}</td>
+                <td>{stockQuantity} peças</td>
+                <td>{bike.name}</td>
+                <td>{bike.bikeBrand.name}</td>
+                <td>{bike.engineCapacity}</td>
+                <td>{bike.year}</td>
                 <td>
-                  <Link to={`/bike/edit/${id}`}>
+                  <Link to={`/part/edit/${id}`}>
                     <EditIcon className="edit-icon" />
                   </Link>
                 </td>
@@ -83,4 +89,4 @@ function BikePage() {
     </div>
   );
 }
-export default BikePage;
+export default BikePartPage;
