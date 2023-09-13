@@ -35,11 +35,11 @@ function EditBikePage() {
   }
 
   function handleBrandChange(event) {
-    for (let i = 0; i < brandList.length; i++) {
-      if (event.target.value === brandList[i].name) {
-        setBrand(brandList[i]);
+    brandList.forEach((element) => {
+      if (event.target.value === element.name) {
+        setBrand(element);
       }
-    }
+    });
   }
 
   function handleEngineCapacityChange(event) {

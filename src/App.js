@@ -17,7 +17,7 @@ import EditBikePage from "./pages/bike/EditBikePage";
 import CreateBikePartPage from "./pages/bikePart/CreateBikePartPage";
 import EditBikePartPage from "./pages/bikePart/EditBikePartPage";
 import SupplierPage from "./pages/supplier/SupplierPage";
-import CreateSupplierPage from "./pages/supplier/CreateSuplierPage";
+import CreateSupplierPage from "./pages/supplier/CreateSupplierPage";
 import EditSupplierPage from "./pages/supplier/EditSupplierPage";
 
 function App() {
