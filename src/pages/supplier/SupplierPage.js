@@ -2,20 +2,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import {
-  getBikeListRequest,
-  filterBikeListRequest,
-} from "../../services/bikeService";
+  getSuppliersListRequest,
+  filterSupplierListRequest,
+} from "../../services/supplierService";
 import EditIcon from "@mui/icons-material/Edit";
 import { isEmpty } from "../../stringHelper";
 
-function BikePage() {
+function SupplierPage() {
   const navigate = useNavigate();
   const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    getBikeListRequest().then((response) => {
+    getSuppliersListRequest().then((response) => {
       setData(response.data);
       setOriginalData(response.data);
     });
@@ -24,7 +24,7 @@ function BikePage() {
   function handleSearchChange(event) {
     setSearch(event.target.value);
     if (!isEmpty(event.target.value)) {
-      filterBikeListRequest(event.target.value).then((response) => {
+      filterSupplierListRequest(event.target.value).then((response) => {
         setData(response.data);
       });
     } else {
@@ -33,13 +33,13 @@ function BikePage() {
   }
 
   function gotoCreatePage() {
-    navigate("/bike/create");
+    navigate("/supplier/create");
   }
 
   return (
     <div>
       <div className="text-center div-title">
-        <p className="page-title">Lista de Motos</p>
+        <p className="page-title">Lista de Fornecedores</p>
         <span className="font-size-18">Pesquisar: </span>
         <input
           maxLength="100"
@@ -49,7 +49,7 @@ function BikePage() {
           className="me-5"
         />
         <button className="btn btn-outline-primary" onClick={gotoCreatePage}>
-          Criar Nova Moto
+          Criar Novo Fornecedor
         </button>
       </div>
       <div className="align-center">
@@ -57,21 +57,17 @@ function BikePage() {
           <thead>
             <tr>
               <th>Nome</th>
-              <th>Marca</th>
-              <th>Cilindrada</th>
-              <th>Ano</th>
+              <th>Telefone</th>
               <th>Editar</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, bikeBrand, engineCapacity, year }) => (
+            {data.map(({ id, name, phone }) => (
               <tr key={id}>
                 <td>{name}</td>
-                <td>{bikeBrand.name}</td>
-                <td>{engineCapacity}</td>
-                <td>{year}</td>
+                <td>{phone}</td>
                 <td>
-                  <Link to={`/bike/edit/${id}`}>
+                  <Link to={`/supplier/edit/${id}`}>
                     <EditIcon className="edit-icon" />
                   </Link>
                 </td>
@@ -83,4 +79,4 @@ function BikePage() {
     </div>
   );
 }
-export default BikePage;
+export default SupplierPage;

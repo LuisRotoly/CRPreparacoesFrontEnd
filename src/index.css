@@ -51,3 +51,12 @@ code {
   max-width: 80%;
   text-align: center;
 }
+
+.select-width {
+  width: 200px;
+}
+
+.text-area-size {
+  width: 400px;
+  height: 200px;
+}

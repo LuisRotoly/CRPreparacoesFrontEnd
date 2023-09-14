@@ -9,6 +9,7 @@ function TopBar() {
       <TopBarItem url="/client" title="Clientes" />
       <TopBarItem url="/bike" title="Motos" />
       <TopBarItem url="/part" title="Peças" />
+      <TopBarItem url="/supplier" title="Fornecedores" />
     </div>
   );
 }

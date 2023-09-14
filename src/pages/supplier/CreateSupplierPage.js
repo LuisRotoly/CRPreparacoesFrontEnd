@@ -1,32 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addClientRequest } from "../../services/clientService";
+import { addSupplierRequest } from "../../services/supplierService";
 import { isEmpty } from "../../stringHelper";
 
-function CreateClientPage() {
+function CreateSupplierPage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [cpfcnpj, setCpfcnpj] = useState("");
-  const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [notes, setNotes] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
-  function handleAddressChange(event) {
-    setAddress(event.target.value);
-  }
-
-  function handleCpfcnpjChange(event) {
-    setCpfcnpj(event.target.value);
-  }
 
   function handleNameChange(event) {
     setName(event.target.value);
   }
 
-  function handleNicknameChange(event) {
-    setNickname(event.target.value);
+  function handleNotesChange(event) {
+    setNotes(event.target.value);
   }
 
   function handlePhoneChange(event) {
@@ -34,13 +24,13 @@ function CreateClientPage() {
   }
 
   function isValidEntrances() {
-    return !isEmpty(name) && !isEmpty(phone) && !isEmpty(cpfcnpj);
+    return !isEmpty(name) && !isEmpty(phone);
   }
 
-  function createClient() {
+  function createSupplier() {
     if (isValidEntrances()) {
-      addClientRequest(name, cpfcnpj, address, phone, nickname)
-        .then((_) => setSuccessMessage("Cliente criado com sucesso!"))
+      addSupplierRequest(name, phone, notes)
+        .then((_) => setSuccessMessage("Fornecedor criado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
       setErrorMessage("Preencha todos os campos obrigatórios!");
@@ -48,7 +38,7 @@ function CreateClientPage() {
   }
 
   function gotoBackPage() {
-    navigate("/client");
+    navigate("/supplier");
   }
 
   return (
@@ -64,7 +54,7 @@ function CreateClientPage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
           <input
             maxLength="100"
             type="text"
@@ -72,22 +62,7 @@ function CreateClientPage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">CPF/CNPJ:</p>
-          <input
-            type="text"
-            required
-            maxLength="18"
-            value={cpfcnpj}
-            onChange={handleCpfcnpjChange}
-          />
-          <p className="mb-0 mt-3 font-size-20">Endereço:</p>
-          <input
-            type="text"
-            maxLength="150"
-            value={address}
-            onChange={handleAddressChange}
-          />
-          <p className="mb-0 mt-3 font-size-20">Telefone:</p>
+          <p className="mb-0 mt-3 font-size-20">Telefone*:</p>
           <input
             required
             maxLength="14"
@@ -95,18 +70,19 @@ function CreateClientPage() {
             value={phone}
             onChange={handlePhoneChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Apelido:</p>
-          <input
+          <p className="mb-0 mt-3 font-size-20">Observações:</p>
+          <textarea
+            className="text-area-size"
             type="text"
-            maxLength="100"
-            value={nickname}
-            onChange={handleNicknameChange}
+            maxLength="255"
+            value={notes}
+            onChange={handleNotesChange}
           />
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar
             </button>
-            <button className="btn btn-success" onClick={createClient}>
+            <button className="btn btn-success" onClick={createSupplier}>
               Criar
             </button>
           </div>
@@ -116,4 +92,4 @@ function CreateClientPage() {
     </div>
   );
 }
-export default CreateClientPage;
+export default CreateSupplierPage;

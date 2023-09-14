@@ -90,7 +90,7 @@ function EditClientPage() {
           <input
             type="text"
             required
-            maxLength="14"
+            maxLength="18"
             value={cpfcnpj}
             onChange={handleCpfcnpjChange}
           />
@@ -104,7 +104,7 @@ function EditClientPage() {
           <p className="mb-0 mt-3 font-size-20">Telefone:</p>
           <input
             required
-            maxLength="12"
+            maxLength="14"
             type="text"
             value={phone}
             onChange={handlePhoneChange}
