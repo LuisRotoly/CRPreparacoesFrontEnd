@@ -5,6 +5,11 @@ import {
   getClientByIdRequest,
 } from "../../services/clientService";
 import { isEmpty } from "../../stringHelper";
+import { listClientBikeById } from "../../services/clientBikeService";
+import CreateNewBikeClientModal from "../../components/modal/CreateNewBikeClientModal";
+import "./client.css";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteModal from "../../components/modal/DeleteModal";
 
 function EditClientPage() {
   const pathname = useParams();
@@ -16,6 +21,10 @@ function EditClientPage() {
   const [nickname, setNickname] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [clientBikeList, setClientBikeList] = useState([]);
+  const [plateModal, setPlateModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [removeClientBike, setRemoveClientBike] = useState("");
 
   useEffect(() => {
     getClientByIdRequest(pathname.id).then((response) => {
@@ -25,6 +34,9 @@ function EditClientPage() {
       setPhone(response.data.phone);
       setNickname(response.data.nickname);
     });
+    listClientBikeById(pathname.id).then((response) =>
+      setClientBikeList(response.data)
+    );
   }, [pathname.id]);
 
   function handleAddressChange(event) {
@@ -53,7 +65,15 @@ function EditClientPage() {
 
   function editClient() {
     if (isValidEntrances()) {
-      editClientRequest(pathname.id, name, cpfcnpj, address, phone, nickname)
+      editClientRequest(
+        pathname.id,
+        name,
+        cpfcnpj,
+        address,
+        phone,
+        nickname,
+        clientBikeList
+      )
         .then((_) => setSuccessMessage("Cliente editado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -63,6 +83,36 @@ function EditClientPage() {
 
   function gotoBackPage() {
     navigate("/client");
+  }
+
+  function openModalBikePlate() {
+    setPlateModal(true);
+  }
+
+  function closeModalBikePlate() {
+    setPlateModal(false);
+  }
+
+  function addClientBike(plate, bike) {
+    const newClientBike = { plate, bike };
+    setClientBikeList((oldList) => [...oldList, newClientBike]);
+    closeModalBikePlate();
+  }
+
+  function openDeleteModal(index) {
+    setRemoveClientBike(index);
+    setDeleteModal(true);
+  }
+
+  function closeDeleteModal() {
+    setDeleteModal(false);
+  }
+
+  function deleteClientBike() {
+    const reducedArray = [...clientBikeList];
+    reducedArray.splice(removeClientBike, 1);
+    setClientBikeList(reducedArray);
+    closeDeleteModal();
   }
 
   return (
@@ -116,6 +166,27 @@ function EditClientPage() {
             value={nickname}
             onChange={handleNicknameChange}
           />
+          <div>
+            {clientBikeList.map(({ plate, bike }, index) => {
+              return (
+                <div key={index} className="align-center mt-3">
+                  <div className="bike-client-container">
+                    <DeleteIcon
+                      className="remove-icon"
+                      onClick={() => openDeleteModal(index)}
+                    />
+                    <p className="mt-3">{plate}</p>
+                    <p className="mt-3">
+                      {bike.bikeBrand.name}, {bike.name}, {bike.engineCapacity}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+            <button className="btn btn-info mt-3" onClick={openModalBikePlate}>
+              Adicionar Moto
+            </button>
+          </div>
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar
@@ -127,6 +198,17 @@ function EditClientPage() {
           <p className="text-danger font-size-18">{errorMessage}</p>
         </div>
       )}
+      <CreateNewBikeClientModal
+        show={plateModal}
+        close={closeModalBikePlate}
+        addClientBike={addClientBike}
+      />
+      <DeleteModal
+        show={deleteModal}
+        close={closeDeleteModal}
+        title={"Excluir a moto?"}
+        remove={deleteClientBike}
+      />
     </div>
   );
 }

@@ -17,7 +17,8 @@ export async function addClientRequest(
   cpfcnpj,
   address,
   phone,
-  nickname
+  nickname,
+  clientBikeList
 ) {
   return await api.post("addClient", {
     name: name,
@@ -25,6 +26,7 @@ export async function addClientRequest(
     address: address,
     phone: phone,
     nickname: nickname,
+    clientBikeList: clientBikeList,
   });
 }
 
@@ -34,7 +36,8 @@ export async function editClientRequest(
   cpfcnpj,
   address,
   phone,
-  nickname
+  nickname,
+  clientBikeList
 ) {
   return await api.post("editClient", {
     id: id,
@@ -43,5 +46,6 @@ export async function editClientRequest(
     address: address,
     phone: phone,
     nickname: nickname,
+    clientBikeList: clientBikeList,
   });
 }
