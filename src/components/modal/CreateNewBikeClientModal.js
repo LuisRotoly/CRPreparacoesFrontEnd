@@ -21,6 +21,10 @@ function CreateNewBikeClientModal(props) {
 
   function addNewPlate() {
     addClientBike(plate, bike);
+    resetFields();
+  }
+
+  function resetFields() {
     setPlate("");
     setBike("");
   }
