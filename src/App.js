@@ -1,10 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import DefaultLayout from "./pages/DefaultLayout";
 import HomePage from "./pages/HomePage";
 import ClientPage from "./pages/client/ClientPage";
@@ -23,26 +18,24 @@ import EditSupplierPage from "./pages/supplier/EditSupplierPage";
 function App() {
   return (
     <div>
-      <Router>
-        <Routes>
-          <Route element={<DefaultLayout />}>
-            <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/client" element={<ClientPage />} />
-            <Route path="/client/edit/:id" element={<EditClientPage />} />
-            <Route path="/client/create" element={<CreateClientPage />} />
-            <Route path="/bike" element={<BikePage />} />
-            <Route path="/bike/create" element={<CreateBikePage />} />
-            <Route path="/bike/edit/:id" element={<EditBikePage />} />
-            <Route path="/part" element={<BikePartPage />} />
-            <Route path="/part/create" element={<CreateBikePartPage />} />
-            <Route path="/part/edit/:id" element={<EditBikePartPage />} />
-            <Route path="/supplier" element={<SupplierPage />} />
-            <Route path="/supplier/create" element={<CreateSupplierPage />} />
-            <Route path="/supplier/edit/:id" element={<EditSupplierPage />} />
-          </Route>
-        </Routes>
-      </Router>
+      <Routes>
+        <Route element={<DefaultLayout />}>
+          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/client" element={<ClientPage />} />
+          <Route path="/client/edit/:id" element={<EditClientPage />} />
+          <Route path="/client/create" element={<CreateClientPage />} />
+          <Route path="/bike" element={<BikePage />} />
+          <Route path="/bike/create" element={<CreateBikePage />} />
+          <Route path="/bike/edit/:id" element={<EditBikePage />} />
+          <Route path="/part" element={<BikePartPage />} />
+          <Route path="/part/create" element={<CreateBikePartPage />} />
+          <Route path="/part/edit/:id" element={<EditBikePartPage />} />
+          <Route path="/supplier" element={<SupplierPage />} />
+          <Route path="/supplier/create" element={<CreateSupplierPage />} />
+          <Route path="/supplier/edit/:id" element={<EditSupplierPage />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

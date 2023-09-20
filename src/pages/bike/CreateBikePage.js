@@ -7,6 +7,7 @@ import {
   getBikeBrandListRequest,
 } from "../../services/bikeBrandService";
 import CreateNewBikeBrandModal from "../../components/modal/CreateNewBikeBrandModal";
+import InputMask from "react-input-mask";
 
 function CreateBikePage() {
   const navigate = useNavigate();
@@ -137,8 +138,9 @@ function CreateBikePage() {
             onChange={handleEngineCapacityChange}
           />
           <p className="mb-0 mt-3 font-size-20">Ano:</p>
-          <input
-            maxLength="9"
+          <InputMask
+            mask="9999/9999"
+            maskChar=""
             type="text"
             value={year}
             onChange={handleYearChange}
