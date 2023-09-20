@@ -7,6 +7,8 @@ import {
   getBikeBrandListRequest,
 } from "../../services/bikeBrandService";
 import CreateNewBikeBrandModal from "../../components/modal/CreateNewBikeBrandModal";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CreateBikePage() {
   const navigate = useNavigate();
@@ -76,11 +78,21 @@ function CreateBikePage() {
   }
 
   function createNewBikeBrand(name) {
-    addBikeBrandRequest(name).then((_) => {
-      getBikeBrandList();
-      //criar um toast setSuccessMessage("Marca criada com sucesso!");
-    });
-    //.catch((e) => setErrorMessage(e.response.data.message));
+    addBikeBrandRequest(name)
+      .then((_) => {
+        getBikeBrandList();
+        toast.success("Marca criada com sucesso!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((e) => setErrorMessage(e.response.data.message));
     closeModal();
   }
 
@@ -159,6 +171,7 @@ function CreateBikePage() {
         close={closeModal}
         addNewBikeBrand={createNewBikeBrand}
       />
+      <ToastContainer />
     </div>
   );
 }

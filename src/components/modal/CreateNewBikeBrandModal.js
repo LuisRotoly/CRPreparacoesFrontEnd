@@ -12,6 +12,11 @@ function CreateNewBikeBrandModal(props) {
 
   function addBikeBrand() {
     addNewBikeBrand(brand);
+    resetFields();
+  }
+
+  function resetFields() {
+    setBrand("");
   }
 
   return (
