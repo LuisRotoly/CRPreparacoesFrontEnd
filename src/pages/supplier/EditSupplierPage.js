@@ -5,6 +5,7 @@ import {
   getSupplierByIdRequest,
 } from "../../services/supplierService";
 import { isEmpty } from "../../stringHelper";
+import InputMask from "react-input-mask";
 
 function EditSupplierPage() {
   const pathname = useParams();
@@ -75,9 +76,14 @@ function EditSupplierPage() {
             onChange={handleNameChange}
           />
           <p className="mb-0 mt-3 font-size-20">Telefone*:</p>
-          <input
+          <InputMask
             required
-            maxLength="14"
+            mask={
+              phone.length >= 5 && phone[4] === "9"
+                ? "(99)99999-9999"
+                : "(99)9999-9999"
+            }
+            maskChar=""
             type="text"
             value={phone}
             onChange={handlePhoneChange}

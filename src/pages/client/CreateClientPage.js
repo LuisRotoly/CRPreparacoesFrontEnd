@@ -6,6 +6,7 @@ import CreateNewBikeClientModal from "../../components/modal/CreateNewBikeClient
 import "./client.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteModal from "../../components/modal/DeleteModal";
+import InputMask from "react-input-mask";
 
 function CreateClientPage() {
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ function CreateClientPage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
           <input
             maxLength="100"
             type="text"
@@ -110,11 +111,15 @@ function CreateClientPage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">CPF/CNPJ:</p>
-          <input
+          <p className="mb-0 mt-3 font-size-20">CPF/CNPJ*:</p>
+
+          <InputMask
             type="text"
             required
-            maxLength="18"
+            mask={
+              cpfcnpj.length < 15 ? "999.999.999-999" : "99.999.999/9999-99"
+            }
+            maskChar=""
             value={cpfcnpj}
             onChange={handleCpfcnpjChange}
           />
@@ -125,10 +130,15 @@ function CreateClientPage() {
             value={address}
             onChange={handleAddressChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Telefone:</p>
-          <input
+          <p className="mb-0 mt-3 font-size-20">Telefone*:</p>
+          <InputMask
             required
-            maxLength="14"
+            mask={
+              phone.length >= 5 && phone[4] === "9"
+                ? "(99)99999-9999"
+                : "(99)9999-9999"
+            }
+            maskChar=""
             type="text"
             value={phone}
             onChange={handlePhoneChange}
