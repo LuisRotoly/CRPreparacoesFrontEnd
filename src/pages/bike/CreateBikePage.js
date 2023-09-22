@@ -83,13 +83,13 @@ function CreateBikePage() {
         getBikeBrandList();
         toast.success("Marca criada com sucesso!", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: false,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: false,
           draggable: false,
           progress: undefined,
-          theme: "light",
+          theme: "colored",
         });
       })
       .catch((e) => setErrorMessage(e.response.data.message));
