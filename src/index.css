@@ -60,3 +60,8 @@ code {
   width: 400px;
   height: 200px;
 }
+
+.default-remove-icon {
+  color: red;
+  cursor: pointer;
+}

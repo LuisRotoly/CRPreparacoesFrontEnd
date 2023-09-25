@@ -6,9 +6,11 @@ function TopBar() {
     <div className="container-topbar">
       <span className="title">CR Preparações</span>
       <TopBarItem url="/" title="Home" />
+      <TopBarItem url="/budget" title="Orçamentos" />
       <TopBarItem url="/client" title="Clientes" />
       <TopBarItem url="/bike" title="Motos" />
       <TopBarItem url="/part" title="Peças" />
+      <TopBarItem url="/services" title="Serviços" />
       <TopBarItem url="/supplier" title="Fornecedores" />
     </div>
   );
