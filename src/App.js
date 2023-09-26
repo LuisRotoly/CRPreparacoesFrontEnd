@@ -14,6 +14,9 @@ import EditBikePartPage from "./pages/bikePart/EditBikePartPage";
 import SupplierPage from "./pages/supplier/SupplierPage";
 import CreateSupplierPage from "./pages/supplier/CreateSupplierPage";
 import EditSupplierPage from "./pages/supplier/EditSupplierPage";
+import BikeServicePage from "./pages/bikeService/BikeServicePage";
+import CreateBikeServicePage from "./pages/bikeService/CreateBikeServicePage";
+import EditBikeServicePage from "./pages/bikeService/EditBikeServicePage";
 
 function App() {
   return (
@@ -34,6 +37,9 @@ function App() {
           <Route path="/supplier" element={<SupplierPage />} />
           <Route path="/supplier/create" element={<CreateSupplierPage />} />
           <Route path="/supplier/edit/:id" element={<EditSupplierPage />} />
+          <Route path="/services" element={<BikeServicePage />} />
+          <Route path="/services/create" element={<CreateBikeServicePage />} />
+          <Route path="/services/edit/:id" element={<EditBikeServicePage />} />
         </Route>
       </Routes>
     </div>
