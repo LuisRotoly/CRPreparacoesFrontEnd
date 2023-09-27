@@ -8,6 +8,10 @@ export async function getBikePartByIdRequest(bikePartId) {
   return await api.get("listBikePartById?id=" + bikePartId);
 }
 
+export async function getBikePartByPlateRequest(plate) {
+  return await api.get("listBikePartByPlate?plate=" + plate);
+}
+
 export async function filterBikePartListRequest(word) {
   return await api.get("filterListBikeParts?word=" + word);
 }

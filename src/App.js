@@ -17,6 +17,9 @@ import EditSupplierPage from "./pages/supplier/EditSupplierPage";
 import BikeServicePage from "./pages/bikeService/BikeServicePage";
 import CreateBikeServicePage from "./pages/bikeService/CreateBikeServicePage";
 import EditBikeServicePage from "./pages/bikeService/EditBikeServicePage";
+import BudgetPage from "./pages/budget/BudgetPage";
+import CreateBudgetPage from "./pages/budget/CreateBudgetPage";
+import EditBudgetPage from "./pages/budget/EditBudgetPage";
 
 function App() {
   return (
@@ -40,6 +43,9 @@ function App() {
           <Route path="/services" element={<BikeServicePage />} />
           <Route path="/services/create" element={<CreateBikeServicePage />} />
           <Route path="/services/edit/:id" element={<EditBikeServicePage />} />
+          <Route path="/budget" element={<BudgetPage />} />
+          <Route path="/budget/create" element={<CreateBudgetPage />} />
+          <Route path="/budget/edit/:id" element={<EditBudgetPage />} />
         </Route>
       </Routes>
     </div>
