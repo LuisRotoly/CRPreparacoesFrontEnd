@@ -83,8 +83,7 @@ function CreateBudgetPage() {
         bike.engineCapacity,
         bike.year,
         laborOrBikePartBudgetList,
-        status,
-        totalValue
+        status
       )
         .then((_) => setSuccessMessage("Orçamento criado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));

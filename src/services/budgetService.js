@@ -20,8 +20,7 @@ export async function addBudgetRequest(
   engineCapacity,
   year,
   laborOrBikePartBudgetList,
-  status,
-  totalValue
+  status
 ) {
   return await api.post("addBudget", {
     clientId: clientId,
@@ -32,7 +31,6 @@ export async function addBudgetRequest(
     year: year,
     laborOrBikePartBudgetList: laborOrBikePartBudgetList,
     status: status,
-    totalValue: totalValue,
   });
 }
 

@@ -7,6 +7,7 @@ import {
   getBudgetListRequest,
   filterBudgetListRequest,
 } from "../../services/budgetService";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function BudgetPage() {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ function BudgetPage() {
               <th>Moto</th>
               <th>Status</th>
               <th>Editar</th>
+              <th>Visualizar</th>
             </tr>
           </thead>
           <tbody>
@@ -88,8 +90,16 @@ function BudgetPage() {
                   </td>
                   <td>{status.description}</td>
                   <td>
-                    <Link to={`/budget/edit/${id}`}>
-                      <EditIcon className="edit-icon" />
+                    {status.description === "Cancelado" ||
+                    status.description === "Finalizado" ? null : (
+                      <Link to={`/budget/edit/${id}`}>
+                        <EditIcon className="edit-icon" />
+                      </Link>
+                    )}
+                  </td>
+                  <td>
+                    <Link to={`/budget/view/${id}`}>
+                      <VisibilityIcon />
                     </Link>
                   </td>
                 </tr>
