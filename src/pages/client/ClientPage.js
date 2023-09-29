@@ -58,18 +58,16 @@ function ClientPage() {
             <tr>
               <th>Nome</th>
               <th>CPF/CNPJ</th>
-              <th>Endereço</th>
               <th>Telefone</th>
               <th>Apelido</th>
               <th>Editar</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, cpfcnpj, address, phone, nickname }) => (
+            {data.map(({ id, name, cpfcnpj, phone, nickname }) => (
               <tr key={id}>
                 <td>{name}</td>
                 <td>{cpfcnpj}</td>
-                <td>{address}</td>
                 <td>{phone}</td>
                 <td>{nickname}</td>
                 <td>

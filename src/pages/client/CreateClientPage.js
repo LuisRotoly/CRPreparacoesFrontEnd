@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addClientRequest } from "../../services/clientService";
+import { getCepRequest } from "../../services/cepService";
 import { isEmpty } from "../../stringHelper";
 import CreateNewBikeClientModal from "../../components/modal/CreateNewBikeClientModal";
 import "./client.css";
@@ -12,8 +13,11 @@ function CreateClientPage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [cpfcnpj, setCpfcnpj] = useState("");
-  const [address, setAddress] = useState("");
+  const [cep, setCep] = useState("");
+  const [addressNumber, setAddressNumber] = useState("");
   const [phone, setPhone] = useState("");
+  const [optionalPhone, setOptionalPhone] = useState("");
+  const [notes, setNotes] = useState("");
   const [nickname, setNickname] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -21,9 +25,27 @@ function CreateClientPage() {
   const [plateModal, setPlateModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [removeClientBike, setRemoveClientBike] = useState("");
+  const [addressList, setAddressList] = useState("");
+  const [cepError, setCepError] = useState("");
 
-  function handleAddressChange(event) {
-    setAddress(event.target.value);
+  function handleOptionalPhoneChange(event) {
+    setOptionalPhone(event.target.value);
+  }
+
+  function handleAddressNumberChange(event) {
+    setAddressNumber(event.target.value);
+  }
+
+  function handleNotesChange(event) {
+    setNotes(event.target.value);
+  }
+
+  function handleCepChange(event) {
+    if (isEmpty(event.target.value)) {
+      setAddressList("");
+      setAddressNumber("");
+    }
+    setCep(event.target.value);
   }
 
   function handleCpfcnpjChange(event) {
@@ -48,7 +70,17 @@ function CreateClientPage() {
 
   function createClient() {
     if (isValidEntrances()) {
-      addClientRequest(name, cpfcnpj, address, phone, nickname, clientBikeList)
+      addClientRequest(
+        name,
+        cpfcnpj,
+        cep,
+        addressNumber,
+        phone,
+        optionalPhone,
+        notes,
+        nickname,
+        clientBikeList
+      )
         .then((_) => setSuccessMessage("Cliente criado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -90,6 +122,21 @@ function CreateClientPage() {
     closeDeleteModal();
   }
 
+  function getCep(cep) {
+    if (!isEmpty(cep) && cep.length === 9) {
+      getCepRequest(cep).then((response) => {
+        if (response.data.erro) {
+          setCepError("CEP não encontrado!");
+          setAddressList("");
+          setAddressNumber("");
+        } else {
+          setAddressList(response.data);
+          setCepError("");
+        }
+      });
+    }
+  }
+
   return (
     <div className="text-center mt-5">
       {successMessage !== "" ? (
@@ -123,13 +170,38 @@ function CreateClientPage() {
             value={cpfcnpj}
             onChange={handleCpfcnpjChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Endereço:</p>
-          <input
+          <p className="mb-0 mt-3 font-size-20">CEP:</p>
+          <InputMask
+            mask={"99999-999"}
+            maskChar=""
             type="text"
-            maxLength="150"
-            value={address}
-            onChange={handleAddressChange}
+            value={cep}
+            onChange={handleCepChange}
           />
+          <br />
+          <button className="btn btn-primary mt-2" onClick={() => getCep(cep)}>
+            Pesquisar CEP
+          </button>
+          <p className="text-danger font-size-18">{cepError}</p>
+          {!isEmpty(addressList) ? (
+            <div>
+              <p className="mb-0 mt-3 font-size-20">Rua:</p>
+              <input type="text" value={addressList.logradouro} disabled />
+              <p className="mb-0 mt-3 font-size-20">Número:</p>
+              <input
+                type="text"
+                maxLength="6"
+                defaultValue={addressNumber}
+                onChange={handleAddressNumberChange}
+              />
+              <p className="mb-0 mt-3 font-size-20">Bairro:</p>
+              <input type="text" value={addressList.bairro} disabled />
+              <p className="mb-0 mt-3 font-size-20">Cidade:</p>
+              <input type="text" value={addressList.localidade} disabled />
+              <p className="mb-0 mt-3 font-size-20">Estado:</p>
+              <input type="text" value={addressList.uf} disabled />
+            </div>
+          ) : null}
           <p className="mb-0 mt-3 font-size-20">Telefone*:</p>
           <InputMask
             required
@@ -143,12 +215,34 @@ function CreateClientPage() {
             value={phone}
             onChange={handlePhoneChange}
           />
+          <p className="mb-0 mt-3 font-size-20">Telefone opcional:</p>
+          <InputMask
+            mask={
+              !isEmpty(optionalPhone) &&
+              optionalPhone.length >= 5 &&
+              optionalPhone[4] === "9"
+                ? "(99)99999-9999"
+                : "(99)9999-9999"
+            }
+            maskChar=""
+            type="text"
+            value={optionalPhone}
+            onChange={handleOptionalPhoneChange}
+          />
           <p className="mb-0 mt-3 font-size-20">Apelido:</p>
           <input
             type="text"
             maxLength="100"
             value={nickname}
             onChange={handleNicknameChange}
+          />
+          <p className="mb-0 mt-3 font-size-20">Observações:</p>
+          <textarea
+            className="text-area-size"
+            type="text"
+            maxLength="255"
+            defaultValue={notes}
+            onChange={handleNotesChange}
           />
           <div>
             {clientBikeList.map(({ plate, bike }, index) => {
