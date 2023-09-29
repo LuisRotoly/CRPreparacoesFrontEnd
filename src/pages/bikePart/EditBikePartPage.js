@@ -12,6 +12,8 @@ function EditBikePartPage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
+  const [profitPercentage, setProfitPercentage] = useState("");
+  const [finalValue, setFinalValue] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
   const [bike, setBike] = useState([]);
   const [bikeList, setBikeList] = useState([]);
@@ -22,6 +24,8 @@ function EditBikePartPage() {
     getBikePartByIdRequest(pathname.id).then((response) => {
       setName(response.data.name);
       setValue(response.data.value);
+      setProfitPercentage(response.data.profitPercentage);
+      setFinalValue(response.data.finalValue);
       setStockQuantity(response.data.stockQuantity);
       setBike(response.data.bike);
     });
@@ -29,6 +33,10 @@ function EditBikePartPage() {
       setBikeList(response.data);
     });
   }, [pathname.id]);
+
+  function handleProfitPercentageChange(event) {
+    setProfitPercentage(event.target.value);
+  }
 
   function handleBikeChange(event) {
     setBike(bikeList[event.target.selectedIndex - 1]);
@@ -50,6 +58,7 @@ function EditBikePartPage() {
     return (
       !isEmpty(name) &&
       !isEmpty(value) &&
+      !isEmpty(profitPercentage) &&
       !isEmpty(stockQuantity) &&
       bike.length !== 0
     );
@@ -67,6 +76,13 @@ function EditBikePartPage() {
 
   function gotoBackPage() {
     navigate("/part");
+  }
+
+  function calculateProfit() {
+    let finalValue =
+      parseFloat(value) +
+      (parseFloat(value) * parseFloat(profitPercentage)) / 100;
+    setFinalValue(finalValue);
   }
 
   return (
@@ -98,6 +114,20 @@ function EditBikePartPage() {
             value={value}
             onChange={handleValueChange}
           />
+          <p className="mb-0 mt-3 font-size-20">Margem de lucro*:</p>
+          <input
+            type="number"
+            required
+            maxLength="14"
+            value={profitPercentage}
+            onChange={handleProfitPercentageChange}
+          />
+          <br />
+          <button className="btn btn-primary mt-2" onClick={calculateProfit}>
+            Calcular Porcentagem
+          </button>
+          <p className="mb-0 mt-3 font-size-20">Valor final:</p>
+          <input type="number" disabled value={finalValue} />
           <p className="mb-0 mt-3 font-size-20">Quantidade em estoque*:</p>
           <input
             type="number"

@@ -16,10 +16,17 @@ export async function filterBikePartListRequest(word) {
   return await api.get("filterListBikeParts?word=" + word);
 }
 
-export async function addBikePartRequest(name, value, stockQuantity, bikeId) {
+export async function addBikePartRequest(
+  name,
+  value,
+  profitPercentage,
+  stockQuantity,
+  bikeId
+) {
   return await api.post("addBikePart", {
     name: name,
     value: value,
+    profitPercentage: profitPercentage,
     stockQuantity: stockQuantity,
     bikeId: bikeId,
   });
@@ -29,6 +36,7 @@ export async function editBikePartRequest(
   id,
   name,
   value,
+  profitPercentage,
   stockQuantity,
   bikeId
 ) {
@@ -36,6 +44,7 @@ export async function editBikePartRequest(
     id: id,
     name: name,
     value: value,
+    profitPercentage: profitPercentage,
     stockQuantity: stockQuantity,
     bikeId: bikeId,
   });
