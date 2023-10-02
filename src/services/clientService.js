@@ -15,16 +15,22 @@ export async function filterClientsListRequest(word) {
 export async function addClientRequest(
   name,
   cpfcnpj,
-  address,
+  cep,
+  addressNumber,
   phone,
+  optionalPhone,
+  notes,
   nickname,
   clientBikeList
 ) {
   return await api.post("addClient", {
     name: name,
     cpfcnpj: cpfcnpj,
-    address: address,
+    cep: cep,
+    addressNumber: addressNumber,
     phone: phone,
+    optionalPhone: optionalPhone,
+    notes: notes,
     nickname: nickname,
     clientBikeList: clientBikeList,
   });
@@ -34,8 +40,11 @@ export async function editClientRequest(
   id,
   name,
   cpfcnpj,
-  address,
+  cep,
+  addressNumber,
   phone,
+  optionalPhone,
+  notes,
   nickname,
   clientBikeList
 ) {
@@ -43,8 +52,11 @@ export async function editClientRequest(
     id: id,
     name: name,
     cpfcnpj: cpfcnpj,
-    address: address,
+    cep: cep,
+    addressNumber: addressNumber,
     phone: phone,
+    optionalPhone: optionalPhone,
+    notes: notes,
     nickname: nickname,
     clientBikeList: clientBikeList,
   });
