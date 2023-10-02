@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addBikePartRequest } from "../../services/bikePartService";
 import { isEmpty } from "../../stringHelper";
-import { getBikeListRequest } from "../../services/bikeService";
+import "./bikePart.css";
+import DeleteModal from "../../components/modal/DeleteModal";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddBikeModal from "../../components/modal/AddBikeModal";
 
 function CreateBikePartPage() {
   const navigate = useNavigate();
@@ -11,17 +14,15 @@ function CreateBikePartPage() {
   const [profitPercentage, setProfitPercentage] = useState("");
   const [finalValue, setFinalValue] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
-  const [bike, setBike] = useState([]);
-  const [bikeList, setBikeList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [bikeList, setBikeList] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [removeBike, setRemoveBike] = useState("");
+  const [addBikeModal, setAddBikeModal] = useState(false);
 
   function handleProfitPercentageChange(event) {
     setProfitPercentage(event.target.value);
-  }
-
-  function handleBikeChange(event) {
-    setBike(bikeList[event.target.selectedIndex - 1]);
   }
 
   function handleValueChange(event) {
@@ -42,13 +43,13 @@ function CreateBikePartPage() {
       !isEmpty(value) &&
       !isEmpty(profitPercentage) &&
       !isEmpty(stockQuantity) &&
-      bike.length !== 0
+      bikeList.length !== 0
     );
   }
 
   function createBikePart() {
     if (isValidEntrances()) {
-      addBikePartRequest(name, value, profitPercentage, stockQuantity, bike.id)
+      addBikePartRequest(name, value, profitPercentage, stockQuantity, bikeList)
         .then((_) => setSuccessMessage("Peça criada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -60,19 +61,40 @@ function CreateBikePartPage() {
     navigate("/part");
   }
 
-  useEffect(() => {
-    getBikeListRequest()
-      .then((response) => {
-        setBikeList(response.data);
-      })
-      .catch((e) => setErrorMessage(e.response.data.message));
-  }, []);
-
   function calculateProfit() {
     let finalValue =
       parseFloat(value) +
       (parseFloat(value) * parseFloat(profitPercentage)) / 100;
     setFinalValue(finalValue);
+  }
+
+  function openDeleteModal(index) {
+    setRemoveBike(index);
+    setDeleteModal(true);
+  }
+
+  function closeDeleteModal() {
+    setDeleteModal(false);
+  }
+
+  function deleteBike() {
+    const reducedArray = [...bikeList];
+    reducedArray.splice(removeBike, 1);
+    setBikeList(reducedArray);
+    closeDeleteModal();
+  }
+
+  function openModalAddBike() {
+    setAddBikeModal(true);
+  }
+
+  function closeModalAddBike() {
+    setAddBikeModal(false);
+  }
+
+  function addBike(bike) {
+    setBikeList((oldList) => [...oldList, bike]);
+    closeModalAddBike();
   }
 
   return (
@@ -129,33 +151,31 @@ function CreateBikePartPage() {
             value={stockQuantity}
             onChange={handleStockQuantityChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Moto*:</p>
-          <select
-            defaultValue=""
-            className="select-width"
-            onChange={handleBikeChange}
-          >
-            <option key="blankChoice" hidden value="">
-              Selecione...
-            </option>
-            {bikeList.map(({ id, name, engineCapacity, year }) => {
-              return (
-                <option key={id} value={name}>
-                  {name}, {engineCapacity}, {year}
-                </option>
-              );
-            })}
-          </select>
-          {bike.length === 0 ? null : (
-            <div>
-              <p className="mb-0 mt-3 font-size-20">Marca:</p>
-              <input disabled type="text" value={bike.bikeBrand.name} />
-              <p className="mb-0 mt-3 font-size-20">Cilindrada:</p>
-              <input disabled type="text" value={bike.engineCapacity} />
-              <p className="mb-0 mt-3 font-size-20">Ano:</p>
-              <input disabled type="text" value={bike.year} />
-            </div>
-          )}
+          <div>
+            {bikeList.map(
+              ({ name, bikeBrand, engineCapacity, year }, index) => {
+                return (
+                  <div key={index} className="align-center mt-3">
+                    <div className="bike-container">
+                      <DeleteIcon
+                        className="remove-icon"
+                        onClick={() => openDeleteModal(index)}
+                      />
+                      <p className="mt-3">
+                        {name} {engineCapacity}
+                      </p>
+                      <p className="mt-3">
+                        {bikeBrand.name}, {year}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+            )}
+            <button className="btn btn-info mt-3" onClick={openModalAddBike}>
+              Adicionar Moto
+            </button>
+          </div>
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar
@@ -167,6 +187,17 @@ function CreateBikePartPage() {
           <p className="text-danger font-size-18">{errorMessage}</p>
         </div>
       )}
+      <AddBikeModal
+        show={addBikeModal}
+        close={closeModalAddBike}
+        addBike={addBike}
+      />
+      <DeleteModal
+        show={deleteModal}
+        close={closeDeleteModal}
+        title={"Excluir a moto?"}
+        remove={deleteBike}
+      />
     </div>
   );
 }

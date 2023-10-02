@@ -21,14 +21,14 @@ export async function addBikePartRequest(
   value,
   profitPercentage,
   stockQuantity,
-  bikeId
+  bikeList
 ) {
   return await api.post("addBikePart", {
     name: name,
     value: value,
     profitPercentage: profitPercentage,
     stockQuantity: stockQuantity,
-    bikeId: bikeId,
+    bikeList: bikeList,
   });
 }
 
@@ -38,7 +38,7 @@ export async function editBikePartRequest(
   value,
   profitPercentage,
   stockQuantity,
-  bikeId
+  bikeList
 ) {
   return await api.post("editBikePart", {
     id: id,
@@ -46,6 +46,10 @@ export async function editBikePartRequest(
     value: value,
     profitPercentage: profitPercentage,
     stockQuantity: stockQuantity,
-    bikeId: bikeId,
+    bikeList: bikeList,
   });
+}
+
+export async function getBikesByBikePartIdRequest(bikePartId) {
+  return await api.get("getBikesByBikePartId?bikePartId=" + bikePartId);
 }
