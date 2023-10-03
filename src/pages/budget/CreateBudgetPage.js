@@ -29,6 +29,9 @@ function CreateBudgetPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [bikePartModal, setBikePartModal] = useState(false);
   const [bikeServiceModal, setBikeServiceModal] = useState(false);
+  const [kilometers, setKilometers] = useState("");
+  const [payment, setPayment] = useState("");
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     getClientsListRequest().then((response) => setClientList(response.data));
@@ -64,11 +67,24 @@ function CreateBudgetPage() {
     setStatus(event.target.value);
   }
 
+  function handleNotesChange(event) {
+    setNotes(event.target.value);
+  }
+
+  function handleKilometersChange(event) {
+    setKilometers(event.target.value);
+  }
+
+  function handlePaymentChange(event) {
+    setPayment(event.target.value);
+  }
+
   function isValidEntrances() {
     return (
       !isEmpty(bike) &&
       !isEmpty(client) &&
       !isEmpty(status) &&
+      !isEmpty(kilometers) &&
       !isEmpty(laborOrBikePartBudgetList)
     );
   }
@@ -82,8 +98,11 @@ function CreateBudgetPage() {
         bike.bikeBrand.name,
         bike.engineCapacity,
         bike.year,
+        payment,
+        kilometers,
         laborOrBikePartBudgetList,
-        status
+        status,
+        notes
       )
         .then((_) => setSuccessMessage("Orçamento criado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
@@ -157,6 +176,7 @@ function CreateBudgetPage() {
         </div>
       ) : (
         <div>
+          <div className="data">Data: {new Date().toLocaleDateString()}</div>
           <p className="mb-0 mt-3 font-size-20">Cliente*:</p>
           <select
             defaultValue=""
@@ -197,6 +217,21 @@ function CreateBudgetPage() {
           )}
           {isEmpty(plate) ? null : (
             <div>
+              <p className="mb-0 mt-3 font-size-20">Quilometragem*:</p>
+              <input
+                type="number"
+                required
+                value={kilometers}
+                onChange={handleKilometersChange}
+              />
+              <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
+              <input
+                maxLength="50"
+                type="text"
+                value={payment}
+                onChange={handlePaymentChange}
+              />
+              <br />
               <button
                 className="btn btn-primary me-3 mt-5"
                 onClick={openBikePartModal}
@@ -226,8 +261,8 @@ function CreateBudgetPage() {
                         <tr key={index}>
                           <td>{name}</td>
                           <td>{quantity}</td>
-                          <td>{value}</td>
-                          <td>{quantity * value}</td>
+                          <td>{value} R$</td>
+                          <td>{quantity * value} R$</td>
                           <td>
                             <DeleteIcon
                               className="default-remove-icon"
@@ -260,6 +295,14 @@ function CreateBudgetPage() {
                   );
                 })}
               </select>
+              <p className="mb-0 mt-3 font-size-20">Observações:</p>
+              <textarea
+                className="text-area-size"
+                type="text"
+                maxLength="255"
+                value={notes}
+                onChange={handleNotesChange}
+              />
             </div>
           )}
           <div className="text-center mt-4">

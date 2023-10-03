@@ -2,6 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useEffect, useState } from "react";
 import { getBikeListRequest } from "../../services/bikeService";
+import InputMask from "react-input-mask";
 
 function CreateNewBikeClientModal(props) {
   const { addClientBike } = props;
@@ -46,9 +47,11 @@ function CreateNewBikeClientModal(props) {
           </Modal.Header>
           <Modal.Body>
             <p className="mb-0 mt-3 font-size-20">Escreva a placa*:</p>
-            <input
+            <InputMask
               type="text"
-              maxLength="8"
+              required
+              mask={"***-****"}
+              maskChar=""
               value={plate}
               onChange={handlePlateChange}
             />

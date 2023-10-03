@@ -9,8 +9,12 @@ import { getStatusListRequest } from "../../services/statusService";
 import { getBikePartByPlateRequest } from "../../services/bikePartService";
 import AddBikePartModal from "../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../components/budgetModal/AddBikeServiceModal";
+import { getBikeByPlateRequest } from "../../services/clientBikeService";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ClientDataModal from "../../components/budgetModal/ClientDataModal";
+import BikeDataModal from "../../components/budgetModal/BikeDataModal";
 
 function EditBudgetPage() {
   const pathname = useParams();
@@ -29,6 +33,13 @@ function EditBudgetPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [bikePartModal, setBikePartModal] = useState(false);
   const [bikeServiceModal, setBikeServiceModal] = useState(false);
+  const [kilometers, setKilometers] = useState("");
+  const [payment, setPayment] = useState("");
+  const [notes, setNotes] = useState("");
+  const [createdDate, setCreatedDate] = useState("");
+  const [clientDataModal, setClientDataModal] = useState(false);
+  const [bikeDataModal, setBikeDataModal] = useState(false);
+  const [bikeData, setBikeData] = useState("");
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -38,6 +49,10 @@ function EditBudgetPage() {
       setTotalValue(response.data.totalValue);
       setLaborOrBikePartBudgetList(response.data.laborOrBikePartBudgetList);
       setStatus(response.data.status);
+      setPayment(response.data.payment);
+      setKilometers(response.data.kilometers);
+      setNotes(response.data.notes);
+      setCreatedDate(response.data.createdAt);
     });
     getStatusListRequest().then((response) => setStatusList(response.data));
   }, [pathname.id]);
@@ -46,13 +61,27 @@ function EditBudgetPage() {
     setStatus(event.target.value);
   }
 
+  function handleNotesChange(event) {
+    setNotes(event.target.value);
+  }
+
+  function handlePaymentChange(event) {
+    setPayment(event.target.value);
+  }
+
   function isValidEntrances() {
     return !isEmpty(status) && !isEmpty(laborOrBikePartBudgetList);
   }
 
   function editBudget() {
     if (isValidEntrances()) {
-      editBudgetRequest(pathname.id, laborOrBikePartBudgetList, status)
+      editBudgetRequest(
+        pathname.id,
+        payment,
+        laborOrBikePartBudgetList,
+        status,
+        notes
+      )
         .then((_) => setSuccessMessage("Orçamento editado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -112,6 +141,25 @@ function EditBudgetPage() {
     setLaborOrBikePartBudgetList(reducedArray);
   }
 
+  function openBikeDataModal() {
+    getBikeByPlateRequest(plate).then((response) => {
+      setBikeData(response.data);
+    });
+    setBikeDataModal(true);
+  }
+
+  function closeBikeDataModal() {
+    setBikeDataModal(false);
+  }
+
+  function openClientDataModal() {
+    setClientDataModal(true);
+  }
+
+  function closeClientDataModal() {
+    setClientDataModal(false);
+  }
+
   return (
     <div className="text-center mt-5">
       {successMessage !== "" ? (
@@ -125,12 +173,36 @@ function EditBudgetPage() {
         </div>
       ) : (
         <div>
+          <div className="data">
+            Data: {new Date(createdDate).toLocaleDateString()}
+          </div>
           <p className="mb-0 mt-3 font-size-20">Cliente:</p>
-          <input type="text" defaultValue={client} disabled />
+          <input type="text" defaultValue={client} disabled className="me-3" />
+          <button
+            className="btn btn-outline-primary"
+            onClick={openClientDataModal}
+          >
+            <VisibilityIcon />
+          </button>
           <p className="mb-0 mt-3 font-size-20">Placa:</p>
           <input type="text" defaultValue={plate} disabled />
           <p className="mb-0 mt-3 font-size-20">Moto:</p>
-          <input type="text" defaultValue={bike} disabled />
+          <input type="text" defaultValue={bike} disabled className="me-3" />
+          <button
+            className="btn btn-outline-primary"
+            onClick={openBikeDataModal}
+          >
+            <VisibilityIcon />
+          </button>
+          <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
+          <input type="number" defaultValue={kilometers} disabled />
+          <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
+          <input
+            maxLength="50"
+            type="text"
+            value={payment}
+            onChange={handlePaymentChange}
+          />
           <br />
           <button
             className="btn btn-primary me-3 mt-5"
@@ -161,8 +233,8 @@ function EditBudgetPage() {
                     <tr key={index}>
                       <td>{name}</td>
                       <td>{quantity}</td>
-                      <td>{value}</td>
-                      <td>{quantity * value}</td>
+                      <td>{value} R$</td>
+                      <td>{quantity * value} R$</td>
                       <td>
                         <DeleteIcon
                           className="default-remove-icon"
@@ -192,6 +264,14 @@ function EditBudgetPage() {
               );
             })}
           </select>
+          <p className="mb-0 mt-3 font-size-20">Observações:</p>
+          <textarea
+            className="text-area-size"
+            type="text"
+            maxLength="255"
+            value={notes}
+            onChange={handleNotesChange}
+          />
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar
@@ -213,6 +293,16 @@ function EditBudgetPage() {
         show={bikeServiceModal}
         close={closeBikeServiceModal}
         addBikeServiceToBudget={addBikeServiceToBudget}
+      />
+      <ClientDataModal
+        show={clientDataModal}
+        close={closeClientDataModal}
+        budgetId={pathname.id}
+      />
+      <BikeDataModal
+        show={bikeDataModal}
+        close={closeBikeDataModal}
+        bike={bikeData}
       />
     </div>
   );

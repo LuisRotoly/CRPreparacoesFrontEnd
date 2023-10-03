@@ -11,7 +11,14 @@ function AddBikePartModal(props) {
   const [errorMessage, setErrorMessage] = useState("");
 
   function handleNameChange(event) {
-    setValue(props.bikePartList[event.target.selectedIndex - 1].value);
+    let finalValue =
+      parseFloat(props.bikePartList[event.target.selectedIndex - 1].value) +
+      (parseFloat(props.bikePartList[event.target.selectedIndex - 1].value) *
+        parseFloat(
+          props.bikePartList[event.target.selectedIndex - 1].profitPercentage
+        )) /
+        100;
+    setValue(finalValue);
     setName(event.target.value);
   }
 

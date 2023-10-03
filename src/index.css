@@ -70,3 +70,10 @@ code {
   color: blue;
   cursor: pointer;
 }
+
+.data {
+  font-size: 20px;
+  position: absolute;
+  top: 130px;
+  right: 50px;
+}

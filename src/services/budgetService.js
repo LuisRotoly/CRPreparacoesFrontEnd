@@ -19,8 +19,11 @@ export async function addBudgetRequest(
   bikeBrand,
   engineCapacity,
   year,
+  payment,
+  kilometers,
   laborOrBikePartBudgetList,
-  status
+  status,
+  notes
 ) {
   return await api.post("addBudget", {
     clientId: clientId,
@@ -29,15 +32,30 @@ export async function addBudgetRequest(
     bikeBrand: bikeBrand,
     engineCapacity: engineCapacity,
     year: year,
+    payment: payment,
+    kilometers: kilometers,
     laborOrBikePartBudgetList: laborOrBikePartBudgetList,
     status: status,
+    notes: notes,
   });
 }
 
-export async function editBudgetRequest(id, laborOrBikePartBudgetList, status) {
+export async function editBudgetRequest(
+  id,
+  payment,
+  laborOrBikePartBudgetList,
+  status,
+  notes
+) {
   return await api.post("editBudget", {
     id: id,
+    payment: payment,
     laborOrBikePartBudgetList: laborOrBikePartBudgetList,
     status: status,
+    notes: notes,
   });
+}
+
+export async function getClientByBudgetIdRequest(budgetId) {
+  return await api.get("findClientByBudgetId?budgetId=" + budgetId);
 }
