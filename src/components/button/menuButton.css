@@ -14,6 +14,7 @@
 .menu-button:hover {
   background-color: white;
   color: black;
+  border: 1px solid black;
 }
 
 .menu-button:active {
@@ -27,16 +28,17 @@
   font-size: 18px;
   color: black;
   background: white;
-  border-color: white;
   cursor: pointer;
   display: inline-block;
   margin-left: 30px;
   padding: 10px;
   border-radius: 6px;
+  border: 1px solid black;
 }
 
 .menu-button-enable:active {
   background-color: white;
   color: black;
+  border: 1px solid white;
   border-color: white;
 }
