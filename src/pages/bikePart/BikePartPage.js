@@ -7,12 +7,16 @@ import {
 } from "../../services/bikePartService";
 import EditIcon from "@mui/icons-material/Edit";
 import { isEmpty } from "../../stringHelper";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import BikeListModal from "../../components/modal/BikeListModal";
 
 function BikePartPage() {
   const navigate = useNavigate();
   const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const [bikeListModal, setBikeListModal] = useState(false);
+  const [bikePartId, setBikePartId] = useState("");
 
   useEffect(() => {
     getBikePartListRequest().then((response) => {
@@ -34,6 +38,15 @@ function BikePartPage() {
 
   function gotoCreatePage() {
     navigate("/part/create");
+  }
+
+  function openBikeListModal(bikePartId) {
+    setBikePartId(bikePartId);
+    setBikeListModal(true);
+  }
+
+  function closeBikeListModal() {
+    setBikeListModal(false);
   }
 
   return (
@@ -59,33 +72,44 @@ function BikePartPage() {
               <th>Peça</th>
               <th>Valor</th>
               <th>Qtd Estoque</th>
-              <th>Moto</th>
-              <th>Marca</th>
-              <th>Cilindrada</th>
-              <th>Ano</th>
+              <th>Lista de Motos</th>
               <th>Editar</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, value, stockQuantity, bike }) => (
-              <tr key={id}>
-                <td>{name}</td>
-                <td>R$ {value}</td>
-                <td>{stockQuantity} peças</td>
-                <td>{bike.name}</td>
-                <td>{bike.bikeBrand.name}</td>
-                <td>{bike.engineCapacity}</td>
-                <td>{bike.year}</td>
-                <td>
-                  <Link to={`/part/edit/${id}`}>
-                    <EditIcon className="edit-icon" />
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {data.map(
+              ({ id, name, value, profitPercentage, stockQuantity }) => {
+                let finalValue =
+                  parseFloat(value) +
+                  (parseFloat(value) * parseFloat(profitPercentage)) / 100;
+                return (
+                  <tr key={id}>
+                    <td>{name}</td>
+                    <td>R$ {finalValue}</td>
+                    <td>{stockQuantity} peças</td>
+                    <td>
+                      <VisibilityIcon
+                        className="default-view-icon"
+                        onClick={() => openBikeListModal(id)}
+                      />
+                    </td>
+                    <td>
+                      <Link to={`/part/edit/${id}`}>
+                        <EditIcon className="edit-icon" />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </Table>
       </div>
+      <BikeListModal
+        show={bikeListModal}
+        close={closeBikeListModal}
+        bikePartId={bikePartId}
+      />
     </div>
   );
 }

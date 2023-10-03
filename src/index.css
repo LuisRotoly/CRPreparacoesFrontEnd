@@ -65,3 +65,8 @@ code {
   color: red;
   cursor: pointer;
 }
+
+.default-view-icon {
+  color: blue;
+  cursor: pointer;
+}
