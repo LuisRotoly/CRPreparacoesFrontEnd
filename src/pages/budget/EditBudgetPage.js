@@ -11,11 +11,6 @@ import AddBikePartModal from "../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../components/budgetModal/AddBikeServiceModal";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  addLaborOrBikePartBudgetRequest,
-  listLaborOrBikePartBudgetByIdRequest,
-  removeLaborOrBikePartBudgetRequest,
-} from "../../services/laborOrBikePartBudgetService";
 
 function EditBudgetPage() {
   const pathname = useParams();
@@ -51,9 +46,13 @@ function EditBudgetPage() {
     setStatus(event.target.value);
   }
 
+  function isValidEntrances() {
+    return !isEmpty(status) && !isEmpty(laborOrBikePartBudgetList);
+  }
+
   function editBudget() {
-    if (!isEmpty(status)) {
-      editBudgetRequest(pathname.id, status)
+    if (isValidEntrances()) {
+      editBudgetRequest(pathname.id, laborOrBikePartBudgetList, status)
         .then((_) => setSuccessMessage("Orçamento editado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -65,24 +64,21 @@ function EditBudgetPage() {
     navigate("/budget");
   }
 
-  function getLaborOrBikePartBudgetListFromDatabase() {
-    listLaborOrBikePartBudgetByIdRequest(pathname.id).then((response) =>
-      setLaborOrBikePartBudgetList(response.data)
-    );
+  function addBikeServiceToBudget(name, quantity, value) {
+    setLaborOrBikePartBudgetList((oldList) => [
+      ...oldList,
+      { name, quantity, value },
+    ]);
+    setTotalValue(totalValue + quantity * value);
+    closeBikeServiceModal();
   }
 
-  function addBikeServiceToBudget(name, quantity, value) {
-    const laborOrBikePartBudget = {
-      name: name,
-      quantity: quantity,
-      value: value,
-      budget: { id: pathname.id },
-    };
-    addLaborOrBikePartBudgetRequest(laborOrBikePartBudget).then((response) => {
-      setTotalValue(response.data);
-      getLaborOrBikePartBudgetListFromDatabase();
-    });
-    closeBikeServiceModal();
+  function addBikePartToBudget(name, quantity, value) {
+    setLaborOrBikePartBudgetList((oldList) => [
+      ...oldList,
+      { name, quantity, value },
+    ]);
+    setTotalValue(totalValue + quantity * value);
     closeBikePartModal();
   }
 
@@ -106,12 +102,14 @@ function EditBudgetPage() {
   }
 
   function deleteLaborOrBikePartLine(index) {
-    removeLaborOrBikePartBudgetRequest(
-      laborOrBikePartBudgetList[index].id
-    ).then((response) => {
-      setTotalValue(response.data);
-      getLaborOrBikePartBudgetListFromDatabase();
-    });
+    const reducedArray = [...laborOrBikePartBudgetList];
+    setTotalValue(
+      totalValue -
+        laborOrBikePartBudgetList[index].quantity *
+          laborOrBikePartBudgetList[index].value
+    );
+    reducedArray.splice(index, 1);
+    setLaborOrBikePartBudgetList(reducedArray);
   }
 
   return (
@@ -209,7 +207,7 @@ function EditBudgetPage() {
         show={bikePartModal}
         close={closeBikePartModal}
         bikePartList={bikePartList}
-        addBikePartToBudget={addBikeServiceToBudget}
+        addBikePartToBudget={addBikePartToBudget}
       />
       <AddBikeServiceModal
         show={bikeServiceModal}

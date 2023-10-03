@@ -34,9 +34,10 @@ export async function addBudgetRequest(
   });
 }
 
-export async function editBudgetRequest(id, status) {
+export async function editBudgetRequest(id, laborOrBikePartBudgetList, status) {
   return await api.post("editBudget", {
     id: id,
+    laborOrBikePartBudgetList: laborOrBikePartBudgetList,
     status: status,
   });
 }
