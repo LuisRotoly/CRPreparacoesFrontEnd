@@ -19,8 +19,8 @@ export async function addBudgetRequest(
   bikeBrand,
   engineCapacity,
   year,
-  payment,
-  kilometers,
+  paymentFormat,
+  kilometersDriven,
   laborOrBikePartBudgetList,
   status,
   notes
@@ -32,8 +32,8 @@ export async function addBudgetRequest(
     bikeBrand: bikeBrand,
     engineCapacity: engineCapacity,
     year: year,
-    payment: payment,
-    kilometers: kilometers,
+    paymentFormat: paymentFormat,
+    kilometersDriven: kilometersDriven,
     laborOrBikePartBudgetList: laborOrBikePartBudgetList,
     status: status,
     notes: notes,
@@ -42,14 +42,14 @@ export async function addBudgetRequest(
 
 export async function editBudgetRequest(
   id,
-  payment,
+  paymentFormat,
   laborOrBikePartBudgetList,
   status,
   notes
 ) {
   return await api.post("editBudget", {
     id: id,
-    payment: payment,
+    paymentFormat: paymentFormat,
     laborOrBikePartBudgetList: laborOrBikePartBudgetList,
     status: status,
     notes: notes,

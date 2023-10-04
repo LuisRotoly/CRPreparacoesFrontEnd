@@ -10,6 +10,7 @@ import AddBikePartModal from "../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../components/budgetModal/AddBikeServiceModal";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
 
 function CreateBudgetPage() {
   const navigate = useNavigate();
@@ -29,13 +30,17 @@ function CreateBudgetPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [bikePartModal, setBikePartModal] = useState(false);
   const [bikeServiceModal, setBikeServiceModal] = useState(false);
-  const [kilometers, setKilometers] = useState("");
-  const [payment, setPayment] = useState("");
+  const [kilometersDriven, setKilometersDriven] = useState("");
+  const [paymentFormat, setPaymentFormat] = useState("");
+  const [paymentFormatList, setPaymentFormatList] = useState([]);
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
     getClientsListRequest().then((response) => setClientList(response.data));
     getStatusListRequest().then((response) => setStatusList(response.data));
+    getPaymentFormatListRequest().then((response) =>
+      setPaymentFormatList(response.data)
+    );
   }, []);
 
   function handleClientChange(event) {
@@ -71,12 +76,12 @@ function CreateBudgetPage() {
     setNotes(event.target.value);
   }
 
-  function handleKilometersChange(event) {
-    setKilometers(event.target.value);
+  function handleKilometersDrivenChange(event) {
+    setKilometersDriven(event.target.value);
   }
 
-  function handlePaymentChange(event) {
-    setPayment(event.target.value);
+  function handlePaymentFormatChange(event) {
+    setPaymentFormat(event.target.value);
   }
 
   function isValidEntrances() {
@@ -84,7 +89,8 @@ function CreateBudgetPage() {
       !isEmpty(bike) &&
       !isEmpty(client) &&
       !isEmpty(status) &&
-      !isEmpty(kilometers) &&
+      !isEmpty(kilometersDriven) &&
+      !isEmpty(paymentFormat) &&
       !isEmpty(laborOrBikePartBudgetList)
     );
   }
@@ -98,8 +104,8 @@ function CreateBudgetPage() {
         bike.bikeBrand.name,
         bike.engineCapacity,
         bike.year,
-        payment,
-        kilometers,
+        paymentFormat,
+        kilometersDriven,
         laborOrBikePartBudgetList,
         status,
         notes
@@ -176,7 +182,7 @@ function CreateBudgetPage() {
         </div>
       ) : (
         <div>
-          <div className="data">Data: {new Date().toLocaleDateString()}</div>
+          <p className="data">Data: {new Date().toLocaleDateString()}</p>
           <p className="mb-0 mt-3 font-size-20">Cliente*:</p>
           <select
             defaultValue=""
@@ -221,16 +227,26 @@ function CreateBudgetPage() {
               <input
                 type="number"
                 required
-                value={kilometers}
-                onChange={handleKilometersChange}
+                value={kilometersDriven}
+                onChange={handleKilometersDrivenChange}
               />
-              <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
-              <input
-                maxLength="50"
-                type="text"
-                value={payment}
-                onChange={handlePaymentChange}
-              />
+              <p className="mb-0 mt-3 font-size-20">Forma de Pagamento*:</p>
+              <select
+                defaultValue=""
+                className="select-width"
+                onChange={handlePaymentFormatChange}
+              >
+                <option key="blankChoice" hidden value="">
+                  Selecione...
+                </option>
+                {paymentFormatList.map(({ id, type }) => {
+                  return (
+                    <option key={id} value={type}>
+                      {type}
+                    </option>
+                  );
+                })}
+              </select>
               <br />
               <button
                 className="btn btn-primary me-3 mt-5"
@@ -261,8 +277,8 @@ function CreateBudgetPage() {
                         <tr key={index}>
                           <td>{name}</td>
                           <td>{quantity}</td>
-                          <td>{value} R$</td>
-                          <td>{quantity * value} R$</td>
+                          <td>R$ {value}</td>
+                          <td>R$ {quantity * value}</td>
                           <td>
                             <DeleteIcon
                               className="default-remove-icon"

@@ -73,7 +73,8 @@ code {
 
 .data {
   font-size: 20px;
-  position: absolute;
-  top: 130px;
-  right: 50px;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 30px;
+  margin-bottom: -40px;
 }

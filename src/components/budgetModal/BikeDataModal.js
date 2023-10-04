@@ -11,7 +11,7 @@ function BikeDataModal(props) {
           </Modal.Header>
           <Modal.Body>
             <p className="mb-0 mt-3 font-size-20">
-              {props.bike.bikeBrandName} {props.bike.bikeName},{" "}
+              {props.bike.brandName} {props.bike.name},{" "}
               {props.bike.engineCapacity}cv - {props.bike.year}
             </p>
           </Modal.Body>

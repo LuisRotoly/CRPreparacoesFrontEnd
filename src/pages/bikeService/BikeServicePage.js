@@ -92,7 +92,7 @@ function BikeServicePage() {
             {data.map(({ id, name, value }) => (
               <tr key={id}>
                 <td>{name}</td>
-                <td>{value} R$</td>
+                <td>R$ {value}</td>
                 <td>
                   <Link to={`/services/edit/${id}`}>
                     <EditIcon className="edit-icon" />

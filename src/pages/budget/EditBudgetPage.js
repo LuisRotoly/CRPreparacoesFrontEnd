@@ -15,6 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClientDataModal from "../../components/budgetModal/ClientDataModal";
 import BikeDataModal from "../../components/budgetModal/BikeDataModal";
+import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
 
 function EditBudgetPage() {
   const pathname = useParams();
@@ -33,13 +34,14 @@ function EditBudgetPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [bikePartModal, setBikePartModal] = useState(false);
   const [bikeServiceModal, setBikeServiceModal] = useState(false);
-  const [kilometers, setKilometers] = useState("");
-  const [payment, setPayment] = useState("");
+  const [kilometersDriven, setKilometersDriven] = useState("");
+  const [paymentFormat, setPaymentFormat] = useState("");
   const [notes, setNotes] = useState("");
   const [createdDate, setCreatedDate] = useState("");
   const [clientDataModal, setClientDataModal] = useState(false);
   const [bikeDataModal, setBikeDataModal] = useState(false);
   const [bikeData, setBikeData] = useState("");
+  const [paymentFormatList, setPaymentFormatList] = useState([]);
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -49,12 +51,15 @@ function EditBudgetPage() {
       setTotalValue(response.data.totalValue);
       setLaborOrBikePartBudgetList(response.data.laborOrBikePartBudgetList);
       setStatus(response.data.status);
-      setPayment(response.data.payment);
-      setKilometers(response.data.kilometers);
+      setPaymentFormat(response.data.paymentFormat);
+      setKilometersDriven(response.data.kilometersDriven);
       setNotes(response.data.notes);
       setCreatedDate(response.data.createdAt);
     });
     getStatusListRequest().then((response) => setStatusList(response.data));
+    getPaymentFormatListRequest().then((response) =>
+      setPaymentFormatList(response.data)
+    );
   }, [pathname.id]);
 
   function handleStatusChange(event) {
@@ -65,19 +70,23 @@ function EditBudgetPage() {
     setNotes(event.target.value);
   }
 
-  function handlePaymentChange(event) {
-    setPayment(event.target.value);
+  function handlePaymentFormatChange(event) {
+    setPaymentFormat(event.target.value);
   }
 
   function isValidEntrances() {
-    return !isEmpty(status) && !isEmpty(laborOrBikePartBudgetList);
+    return (
+      !isEmpty(status) &&
+      !isEmpty(paymentFormat) &&
+      !isEmpty(laborOrBikePartBudgetList)
+    );
   }
 
   function editBudget() {
     if (isValidEntrances()) {
       editBudgetRequest(
         pathname.id,
-        payment,
+        paymentFormat,
         laborOrBikePartBudgetList,
         status,
         notes
@@ -195,14 +204,21 @@ function EditBudgetPage() {
             <VisibilityIcon />
           </button>
           <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
-          <input type="number" defaultValue={kilometers} disabled />
-          <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
-          <input
-            maxLength="50"
-            type="text"
-            value={payment}
-            onChange={handlePaymentChange}
-          />
+          <input type="number" defaultValue={kilometersDriven} disabled />
+          <p className="mb-0 mt-3 font-size-20">Forma de Pagamento*:</p>
+          <select
+            value={paymentFormat}
+            className="select-width"
+            onChange={handlePaymentFormatChange}
+          >
+            {paymentFormatList.map(({ id, type }) => {
+              return (
+                <option key={id} value={type}>
+                  {type}
+                </option>
+              );
+            })}
+          </select>
           <br />
           <button
             className="btn btn-primary me-3 mt-5"
@@ -233,8 +249,8 @@ function EditBudgetPage() {
                     <tr key={index}>
                       <td>{name}</td>
                       <td>{quantity}</td>
-                      <td>{value} R$</td>
-                      <td>{quantity * value} R$</td>
+                      <td>R$ {value}</td>
+                      <td>R$ {quantity * value}</td>
                       <td>
                         <DeleteIcon
                           className="default-remove-icon"

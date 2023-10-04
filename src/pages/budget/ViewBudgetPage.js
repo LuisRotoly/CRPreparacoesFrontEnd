@@ -18,8 +18,8 @@ function ViewBudgetPage() {
   );
   const [status, setStatus] = useState("");
   const [totalValue, setTotalValue] = useState(0);
-  const [kilometers, setKilometers] = useState("");
-  const [payment, setPayment] = useState("");
+  const [kilometersDriven, setKilometersDriven] = useState("");
+  const [paymentFormat, setPaymentFormat] = useState("");
   const [notes, setNotes] = useState("");
   const [createdDate, setCreatedDate] = useState("");
   const [clientDataModal, setClientDataModal] = useState(false);
@@ -34,8 +34,8 @@ function ViewBudgetPage() {
       setTotalValue(response.data.totalValue);
       setLaborOrBikePartBudgetList(response.data.laborOrBikePartBudgetList);
       setStatus(response.data.status);
-      setPayment(response.data.payment);
-      setKilometers(response.data.kilometers);
+      setPaymentFormat(response.data.paymentFormat);
+      setKilometersDriven(response.data.kilometersDriven);
       setNotes(response.data.notes);
       setCreatedDate(response.data.createdAt);
     });
@@ -86,9 +86,9 @@ function ViewBudgetPage() {
         <p className="mb-0 mt-3 font-size-20">Moto:</p>
         <input type="text" defaultValue={bike} disabled />
         <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
-        <input type="number" defaultValue={kilometers} disabled />
+        <input type="number" defaultValue={kilometersDriven} disabled />
         <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
-        <input type="text" defaultValue={payment} disabled />
+        <input type="text" defaultValue={paymentFormat} disabled />
         <br />
         <div className="align-center">
           <Table className="table-preferences">
@@ -106,8 +106,8 @@ function ViewBudgetPage() {
                   <tr key={index}>
                     <td>{name}</td>
                     <td>{quantity}</td>
-                    <td>{value} R$</td>
-                    <td>{quantity * value} R$</td>
+                    <td>R$ {value}</td>
+                    <td>R$ {quantity * value}</td>
                   </tr>
                 )
               )}
