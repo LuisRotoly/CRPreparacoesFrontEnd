@@ -38,9 +38,9 @@ function CreateBudgetPage() {
   useEffect(() => {
     getClientsListRequest().then((response) => setClientList(response.data));
     getStatusListRequest().then((response) => setStatusList(response.data));
-    getPaymentFormatListRequest().then((response) =>
-      setPaymentFormatList(response.data)
-    );
+    getPaymentFormatListRequest().then((response) => {
+      setPaymentFormatList(response.data);
+    });
   }, []);
 
   function handleClientChange(event) {
@@ -69,7 +69,7 @@ function CreateBudgetPage() {
   }
 
   function handleStatusChange(event) {
-    setStatus(event.target.value);
+    setStatus(statusList[event.target.selectedIndex]);
   }
 
   function handleNotesChange(event) {
@@ -81,7 +81,7 @@ function CreateBudgetPage() {
   }
 
   function handlePaymentFormatChange(event) {
-    setPaymentFormat(event.target.value);
+    setPaymentFormat(paymentFormatList[event.target.selectedIndex]);
   }
 
   function isValidEntrances() {

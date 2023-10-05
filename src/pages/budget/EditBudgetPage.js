@@ -63,7 +63,7 @@ function EditBudgetPage() {
   }, [pathname.id]);
 
   function handleStatusChange(event) {
-    setStatus(event.target.value);
+    setStatus(statusList[event.target.selectedIndex]);
   }
 
   function handleNotesChange(event) {
@@ -71,7 +71,7 @@ function EditBudgetPage() {
   }
 
   function handlePaymentFormatChange(event) {
-    setPaymentFormat(event.target.value);
+    setPaymentFormat(paymentFormatList[event.target.selectedIndex]);
   }
 
   function isValidEntrances() {
@@ -207,7 +207,7 @@ function EditBudgetPage() {
           <input type="number" defaultValue={kilometersDriven} disabled />
           <p className="mb-0 mt-3 font-size-20">Forma de Pagamento*:</p>
           <select
-            value={paymentFormat}
+            value={paymentFormat.type}
             className="select-width"
             onChange={handlePaymentFormatChange}
           >
@@ -268,7 +268,7 @@ function EditBudgetPage() {
           </p>
           <p className="mb-0 mt-3 font-size-20">Status*:</p>
           <select
-            value={status}
+            value={status.description}
             className="select-width"
             onChange={handleStatusChange}
           >

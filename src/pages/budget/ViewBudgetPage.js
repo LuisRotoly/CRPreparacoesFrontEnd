@@ -88,7 +88,7 @@ function ViewBudgetPage() {
         <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
         <input type="number" defaultValue={kilometersDriven} disabled />
         <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
-        <input type="text" defaultValue={paymentFormat} disabled />
+        <input type="text" defaultValue={paymentFormat.type} disabled />
         <br />
         <div className="align-center">
           <Table className="table-preferences">
@@ -118,7 +118,7 @@ function ViewBudgetPage() {
           Valor Total: {totalValue} Reais
         </p>
         <p className="mb-0 mt-3 font-size-20">Status:</p>
-        <input type="text" defaultValue={status} disabled />
+        <input type="text" defaultValue={status.description} disabled />
         <p className="mb-0 mt-3 font-size-20">Observações:</p>
         <textarea
           className="text-area-size"
