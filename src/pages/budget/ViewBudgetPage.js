@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getBudgetByIdRequest } from "../../services/budgetService";
+import { getBikeByPlateRequest } from "../../services/clientBikeService";
 import Table from "react-bootstrap/Table";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ClientDataModal from "../../components/budgetModal/ClientDataModal";
+import BikeDataModal from "../../components/budgetModal/BikeDataModal";
 
 function ViewBudgetPage() {
   const pathname = useParams();
@@ -14,6 +18,13 @@ function ViewBudgetPage() {
   );
   const [status, setStatus] = useState("");
   const [totalValue, setTotalValue] = useState(0);
+  const [kilometersDriven, setKilometersDriven] = useState("");
+  const [paymentFormat, setPaymentFormat] = useState("");
+  const [notes, setNotes] = useState("");
+  const [createdDate, setCreatedDate] = useState("");
+  const [clientDataModal, setClientDataModal] = useState(false);
+  const [bikeDataModal, setBikeDataModal] = useState(false);
+  const [bikeData, setBikeData] = useState("");
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -23,6 +34,10 @@ function ViewBudgetPage() {
       setTotalValue(response.data.totalValue);
       setLaborOrBikePartBudgetList(response.data.laborOrBikePartBudgetList);
       setStatus(response.data.status);
+      setPaymentFormat(response.data.paymentFormat);
+      setKilometersDriven(response.data.kilometersDriven);
+      setNotes(response.data.notes);
+      setCreatedDate(response.data.createdAt);
     });
   }, [pathname.id]);
 
@@ -30,15 +45,50 @@ function ViewBudgetPage() {
     navigate("/budget");
   }
 
+  function openBikeDataModal() {
+    getBikeByPlateRequest(plate).then((response) => {
+      setBikeData(response.data);
+    });
+    setBikeDataModal(true);
+  }
+
+  function closeBikeDataModal() {
+    setBikeDataModal(false);
+  }
+
+  function openClientDataModal() {
+    setClientDataModal(true);
+  }
+
+  function closeClientDataModal() {
+    setClientDataModal(false);
+  }
+
   return (
     <div className="text-center mt-5">
       <div>
+        <div className="data">
+          Data: {new Date(createdDate).toLocaleDateString()}
+        </div>
         <p className="mb-0 mt-3 font-size-20">Cliente:</p>
-        <input type="text" defaultValue={client} disabled />
+        <input type="text" defaultValue={client} disabled className="me-3" />
+        <button
+          className="btn btn-outline-primary"
+          onClick={openClientDataModal}
+        >
+          <VisibilityIcon />
+        </button>
         <p className="mb-0 mt-3 font-size-20">Placa:</p>
-        <input type="text" defaultValue={plate} disabled />
+        <input type="text" defaultValue={plate} disabled className="me-3" />
+        <button className="btn btn-outline-primary" onClick={openBikeDataModal}>
+          <VisibilityIcon />
+        </button>
         <p className="mb-0 mt-3 font-size-20">Moto:</p>
         <input type="text" defaultValue={bike} disabled />
+        <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
+        <input type="number" defaultValue={kilometersDriven} disabled />
+        <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
+        <input type="text" defaultValue={paymentFormat.type} disabled />
         <br />
         <div className="align-center">
           <Table className="table-preferences">
@@ -56,8 +106,8 @@ function ViewBudgetPage() {
                   <tr key={index}>
                     <td>{name}</td>
                     <td>{quantity}</td>
-                    <td>{value}</td>
-                    <td>{quantity * value}</td>
+                    <td>R$ {value}</td>
+                    <td>R$ {quantity * value}</td>
                   </tr>
                 )
               )}
@@ -68,13 +118,30 @@ function ViewBudgetPage() {
           Valor Total: {totalValue} Reais
         </p>
         <p className="mb-0 mt-3 font-size-20">Status:</p>
-        <input type="text" defaultValue={status} disabled />
+        <input type="text" defaultValue={status.description} disabled />
+        <p className="mb-0 mt-3 font-size-20">Observações:</p>
+        <textarea
+          className="text-area-size"
+          type="text"
+          defaultValue={notes}
+          disabled
+        />
         <div className="text-center mt-4">
-          <button className="btn btn-primary me-3" onClick={gotoBackPage}>
+          <button className="btn btn-primary" onClick={gotoBackPage}>
             Voltar
           </button>
         </div>
       </div>
+      <ClientDataModal
+        show={clientDataModal}
+        close={closeClientDataModal}
+        budgetId={pathname.id}
+      />
+      <BikeDataModal
+        show={bikeDataModal}
+        close={closeBikeDataModal}
+        bike={bikeData}
+      />
     </div>
   );
 }
