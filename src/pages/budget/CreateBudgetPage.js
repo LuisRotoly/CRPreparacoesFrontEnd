@@ -69,7 +69,7 @@ function CreateBudgetPage() {
   }
 
   function handleStatusChange(event) {
-    setStatus(statusList[event.target.selectedIndex]);
+    setStatus(statusList[event.target.selectedIndex - 1]);
   }
 
   function handleNotesChange(event) {
