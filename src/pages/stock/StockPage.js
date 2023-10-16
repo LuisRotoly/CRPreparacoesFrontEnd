@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import {
@@ -10,8 +10,7 @@ import { isEmpty } from "../../stringHelper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import BikeListModal from "../../components/modal/BikeListModal";
 
-function BikePartPage() {
-  const navigate = useNavigate();
+function StockPage() {
   const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
@@ -36,10 +35,6 @@ function BikePartPage() {
     }
   }
 
-  function gotoCreatePage() {
-    navigate("/part/create");
-  }
-
   function openBikeListModal(bikePartId) {
     setBikePartId(bikePartId);
     setBikeListModal(true);
@@ -52,38 +47,31 @@ function BikePartPage() {
   return (
     <div>
       <div className="text-center div-title">
-        <p className="page-title">Lista de Peças</p>
+        <p className="page-title">Estoque de Peças</p>
         <span className="font-size-18">Pesquisar: </span>
         <input
           maxLength="100"
           type="text"
           value={search}
           onChange={handleSearchChange}
-          className="me-5"
         />
-        <button className="btn btn-outline-primary" onClick={gotoCreatePage}>
-          Criar Nova Peça
-        </button>
       </div>
       <div className="align-center">
         <Table className="table-preferences">
           <thead>
             <tr>
               <th>Peça</th>
-              <th>Valor</th>
+              <th>Qtd Estoque</th>
               <th>Lista de Motos</th>
               <th>Editar</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, value, profitPercentage }) => {
-              let finalValue =
-                parseFloat(value) +
-                (parseFloat(value) * parseFloat(profitPercentage)) / 100;
+            {data.map(({ id, name, stockQuantity }) => {
               return (
                 <tr key={id}>
                   <td>{name}</td>
-                  <td>R$ {finalValue}</td>
+                  <td>{stockQuantity} peças</td>
                   <td>
                     <VisibilityIcon
                       className="default-view-icon"
@@ -91,7 +79,7 @@ function BikePartPage() {
                     />
                   </td>
                   <td>
-                    <Link to={`/part/edit/${id}`}>
+                    <Link to={`/stock/edit/${id}`}>
                       <EditIcon className="edit-icon" />
                     </Link>
                   </td>
@@ -109,4 +97,4 @@ function BikePartPage() {
     </div>
   );
 }
-export default BikePartPage;
+export default StockPage;
