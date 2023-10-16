@@ -22,6 +22,7 @@ export async function addBudgetRequest(
   paymentFormat,
   kilometersDriven,
   laborOrBikePartBudgetList,
+  discountPercentage,
   status,
   notes
 ) {
@@ -35,6 +36,7 @@ export async function addBudgetRequest(
     paymentFormat: paymentFormat,
     kilometersDriven: kilometersDriven,
     laborOrBikePartBudgetList: laborOrBikePartBudgetList,
+    discountPercentage: discountPercentage,
     status: status,
     notes: notes,
   });
@@ -44,6 +46,7 @@ export async function editBudgetRequest(
   id,
   paymentFormat,
   laborOrBikePartBudgetList,
+  discountPercentage,
   status,
   notes
 ) {
@@ -51,6 +54,7 @@ export async function editBudgetRequest(
     id: id,
     paymentFormat: paymentFormat,
     laborOrBikePartBudgetList: laborOrBikePartBudgetList,
+    discountPercentage,
     status: status,
     notes: notes,
   });
@@ -58,4 +62,15 @@ export async function editBudgetRequest(
 
 export async function getClientByBudgetIdRequest(budgetId) {
   return await api.get("findClientByBudgetId?budgetId=" + budgetId);
+}
+
+export async function removeBudgetByIdRequest(id) {
+  return await api.put("removeBudgetById?budgetId=" + id);
+}
+
+export async function editBudgetNotesRequest(id, notes) {
+  return await api.put("editBudgetNotesById", {
+    id: id,
+    notes: notes,
+  });
 }

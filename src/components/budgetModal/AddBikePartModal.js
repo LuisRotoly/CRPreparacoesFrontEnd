@@ -2,6 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 import { isEmpty } from "../../stringHelper";
+import AddNewBikePartModal from "../modal/AddNewBikePartModal";
 
 function AddBikePartModal(props) {
   const { addBikePartToBudget } = props;
@@ -9,6 +10,7 @@ function AddBikePartModal(props) {
   const [quantity, setQuantity] = useState(1);
   const [value, setValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [addNewBikePartModal, setAddNewBikePartModal] = useState(false);
 
   function handleNameChange(event) {
     let finalValue =
@@ -49,6 +51,15 @@ function AddBikePartModal(props) {
     setQuantity(1);
   }
 
+  function openAddNewBikePartModal() {
+    setAddNewBikePartModal(true);
+  }
+
+  function closeAddNewBikePartModal() {
+    props.getBikePartList();
+    setAddNewBikePartModal(false);
+  }
+
   return (
     <div>
       {
@@ -86,6 +97,9 @@ function AddBikePartModal(props) {
             <p className="text-danger font-size-18">{errorMessage}</p>
           </Modal.Body>
           <Modal.Footer>
+            <Button variant="info" onClick={openAddNewBikePartModal}>
+              Criar nova peça
+            </Button>
             <Button variant="secondary" onClick={props.close}>
               Cancelar
             </Button>
@@ -95,6 +109,10 @@ function AddBikePartModal(props) {
           </Modal.Footer>
         </Modal>
       }
+      <AddNewBikePartModal
+        show={addNewBikePartModal}
+        close={closeAddNewBikePartModal}
+      />
     </div>
   );
 }

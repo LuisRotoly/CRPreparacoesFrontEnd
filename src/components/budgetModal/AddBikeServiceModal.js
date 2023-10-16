@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useState, useEffect } from "react";
 import { getBikeServiceListRequest } from "../../services/bikeServiceService";
 import { isEmpty } from "../../stringHelper";
+import AddNewBikeServiceModal from "../modal/AddNewBikeServiceModal";
 
 function AddBikeServiceModal(props) {
   const { addBikeServiceToBudget } = props;
@@ -11,12 +12,17 @@ function AddBikeServiceModal(props) {
   const [value, setValue] = useState("");
   const [bikeServiceList, setBikeServiceList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [addNewBikeServiceModal, setAddNewBikeServiceModal] = useState(false);
 
   useEffect(() => {
+    getBikeServiceList();
+  }, []);
+
+  function getBikeServiceList() {
     getBikeServiceListRequest().then((response) =>
       setBikeServiceList(response.data)
     );
-  }, []);
+  }
 
   function handleNameChange(event) {
     setName(event.target.value);
@@ -48,6 +54,15 @@ function AddBikeServiceModal(props) {
     setName("");
     setValue("");
     setQuantity(1);
+  }
+
+  function openAddNewBikeServiceModal() {
+    setAddNewBikeServiceModal(true);
+  }
+
+  function closeAddNewBikeServiceModal() {
+    getBikeServiceList();
+    setAddNewBikeServiceModal(false);
   }
 
   return (
@@ -87,6 +102,9 @@ function AddBikeServiceModal(props) {
             <p className="text-danger font-size-18">{errorMessage}</p>
           </Modal.Body>
           <Modal.Footer>
+            <Button variant="info" onClick={openAddNewBikeServiceModal}>
+              Criar novo serviço
+            </Button>
             <Button variant="secondary" onClick={props.close}>
               Cancelar
             </Button>
@@ -96,6 +114,10 @@ function AddBikeServiceModal(props) {
           </Modal.Footer>
         </Modal>
       }
+      <AddNewBikeServiceModal
+        show={addNewBikeServiceModal}
+        close={closeAddNewBikeServiceModal}
+      />
     </div>
   );
 }

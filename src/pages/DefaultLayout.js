@@ -5,7 +5,9 @@ function DefaultLayout() {
   return (
     <div>
       <Topbar />
-      <Outlet />
+      <div className="image-logo">
+        <Outlet />
+      </div>
     </div>
   );
 }

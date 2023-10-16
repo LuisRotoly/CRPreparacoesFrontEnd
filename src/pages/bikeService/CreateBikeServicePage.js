@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isEmpty } from "../../stringHelper";
 import { addBikeServiceRequest } from "../../services/bikeServiceService";
-import "react-toastify/dist/ReactToastify.css";
 
 function CreateBikeServicePage() {
   const navigate = useNavigate();

@@ -6,14 +6,19 @@ import EditIcon from "@mui/icons-material/Edit";
 import {
   getBudgetListRequest,
   filterBudgetListRequest,
+  removeBudgetByIdRequest,
 } from "../../services/budgetService";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteModal from "../../components/modal/DeleteModal";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function BudgetPage() {
   const navigate = useNavigate();
   const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [removeBudget, setRemoveBudget] = useState("");
 
   useEffect(() => {
     getBudgetList();
@@ -39,6 +44,21 @@ function BudgetPage() {
 
   function gotoCreatePage() {
     navigate("/budget/create");
+  }
+
+  function openDeleteModal(id) {
+    setRemoveBudget(id);
+    setDeleteModal(true);
+  }
+
+  function closeDeleteModal() {
+    setDeleteModal(false);
+  }
+
+  function deleteBudget() {
+    removeBudgetByIdRequest(removeBudget).then(() => getBudgetList());
+    setRemoveBudget("");
+    closeDeleteModal();
   }
 
   return (
@@ -68,6 +88,7 @@ function BudgetPage() {
               <th>Status</th>
               <th>Editar</th>
               <th>Visualizar</th>
+              <th>Remover</th>
             </tr>
           </thead>
           <tbody>
@@ -102,12 +123,24 @@ function BudgetPage() {
                       <VisibilityIcon />
                     </Link>
                   </td>
+                  <td>
+                    <DeleteIcon
+                      className="default-remove-icon"
+                      onClick={() => openDeleteModal(id)}
+                    />
+                  </td>
                 </tr>
               )
             )}
           </tbody>
         </Table>
       </div>
+      <DeleteModal
+        show={deleteModal}
+        close={closeDeleteModal}
+        title={"Excluir o orçamento?"}
+        remove={deleteBudget}
+      />
     </div>
   );
 }

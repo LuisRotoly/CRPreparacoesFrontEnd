@@ -29,7 +29,7 @@ function EditBudgetPage() {
   );
   const [status, setStatus] = useState("");
   const [statusList, setStatusList] = useState([]);
-  const [totalValue, setTotalValue] = useState(0);
+  const [discountPercentage, setDiscountPercentage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [bikePartModal, setBikePartModal] = useState(false);
@@ -48,8 +48,8 @@ function EditBudgetPage() {
       setClient(response.data.client.name);
       setBike(response.data.bikeName + " " + response.data.bikeBrand);
       setPlate(response.data.plate);
-      setTotalValue(response.data.totalValue);
       setLaborOrBikePartBudgetList(response.data.laborOrBikePartBudgetList);
+      setDiscountPercentage(response.data.discountPercentage);
       setStatus(response.data.status);
       setPaymentFormat(response.data.paymentFormat);
       setKilometersDriven(response.data.kilometersDriven);
@@ -74,6 +74,10 @@ function EditBudgetPage() {
     setPaymentFormat(paymentFormatList[event.target.selectedIndex]);
   }
 
+  function handleDiscountPercentageChange(event) {
+    setDiscountPercentage(event.target.value);
+  }
+
   function isValidEntrances() {
     return (
       !isEmpty(status) &&
@@ -88,6 +92,7 @@ function EditBudgetPage() {
         pathname.id,
         paymentFormat,
         laborOrBikePartBudgetList,
+        discountPercentage,
         status,
         notes
       )
@@ -107,7 +112,6 @@ function EditBudgetPage() {
       ...oldList,
       { name, quantity, value },
     ]);
-    setTotalValue(totalValue + quantity * value);
     closeBikeServiceModal();
   }
 
@@ -116,15 +120,18 @@ function EditBudgetPage() {
       ...oldList,
       { name, quantity, value },
     ]);
-    setTotalValue(totalValue + quantity * value);
     closeBikePartModal();
   }
 
   function openBikePartModal() {
+    getBikePartList();
+    setBikePartModal(true);
+  }
+
+  function getBikePartList() {
     getBikePartByPlateRequest(plate).then((response) =>
       setBikePartList(response.data)
     );
-    setBikePartModal(true);
   }
 
   function closeBikePartModal() {
@@ -141,11 +148,6 @@ function EditBudgetPage() {
 
   function deleteLaborOrBikePartLine(index) {
     const reducedArray = [...laborOrBikePartBudgetList];
-    setTotalValue(
-      totalValue -
-        laborOrBikePartBudgetList[index].quantity *
-          laborOrBikePartBudgetList[index].value
-    );
     reducedArray.splice(index, 1);
     setLaborOrBikePartBudgetList(reducedArray);
   }
@@ -167,6 +169,18 @@ function EditBudgetPage() {
 
   function closeClientDataModal() {
     setClientDataModal(false);
+  }
+
+  function getTotalValue() {
+    let totalValue = 0;
+    laborOrBikePartBudgetList.forEach((element) => {
+      totalValue = totalValue + element.quantity * element.value;
+    });
+    if (isEmpty(discountPercentage)) {
+      return totalValue;
+    } else {
+      return totalValue - (totalValue * discountPercentage) / 100;
+    }
   }
 
   return (
@@ -221,13 +235,13 @@ function EditBudgetPage() {
           </select>
           <br />
           <button
-            className="btn btn-primary me-3 mt-5"
+            className="btn btn-primary me-3 mt-5  mb-3"
             onClick={openBikePartModal}
           >
             Adicionar Peça
           </button>
           <button
-            className="btn btn-primary me-3 mt-5"
+            className="btn btn-primary me-3 mt-5  mb-3"
             onClick={openBikeServiceModal}
           >
             Adicionar Serviço
@@ -263,8 +277,15 @@ function EditBudgetPage() {
               </tbody>
             </Table>
           </div>
+          <p className="mb-0 mt-3 font-size-20">Desconto:</p>
+          <input
+            type="number"
+            defaultValue={discountPercentage}
+            onChange={handleDiscountPercentageChange}
+          />
+          <span>%</span>
           <p className="mb-0 mt-5 font-size-20 fw-bold">
-            Valor Total: {totalValue} Reais
+            Valor Total: {getTotalValue()} Reais
           </p>
           <p className="mb-0 mt-3 font-size-20">Status*:</p>
           <select
@@ -303,6 +324,7 @@ function EditBudgetPage() {
         show={bikePartModal}
         close={closeBikePartModal}
         bikePartList={bikePartList}
+        getBikePartList={getBikePartList}
         addBikePartToBudget={addBikePartToBudget}
       />
       <AddBikeServiceModal
