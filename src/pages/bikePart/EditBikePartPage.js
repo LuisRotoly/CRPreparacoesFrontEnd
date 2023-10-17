@@ -17,7 +17,6 @@ function EditBikePartPage() {
   const [value, setValue] = useState("");
   const [profitPercentage, setProfitPercentage] = useState("");
   const [finalValue, setFinalValue] = useState("");
-  const [stockQuantity, setStockQuantity] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [bikeList, setBikeList] = useState([]);
@@ -31,7 +30,6 @@ function EditBikePartPage() {
       setValue(response.data.value);
       setProfitPercentage(response.data.profitPercentage);
       setFinalValue(response.data.finalValue);
-      setStockQuantity(response.data.stockQuantity);
       setBikeList(response.data.bikeList);
     });
   }, [pathname.id]);
@@ -48,30 +46,18 @@ function EditBikePartPage() {
     setName(event.target.value);
   }
 
-  function handleStockQuantityChange(event) {
-    setStockQuantity(event.target.value);
-  }
-
   function isValidEntrances() {
     return (
       !isEmpty(name) &&
       !isEmpty(value) &&
       !isEmpty(profitPercentage) &&
-      !isEmpty(stockQuantity) &&
       bikeList.length !== 0
     );
   }
 
   function editBikePart() {
     if (isValidEntrances()) {
-      editBikePartRequest(
-        pathname.id,
-        name,
-        value,
-        profitPercentage,
-        stockQuantity,
-        bikeList
-      )
+      editBikePartRequest(pathname.id, name, value, profitPercentage, bikeList)
         .then((_) => setSuccessMessage("Peça editada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -162,13 +148,6 @@ function EditBikePartPage() {
           </button>
           <p className="mb-0 mt-3 font-size-20">Valor final:</p>
           <input type="number" disabled value={finalValue} />
-          <p className="mb-0 mt-3 font-size-20">Quantidade em estoque*:</p>
-          <input
-            type="number"
-            maxLength="10"
-            value={stockQuantity}
-            onChange={handleStockQuantityChange}
-          />
           <div>
             {bikeList.map(
               ({ name, bikeBrand, engineCapacity, year }, index) => {
