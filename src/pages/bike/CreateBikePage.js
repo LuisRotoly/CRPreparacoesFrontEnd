@@ -151,7 +151,7 @@ function CreateBikePage() {
           />
           <p className="mb-0 mt-3 font-size-20">Ano:</p>
           <InputMask
-            mask="9999/9999"
+            mask="9999"
             maskChar=""
             type="text"
             value={year}
