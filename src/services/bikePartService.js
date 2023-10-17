@@ -37,7 +37,6 @@ export async function editBikePartRequest(
   name,
   value,
   profitPercentage,
-  stockQuantity,
   bikeList
 ) {
   return await api.post("editBikePart", {
@@ -45,8 +44,14 @@ export async function editBikePartRequest(
     name: name,
     value: value,
     profitPercentage: profitPercentage,
-    stockQuantity: stockQuantity,
     bikeList: bikeList,
+  });
+}
+
+export async function editBikePartStockRequest(id, stockQuantity) {
+  return await api.post("editBikePartStock", {
+    id: id,
+    stockQuantity: stockQuantity,
   });
 }
 
