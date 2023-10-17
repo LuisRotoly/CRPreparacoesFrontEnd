@@ -10,6 +10,7 @@ import CreateNewBikeBrandModal from "../../components/modal/CreateNewBikeBrandMo
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputMask from "react-input-mask";
+import { toastProperties } from "../../constants";
 
 function CreateBikePage() {
   const navigate = useNavigate();
@@ -82,16 +83,7 @@ function CreateBikePage() {
     addBikeBrandRequest(name)
       .then((_) => {
         getBikeBrandList();
-        toast.success("Marca criada com sucesso!", {
-          position: "top-right",
-          autoClose: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-          theme: "colored",
-        });
+        toast.success("Marca criada com sucesso!", toastProperties);
       })
       .catch((e) => setErrorMessage(e.response.data.message));
     closeModal();
@@ -110,7 +102,7 @@ function CreateBikePage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome:*</p>
           <input
             maxLength="100"
             type="text"
@@ -118,7 +110,7 @@ function CreateBikePage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Marca*:</p>
+          <p className="mb-0 mt-3 font-size-20">Marca:*</p>
           <select
             defaultValue=""
             className="select-width"

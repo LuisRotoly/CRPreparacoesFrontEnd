@@ -219,7 +219,7 @@ function EditBudgetPage() {
           </button>
           <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
           <input type="number" defaultValue={kilometersDriven} disabled />
-          <p className="mb-0 mt-3 font-size-20">Forma de Pagamento*:</p>
+          <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
           <select
             value={paymentFormat.type}
             className="select-width"
@@ -287,7 +287,7 @@ function EditBudgetPage() {
           <p className="mb-0 mt-5 font-size-20 fw-bold">
             Valor Total: {getTotalValue()} Reais
           </p>
-          <p className="mb-0 mt-3 font-size-20">Status*:</p>
+          <p className="mb-0 mt-3 font-size-20">Status:*</p>
           <select
             value={status.description}
             className="select-width"

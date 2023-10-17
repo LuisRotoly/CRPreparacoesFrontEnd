@@ -5,6 +5,7 @@ import { isEmpty } from "../../stringHelper";
 import { addBikeServiceRequest } from "../../services/bikeServiceService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { toastProperties } from "../../constants";
 
 function AddNewBikeServiceModal(props) {
   const [name, setName] = useState("");
@@ -27,24 +28,19 @@ function AddNewBikeServiceModal(props) {
     if (isValidEntrances()) {
       addBikeServiceRequest(name, value)
         .then((_) => {
-          toast.success("Serviço criado com sucesso!", {
-            position: "top-right",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "colored",
-          });
-          setName("");
-          setValue("");
+          toast.success("Serviço criado com sucesso!", toastProperties);
+          resetFields();
           props.close();
         })
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
       setErrorMessage("Preencha todos os campos obrigatórios!");
     }
+  }
+
+  function resetFields() {
+    setName("");
+    setValue("");
   }
 
   return (
@@ -56,7 +52,7 @@ function AddNewBikeServiceModal(props) {
           </Modal.Header>
           <Modal.Body>
             <div>
-              <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+              <p className="mb-0 mt-3 font-size-20">Nome:*</p>
               <input
                 maxLength="100"
                 type="text"
@@ -64,7 +60,7 @@ function AddNewBikeServiceModal(props) {
                 value={name}
                 onChange={handleNameChange}
               />
-              <p className="mb-0 mt-3 font-size-20">Valor*:</p>
+              <p className="mb-0 mt-3 font-size-20">Valor:*</p>
               <input
                 type="number"
                 required

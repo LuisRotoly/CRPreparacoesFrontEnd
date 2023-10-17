@@ -150,7 +150,7 @@ function CreateClientPage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome:*</p>
           <input
             maxLength="100"
             type="text"
@@ -158,7 +158,7 @@ function CreateClientPage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">CPF/CNPJ*:</p>
+          <p className="mb-0 mt-3 font-size-20">CPF/CNPJ:*</p>
 
           <InputMask
             type="text"
@@ -202,7 +202,7 @@ function CreateClientPage() {
               <input type="text" value={addressList.uf} disabled />
             </div>
           ) : null}
-          <p className="mb-0 mt-3 font-size-20">Telefone*:</p>
+          <p className="mb-0 mt-3 font-size-20">Telefone:*</p>
           <InputMask
             required
             mask={

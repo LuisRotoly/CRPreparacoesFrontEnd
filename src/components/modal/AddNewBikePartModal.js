@@ -8,6 +8,7 @@ import AddBikeModal from "./AddBikeModal";
 import DeleteModal from "./DeleteModal";
 import { addBikePartRequest } from "../../services/bikePartService";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toastProperties } from "../../constants";
 
 function AddNewBikePartModal(props) {
   const [name, setName] = useState("");
@@ -51,27 +52,22 @@ function AddNewBikePartModal(props) {
     if (isValidEntrances()) {
       addBikePartRequest(name, value, profitPercentage, stockQuantity, bikeList)
         .then((_) => {
-          toast.success("Peça criada com sucesso!", {
-            position: "top-right",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "colored",
-          });
-          setName("");
-          setValue("");
-          setProfitPercentage("");
-          setFinalValue("");
-          setStockQuantity("");
+          toast.success("Peça criada com sucesso!", toastProperties);
+          resetFields();
           props.close();
         })
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
       setErrorMessage("Preencha todos os campos obrigatórios!");
     }
+  }
+
+  function resetFields() {
+    setName("");
+    setValue("");
+    setProfitPercentage("");
+    setFinalValue("");
+    setStockQuantity("");
   }
 
   function calculateProfit() {
@@ -119,7 +115,7 @@ function AddNewBikePartModal(props) {
           </Modal.Header>
           <Modal.Body>
             <div>
-              <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+              <p className="mb-0 mt-3 font-size-20">Nome:*</p>
               <input
                 maxLength="100"
                 type="text"
@@ -127,7 +123,7 @@ function AddNewBikePartModal(props) {
                 value={name}
                 onChange={handleNameChange}
               />
-              <p className="mb-0 mt-3 font-size-20">Valor*:</p>
+              <p className="mb-0 mt-3 font-size-20">Valor:*</p>
               <input
                 type="number"
                 required
@@ -135,7 +131,7 @@ function AddNewBikePartModal(props) {
                 value={value}
                 onChange={handleValueChange}
               />
-              <p className="mb-0 mt-3 font-size-20">Margem de lucro*:</p>
+              <p className="mb-0 mt-3 font-size-20">Margem de lucro:*</p>
               <input
                 type="number"
                 required
@@ -156,7 +152,7 @@ function AddNewBikePartModal(props) {
                   <input type="number" disabled value={finalValue} />
                 </div>
               )}
-              <p className="mb-0 mt-3 font-size-20">Quantidade em estoque*:</p>
+              <p className="mb-0 mt-3 font-size-20">Quantidade em estoque:*</p>
               <input
                 type="number"
                 maxLength="10"

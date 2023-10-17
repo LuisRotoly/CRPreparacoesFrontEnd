@@ -68,7 +68,7 @@ function AddBikePartModal(props) {
             <Modal.Title>Adicionar uma peça</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+            <p className="mb-0 mt-3 font-size-20">Nome:*</p>
             <select
               defaultValue=""
               className="select-width"
@@ -85,13 +85,13 @@ function AddBikePartModal(props) {
                 );
               })}
             </select>
-            <p className="mb-0 mt-3 font-size-20">Quantidade*:</p>
+            <p className="mb-0 mt-3 font-size-20">Quantidade:*</p>
             <input
               type="number"
               value={quantity}
               onChange={handleQuantityChange}
             />
-            <p className="mb-0 mt-3 font-size-20">Valor de cada peça*:</p>
+            <p className="mb-0 mt-3 font-size-20">Valor de cada peça:*</p>
             <input type="number" value={value} onChange={handleValueChange} />
             <br />
             <p className="text-danger font-size-18">{errorMessage}</p>

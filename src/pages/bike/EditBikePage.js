@@ -86,7 +86,7 @@ function EditBikePage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome:*</p>
           <input
             maxLength="100"
             type="text"
@@ -94,7 +94,7 @@ function EditBikePage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Marca*:</p>
+          <p className="mb-0 mt-3 font-size-20">Marca:*</p>
           <select
             value={brand.id}
             className="select-width"

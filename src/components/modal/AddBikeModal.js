@@ -35,7 +35,7 @@ function AddBikeModal(props) {
             <Modal.Title>Adicionar uma nova moto</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p className="mb-0 mt-3 font-size-20">Escolha a moto*:</p>
+            <p className="mb-0 mt-3 font-size-20">Escolha a mot:*</p>
             <select
               defaultValue=""
               className="select-width"

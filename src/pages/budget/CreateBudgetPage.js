@@ -197,7 +197,7 @@ function CreateBudgetPage() {
       ) : (
         <div>
           <p className="data">Data: {new Date().toLocaleDateString()}</p>
-          <p className="mb-0 mt-3 font-size-20">Cliente*:</p>
+          <p className="mb-0 mt-3 font-size-20">Cliente:*</p>
           <select
             defaultValue=""
             className="select-width"
@@ -216,7 +216,7 @@ function CreateBudgetPage() {
           </select>
           {isEmpty(client) ? null : (
             <div>
-              <p className="mb-0 mt-3 font-size-20">Moto*:</p>
+              <p className="mb-0 mt-3 font-size-20">Moto:*</p>
               <select
                 defaultValue=""
                 className="select-width"
@@ -237,14 +237,14 @@ function CreateBudgetPage() {
           )}
           {isEmpty(plate) ? null : (
             <div>
-              <p className="mb-0 mt-3 font-size-20">Quilometragem*:</p>
+              <p className="mb-0 mt-3 font-size-20">Quilometragem:*</p>
               <input
                 type="number"
                 required
                 value={kilometersDriven}
                 onChange={handleKilometersDrivenChange}
               />
-              <p className="mb-0 mt-3 font-size-20">Forma de Pagamento*:</p>
+              <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
               <select
                 defaultValue=""
                 className="select-width"
@@ -316,7 +316,7 @@ function CreateBudgetPage() {
               <p className="mb-0 mt-5 font-size-20 fw-bold">
                 Valor Total: {getTotalValue()} Reais
               </p>
-              <p className="mb-0 mt-3 font-size-20">Status*:</p>
+              <p className="mb-0 mt-3 font-size-20">Status:*</p>
               <select
                 defaultValue={status}
                 className="select-width"

@@ -55,7 +55,7 @@ function CreateSupplierPage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome:*</p>
           <input
             maxLength="100"
             type="text"
@@ -63,7 +63,7 @@ function CreateSupplierPage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Telefone*:</p>
+          <p className="mb-0 mt-3 font-size-20">Telefone:*</p>
           <InputMask
             required
             mask={

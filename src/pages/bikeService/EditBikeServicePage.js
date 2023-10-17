@@ -60,7 +60,7 @@ function EditBikeServicePage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome:*</p>
           <input
             maxLength="100"
             type="text"
@@ -68,7 +68,7 @@ function EditBikeServicePage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Valor*:</p>
+          <p className="mb-0 mt-3 font-size-20">Valor:*</p>
           <input
             type="number"
             required
