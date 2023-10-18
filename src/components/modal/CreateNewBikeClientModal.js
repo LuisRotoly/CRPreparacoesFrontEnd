@@ -46,7 +46,7 @@ function CreateNewBikeClientModal(props) {
             <Modal.Title>Adicionar uma nova moto</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p className="mb-0 mt-3 font-size-20">Escreva a placa*:</p>
+            <p className="mb-0 mt-3 font-size-20">Escreva a placa:*</p>
             <InputMask
               type="text"
               required
@@ -55,7 +55,7 @@ function CreateNewBikeClientModal(props) {
               value={plate}
               onChange={handlePlateChange}
             />
-            <p className="mb-0 mt-3 font-size-20">Escolha a moto*:</p>
+            <p className="mb-0 mt-3 font-size-20">Escolha a moto:*</p>
             <select
               defaultValue=""
               className="select-width"

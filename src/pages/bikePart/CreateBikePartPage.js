@@ -110,7 +110,7 @@ function CreateBikePartPage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome:*</p>
           <input
             maxLength="100"
             type="text"
@@ -118,7 +118,7 @@ function CreateBikePartPage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Valor*:</p>
+          <p className="mb-0 mt-3 font-size-20">Valor:*</p>
           <input
             type="number"
             required
@@ -126,7 +126,7 @@ function CreateBikePartPage() {
             value={value}
             onChange={handleValueChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Margem de lucro*:</p>
+          <p className="mb-0 mt-3 font-size-20">Margem de lucro:*</p>
           <input
             type="number"
             required
@@ -144,7 +144,7 @@ function CreateBikePartPage() {
               <input type="number" disabled value={finalValue} />
             </div>
           )}
-          <p className="mb-0 mt-3 font-size-20">Quantidade em estoque*:</p>
+          <p className="mb-0 mt-3 font-size-20">Quantidade em estoque:*</p>
           <input
             type="number"
             maxLength="10"

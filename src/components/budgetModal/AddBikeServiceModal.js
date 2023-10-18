@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useState, useEffect } from "react";
 import { getBikeServiceListRequest } from "../../services/bikeServiceService";
 import { isEmpty } from "../../stringHelper";
+import AddNewBikeServiceModal from "../modal/AddNewBikeServiceModal";
 
 function AddBikeServiceModal(props) {
   const { addBikeServiceToBudget } = props;
@@ -11,12 +12,17 @@ function AddBikeServiceModal(props) {
   const [value, setValue] = useState("");
   const [bikeServiceList, setBikeServiceList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [addNewBikeServiceModal, setAddNewBikeServiceModal] = useState(false);
 
   useEffect(() => {
+    getBikeServiceList();
+  }, []);
+
+  function getBikeServiceList() {
     getBikeServiceListRequest().then((response) =>
       setBikeServiceList(response.data)
     );
-  }, []);
+  }
 
   function handleNameChange(event) {
     setName(event.target.value);
@@ -50,6 +56,15 @@ function AddBikeServiceModal(props) {
     setQuantity(1);
   }
 
+  function openAddNewBikeServiceModal() {
+    setAddNewBikeServiceModal(true);
+  }
+
+  function closeAddNewBikeServiceModal() {
+    getBikeServiceList();
+    setAddNewBikeServiceModal(false);
+  }
+
   return (
     <div>
       {
@@ -58,7 +73,7 @@ function AddBikeServiceModal(props) {
             <Modal.Title>Adicionar um serviço</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+            <p className="mb-0 mt-3 font-size-20">Nome:*</p>
             <select
               defaultValue=""
               className="select-width"
@@ -75,18 +90,21 @@ function AddBikeServiceModal(props) {
                 );
               })}
             </select>
-            <p className="mb-0 mt-3 font-size-20">Quantidade*:</p>
+            <p className="mb-0 mt-3 font-size-20">Quantidade:*</p>
             <input
               type="number"
               value={quantity}
               onChange={handleQuantityChange}
             />
-            <p className="mb-0 mt-3 font-size-20">Valor de cada serviço*:</p>
+            <p className="mb-0 mt-3 font-size-20">Valor de cada serviço:*</p>
             <input type="number" value={value} onChange={handleValueChange} />
             <br />
             <p className="text-danger font-size-18">{errorMessage}</p>
           </Modal.Body>
           <Modal.Footer>
+            <Button variant="info" onClick={openAddNewBikeServiceModal}>
+              Criar novo serviço
+            </Button>
             <Button variant="secondary" onClick={props.close}>
               Cancelar
             </Button>
@@ -96,6 +114,10 @@ function AddBikeServiceModal(props) {
           </Modal.Footer>
         </Modal>
       }
+      <AddNewBikeServiceModal
+        show={addNewBikeServiceModal}
+        close={closeAddNewBikeServiceModal}
+      />
     </div>
   );
 }

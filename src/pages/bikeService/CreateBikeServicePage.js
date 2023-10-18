@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isEmpty } from "../../stringHelper";
 import { addBikeServiceRequest } from "../../services/bikeServiceService";
-import "react-toastify/dist/ReactToastify.css";
 
 function CreateBikeServicePage() {
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ function CreateBikeServicePage() {
         </div>
       ) : (
         <div>
-          <p className="mb-0 mt-3 font-size-20">Nome*:</p>
+          <p className="mb-0 mt-3 font-size-20">Nome:*</p>
           <input
             maxLength="100"
             type="text"
@@ -58,7 +57,7 @@ function CreateBikeServicePage() {
             value={name}
             onChange={handleNameChange}
           />
-          <p className="mb-0 mt-3 font-size-20">Valor*:</p>
+          <p className="mb-0 mt-3 font-size-20">Valor:*</p>
           <input
             type="number"
             required

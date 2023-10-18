@@ -23,9 +23,9 @@ function CreateBudgetPage() {
   const [laborOrBikePartBudgetList, setLaborOrBikePartBudgetList] = useState(
     []
   );
+  const [discountPercentage, setDiscountPercentage] = useState("");
   const [status, setStatus] = useState("");
   const [statusList, setStatusList] = useState([]);
-  const [totalValue, setTotalValue] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [bikePartModal, setBikePartModal] = useState(false);
@@ -58,7 +58,7 @@ function CreateBudgetPage() {
     setErrorMessage("");
     setLaborOrBikePartBudgetList([]);
     setStatus("");
-    setTotalValue(0);
+    setDiscountPercentage("");
   }
 
   function handleBikeChange(event) {
@@ -84,6 +84,10 @@ function CreateBudgetPage() {
     setPaymentFormat(paymentFormatList[event.target.selectedIndex]);
   }
 
+  function handleDiscountPercentageChange(event) {
+    setDiscountPercentage(event.target.value);
+  }
+
   function isValidEntrances() {
     return (
       !isEmpty(bike) &&
@@ -107,6 +111,7 @@ function CreateBudgetPage() {
         paymentFormat,
         kilometersDriven,
         laborOrBikePartBudgetList,
+        discountPercentage,
         status,
         notes
       )
@@ -126,7 +131,6 @@ function CreateBudgetPage() {
       ...oldList,
       { name, quantity, value },
     ]);
-    setTotalValue(totalValue + quantity * value);
     closeBikeServiceModal();
   }
 
@@ -135,15 +139,18 @@ function CreateBudgetPage() {
       ...oldList,
       { name, quantity, value },
     ]);
-    setTotalValue(totalValue + quantity * value);
     closeBikePartModal();
   }
 
   function openBikePartModal() {
+    getBikePartList();
+    setBikePartModal(true);
+  }
+
+  function getBikePartList() {
     getBikePartByPlateRequest(plate).then((response) =>
       setBikePartList(response.data)
     );
-    setBikePartModal(true);
   }
 
   function closeBikePartModal() {
@@ -160,13 +167,20 @@ function CreateBudgetPage() {
 
   function deleteLaborOrBikePartLine(index) {
     const reducedArray = [...laborOrBikePartBudgetList];
-    setTotalValue(
-      totalValue -
-        laborOrBikePartBudgetList[index].quantity *
-          laborOrBikePartBudgetList[index].value
-    );
     reducedArray.splice(index, 1);
     setLaborOrBikePartBudgetList(reducedArray);
+  }
+
+  function getTotalValue() {
+    let totalValue = 0;
+    laborOrBikePartBudgetList.forEach((element) => {
+      totalValue = totalValue + element.quantity * element.value;
+    });
+    if (isEmpty(discountPercentage)) {
+      return totalValue;
+    } else {
+      return totalValue - (totalValue * discountPercentage) / 100;
+    }
   }
 
   return (
@@ -183,7 +197,7 @@ function CreateBudgetPage() {
       ) : (
         <div>
           <p className="data">Data: {new Date().toLocaleDateString()}</p>
-          <p className="mb-0 mt-3 font-size-20">Cliente*:</p>
+          <p className="mb-0 mt-3 font-size-20">Cliente:*</p>
           <select
             defaultValue=""
             className="select-width"
@@ -202,7 +216,7 @@ function CreateBudgetPage() {
           </select>
           {isEmpty(client) ? null : (
             <div>
-              <p className="mb-0 mt-3 font-size-20">Moto*:</p>
+              <p className="mb-0 mt-3 font-size-20">Moto:*</p>
               <select
                 defaultValue=""
                 className="select-width"
@@ -223,14 +237,14 @@ function CreateBudgetPage() {
           )}
           {isEmpty(plate) ? null : (
             <div>
-              <p className="mb-0 mt-3 font-size-20">Quilometragem*:</p>
+              <p className="mb-0 mt-3 font-size-20">Quilometragem:*</p>
               <input
                 type="number"
                 required
                 value={kilometersDriven}
                 onChange={handleKilometersDrivenChange}
               />
-              <p className="mb-0 mt-3 font-size-20">Forma de Pagamento*:</p>
+              <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
               <select
                 defaultValue=""
                 className="select-width"
@@ -249,13 +263,13 @@ function CreateBudgetPage() {
               </select>
               <br />
               <button
-                className="btn btn-primary me-3 mt-5"
+                className="btn btn-primary me-3 mt-5 mb-3"
                 onClick={openBikePartModal}
               >
                 Adicionar Peça
               </button>
               <button
-                className="btn btn-primary me-3 mt-5"
+                className="btn btn-primary me-3 mt-5 mb-3"
                 onClick={openBikeServiceModal}
               >
                 Adicionar Serviço
@@ -291,10 +305,18 @@ function CreateBudgetPage() {
                   </tbody>
                 </Table>
               </div>
+              <p className="mb-0 mt-3 font-size-20">Desconto:</p>
+              <input
+                type="number"
+                maxLength={2}
+                value={discountPercentage}
+                onChange={handleDiscountPercentageChange}
+              />
+              <span>%</span>
               <p className="mb-0 mt-5 font-size-20 fw-bold">
-                Valor Total: {totalValue} Reais
+                Valor Total: {getTotalValue()} Reais
               </p>
-              <p className="mb-0 mt-3 font-size-20">Status*:</p>
+              <p className="mb-0 mt-3 font-size-20">Status:*</p>
               <select
                 defaultValue={status}
                 className="select-width"
@@ -336,6 +358,7 @@ function CreateBudgetPage() {
         show={bikePartModal}
         close={closeBikePartModal}
         bikePartList={bikePartList}
+        getBikePartList={getBikePartList}
         addBikePartToBudget={addBikePartToBudget}
       />
       <AddBikeServiceModal
