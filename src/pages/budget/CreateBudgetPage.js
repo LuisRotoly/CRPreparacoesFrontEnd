@@ -211,22 +211,6 @@ function CreateBudgetPage() {
               className="select-dropdown mb-3"
             />
           </div>
-          {/*<select
-            defaultValue=""
-            className="select-width"
-            onChange={handleClientChange}
-          >
-            <option key="blankChoice" hidden value="">
-              Selecione...
-            </option>
-            {clientList.map(({ id, name, cpfcnpj, nickname }) => {
-              return (
-                <option key={id} value={name}>
-                  {name}, {cpfcnpj}, {nickname}
-                </option>
-              );
-            })}
-          </select>*/}
           {isEmpty(client) ? null : (
             <div>
               <p className="mb-0 mt-3 font-size-20">Moto:*</p>
