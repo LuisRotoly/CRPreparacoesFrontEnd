@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
 import { isEmpty } from "../../stringHelper";
 import AddNewBikePartModal from "../modal/AddNewBikePartModal";
+import Select from "react-select";
 
 function AddBikePartModal(props) {
   const { addBikePartToBudget } = props;
@@ -14,14 +15,10 @@ function AddBikePartModal(props) {
 
   function handleNameChange(event) {
     let finalValue =
-      parseFloat(props.bikePartList[event.target.selectedIndex - 1].value) +
-      (parseFloat(props.bikePartList[event.target.selectedIndex - 1].value) *
-        parseFloat(
-          props.bikePartList[event.target.selectedIndex - 1].profitPercentage
-        )) /
-        100;
+      parseFloat(event.value) +
+      (parseFloat(event.value) * parseFloat(event.profitPercentage)) / 100;
     setValue(finalValue);
-    setName(event.target.value);
+    setName(event.name);
   }
 
   function handleValueChange(event) {
@@ -69,22 +66,14 @@ function AddBikePartModal(props) {
           </Modal.Header>
           <Modal.Body>
             <p className="mb-0 mt-3 font-size-20">Nome:*</p>
-            <select
+            <Select
               defaultValue=""
-              className="select-width"
+              getOptionLabel={(option) => option.name}
               onChange={handleNameChange}
-            >
-              <option key="blankChoice" hidden value="">
-                Selecione...
-              </option>
-              {props.bikePartList.map(({ id, name }) => {
-                return (
-                  <option key={id} value={name}>
-                    {name}
-                  </option>
-                );
-              })}
-            </select>
+              options={props.bikePartList}
+              getOptionValue={(option) => option.name}
+              placeholder={"Selecione..."}
+            />
             <p className="mb-0 mt-3 font-size-20">Quantidade:*</p>
             <input
               type="number"

@@ -2,6 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useEffect, useState } from "react";
 import { getBikeListRequest } from "../../services/bikeService";
+import Select from "react-select";
 
 function AddBikeModal(props) {
   const { addBike } = props;
@@ -24,7 +25,7 @@ function AddBikeModal(props) {
   }
 
   function handleBikeChange(event) {
-    setBike(bikeList[event.target.selectedIndex - 1]);
+    setBike(event);
   }
 
   return (
@@ -36,22 +37,22 @@ function AddBikeModal(props) {
           </Modal.Header>
           <Modal.Body>
             <p className="mb-0 mt-3 font-size-20">Escolha a moto:*</p>
-            <select
+            <Select
               defaultValue=""
-              className="select-width"
+              getOptionLabel={(option) =>
+                option.name +
+                ", " +
+                option.bikeBrand.name +
+                ", " +
+                option.engineCapacity +
+                ", " +
+                option.year
+              }
               onChange={handleBikeChange}
-            >
-              <option key="blankChoice" hidden value="">
-                Selecione...
-              </option>
-              {bikeList.map(({ id, name, bikeBrand, engineCapacity, year }) => {
-                return (
-                  <option key={id} value={name}>
-                    {name}, {bikeBrand.name}, {engineCapacity}, {year}
-                  </option>
-                );
-              })}
-            </select>
+              options={bikeList}
+              getOptionValue={(option) => option.name}
+              placeholder={"Selecione..."}
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={props.close}>
