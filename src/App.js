@@ -23,6 +23,8 @@ import EditBudgetPage from "./pages/budget/EditBudgetPage";
 import ViewBudgetPage from "./pages/budget/ViewBudgetPage";
 import StockPage from "./pages/stock/StockPage";
 import EditStockPage from "./pages/stock/EditStockPage";
+import CreateBudgetSketchPage from "./pages/budget/sketch/CreateBudgetSketchPage";
+import EditBudgetSketchPage from "./pages/budget/sketch/EditBudgetSketchPage";
 
 function App() {
   return (
@@ -52,6 +54,14 @@ function App() {
           <Route path="/budget/create" element={<CreateBudgetPage />} />
           <Route path="/budget/edit/:id" element={<EditBudgetPage />} />
           <Route path="/budget/view/:id" element={<ViewBudgetPage />} />
+          <Route
+            path="/budget/sketch/create"
+            element={<CreateBudgetSketchPage />}
+          />
+          <Route
+            path="/budget/sketch/edit/:id"
+            element={<EditBudgetSketchPage />}
+          />
         </Route>
       </Routes>
     </div>
