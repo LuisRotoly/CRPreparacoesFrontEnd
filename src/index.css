@@ -56,6 +56,12 @@ code {
   width: 200px;
 }
 
+.select-dropdown {
+  min-width: 400px;
+  text-align: start;
+  height: 20px;
+}
+
 .text-area-size {
   width: 400px;
   height: 200px;

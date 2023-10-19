@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useEffect, useState } from "react";
 import { getBikeListRequest } from "../../services/bikeService";
 import InputMask from "react-input-mask";
+import Select from "react-select";
 
 function CreateNewBikeClientModal(props) {
   const { addClientBike } = props;
@@ -31,11 +32,7 @@ function CreateNewBikeClientModal(props) {
   }
 
   function handleBikeChange(event) {
-    bikeList.forEach((element) => {
-      if (event.target.value === element.name) {
-        setBike(element);
-      }
-    });
+    setBike(event);
   }
 
   return (
@@ -56,22 +53,22 @@ function CreateNewBikeClientModal(props) {
               onChange={handlePlateChange}
             />
             <p className="mb-0 mt-3 font-size-20">Escolha a moto:*</p>
-            <select
+            <Select
               defaultValue=""
-              className="select-width"
+              getOptionLabel={(option) =>
+                option.name +
+                ", " +
+                option.bikeBrand.name +
+                ", " +
+                option.engineCapacity +
+                ", " +
+                option.year
+              }
               onChange={handleBikeChange}
-            >
-              <option key="blankChoice" hidden value="">
-                Selecione...
-              </option>
-              {bikeList.map(({ id, name, bikeBrand, engineCapacity, year }) => {
-                return (
-                  <option key={id} value={name}>
-                    {name}, {bikeBrand.name}, {engineCapacity}, {year}
-                  </option>
-                );
-              })}
-            </select>
+              options={bikeList}
+              getOptionValue={(option) => option.name}
+              placeholder={"Selecione..."}
+            />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={props.close}>

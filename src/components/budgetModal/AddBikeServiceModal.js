@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getBikeServiceListRequest } from "../../services/bikeServiceService";
 import { isEmpty } from "../../stringHelper";
 import AddNewBikeServiceModal from "../modal/AddNewBikeServiceModal";
+import Select from "react-select";
 
 function AddBikeServiceModal(props) {
   const { addBikeServiceToBudget } = props;
@@ -25,8 +26,8 @@ function AddBikeServiceModal(props) {
   }
 
   function handleNameChange(event) {
-    setName(event.target.value);
-    setValue(bikeServiceList[event.target.selectedIndex - 1].value);
+    setName(event.name);
+    setValue(event.value);
   }
 
   function handleValueChange(event) {
@@ -74,22 +75,14 @@ function AddBikeServiceModal(props) {
           </Modal.Header>
           <Modal.Body>
             <p className="mb-0 mt-3 font-size-20">Nome:*</p>
-            <select
+            <Select
               defaultValue=""
-              className="select-width"
+              getOptionLabel={(option) => option.name}
               onChange={handleNameChange}
-            >
-              <option key="blankChoice" hidden value="">
-                Selecione...
-              </option>
-              {bikeServiceList.map(({ id, name }) => {
-                return (
-                  <option key={id} value={name}>
-                    {name}
-                  </option>
-                );
-              })}
-            </select>
+              options={bikeServiceList}
+              getOptionValue={(option) => option.name}
+              placeholder={"Selecione..."}
+            />
             <p className="mb-0 mt-3 font-size-20">Quantidade:*</p>
             <input
               type="number"

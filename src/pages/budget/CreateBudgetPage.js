@@ -11,6 +11,7 @@ import AddBikeServiceModal from "../../components/budgetModal/AddBikeServiceModa
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
+import Select from "react-select";
 
 function CreateBudgetPage() {
   const navigate = useNavigate();
@@ -44,9 +45,8 @@ function CreateBudgetPage() {
   }, []);
 
   function handleClientChange(event) {
-    let clientId = clientList[event.target.selectedIndex - 1].id;
-    setClient(clientId);
-    listClientBikeById(clientId).then((response) =>
+    setClient(event.id);
+    listClientBikeById(event.id).then((response) =>
       setClientBikeList(response.data)
     );
     setBike("");
@@ -198,22 +198,19 @@ function CreateBudgetPage() {
         <div>
           <p className="data">Data: {new Date().toLocaleDateString()}</p>
           <p className="mb-0 mt-3 font-size-20">Cliente:*</p>
-          <select
-            defaultValue=""
-            className="select-width"
-            onChange={handleClientChange}
-          >
-            <option key="blankChoice" hidden value="">
-              Selecione...
-            </option>
-            {clientList.map(({ id, name, cpfcnpj, nickname }) => {
-              return (
-                <option key={id} value={name}>
-                  {name}, {cpfcnpj}, {nickname}
-                </option>
-              );
-            })}
-          </select>
+          <div className="d-flex justify-content-center">
+            <Select
+              defaultValue=""
+              getOptionLabel={(option) =>
+                option.name + ", " + option.cpfcnpj + ", " + option.nickname
+              }
+              onChange={handleClientChange}
+              options={clientList}
+              getOptionValue={(option) => option.name}
+              placeholder={"Selecione..."}
+              className="select-dropdown mb-3"
+            />
+          </div>
           {isEmpty(client) ? null : (
             <div>
               <p className="mb-0 mt-3 font-size-20">Moto:*</p>
