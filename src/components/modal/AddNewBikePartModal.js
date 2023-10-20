@@ -4,10 +4,7 @@ import { useState } from "react";
 import { isEmpty } from "../../stringHelper";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddBikeModal from "./AddBikeModal";
-import DeleteModal from "./DeleteModal";
 import { addBikePartRequest } from "../../services/bikePartService";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { toastProperties } from "../../constants";
 
 function AddNewBikePartModal(props) {
@@ -17,10 +14,6 @@ function AddNewBikePartModal(props) {
   const [finalValue, setFinalValue] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [bikeList, setBikeList] = useState([]);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [removeBike, setRemoveBike] = useState("");
-  const [addBikeModal, setAddBikeModal] = useState(false);
 
   function handleProfitPercentageChange(event) {
     setProfitPercentage(event.target.value);
@@ -43,14 +36,13 @@ function AddNewBikePartModal(props) {
       !isEmpty(name) &&
       !isEmpty(value) &&
       !isEmpty(profitPercentage) &&
-      !isEmpty(stockQuantity) &&
-      bikeList.length !== 0
+      !isEmpty(stockQuantity)
     );
   }
 
   function createBikePart() {
     if (isValidEntrances()) {
-      addBikePartRequest(name, value, profitPercentage, stockQuantity, bikeList)
+      addBikePartRequest(name, value, profitPercentage, stockQuantity)
         .then((_) => {
           toast.success("Peça criada com sucesso!", toastProperties);
           resetFields();
@@ -75,35 +67,6 @@ function AddNewBikePartModal(props) {
       parseFloat(value) +
       (parseFloat(value) * parseFloat(profitPercentage)) / 100;
     setFinalValue(finalValue);
-  }
-
-  function openDeleteModal(index) {
-    setRemoveBike(index);
-    setDeleteModal(true);
-  }
-
-  function closeDeleteModal() {
-    setDeleteModal(false);
-  }
-
-  function deleteBike() {
-    const reducedArray = [...bikeList];
-    reducedArray.splice(removeBike, 1);
-    setBikeList(reducedArray);
-    closeDeleteModal();
-  }
-
-  function openModalAddBike() {
-    setAddBikeModal(true);
-  }
-
-  function closeModalAddBike() {
-    setAddBikeModal(false);
-  }
-
-  function addBike(bike) {
-    setBikeList((oldList) => [...oldList, bike]);
-    closeModalAddBike();
   }
 
   return (
@@ -159,35 +122,7 @@ function AddNewBikePartModal(props) {
                 value={stockQuantity}
                 onChange={handleStockQuantityChange}
               />
-              <div>
-                {bikeList.map(
-                  ({ name, bikeBrand, engineCapacity, year }, index) => {
-                    return (
-                      <div key={index} className="align-center mt-3">
-                        <div className="bike-container">
-                          <DeleteIcon
-                            className="remove-icon"
-                            onClick={() => openDeleteModal(index)}
-                          />
-                          <p className="mt-3">
-                            {name} {engineCapacity}
-                          </p>
-                          <p className="mt-3">
-                            {bikeBrand.name}, {year}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  }
-                )}
-                <button
-                  className="btn btn-info mt-3"
-                  onClick={openModalAddBike}
-                >
-                  Adicionar Moto
-                </button>
-                <p className="text-danger font-size-18">{errorMessage}</p>
-              </div>
+              <p className="text-danger font-size-18">{errorMessage}</p>
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -200,17 +135,6 @@ function AddNewBikePartModal(props) {
           </Modal.Footer>
         </Modal>
       }
-      <AddBikeModal
-        show={addBikeModal}
-        close={closeModalAddBike}
-        addBike={addBike}
-      />
-      <DeleteModal
-        show={deleteModal}
-        close={closeDeleteModal}
-        title={"Excluir a moto?"}
-        remove={deleteBike}
-      />
       <ToastContainer />
     </div>
   );

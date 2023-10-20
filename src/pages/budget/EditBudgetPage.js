@@ -6,15 +6,13 @@ import {
   getBudgetByIdRequest,
 } from "../../services/budgetService";
 import { getStatusListRequest } from "../../services/statusService";
-import { getBikePartByPlateRequest } from "../../services/bikePartService";
+import { getBikePartListRequest } from "../../services/bikePartService";
 import AddBikePartModal from "../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../components/budgetModal/AddBikeServiceModal";
-import { getBikeByPlateRequest } from "../../services/clientBikeService";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClientDataModal from "../../components/budgetModal/ClientDataModal";
-import BikeDataModal from "../../components/budgetModal/BikeDataModal";
 import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
 
 function EditBudgetPage() {
@@ -39,14 +37,18 @@ function EditBudgetPage() {
   const [notes, setNotes] = useState("");
   const [createdDate, setCreatedDate] = useState("");
   const [clientDataModal, setClientDataModal] = useState(false);
-  const [bikeDataModal, setBikeDataModal] = useState(false);
-  const [bikeData, setBikeData] = useState("");
   const [paymentFormatList, setPaymentFormatList] = useState([]);
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
       setClient(response.data.client.name);
-      setBike(response.data.bikeName + " " + response.data.bikeBrand);
+      setBike(
+        response.data.bikeName +
+          " " +
+          response.data.bikeBrand +
+          ", " +
+          response.data.year
+      );
       setPlate(response.data.plate);
       setLaborOrBikePartBudgetList(response.data.laborOrBikePartBudgetList);
       setDiscountPercentage(response.data.discountPercentage);
@@ -60,6 +62,7 @@ function EditBudgetPage() {
     getPaymentFormatListRequest().then((response) =>
       setPaymentFormatList(response.data)
     );
+    getBikePartList();
   }, [pathname.id]);
 
   function handleStatusChange(event) {
@@ -124,14 +127,11 @@ function EditBudgetPage() {
   }
 
   function openBikePartModal() {
-    getBikePartList();
     setBikePartModal(true);
   }
 
   function getBikePartList() {
-    getBikePartByPlateRequest(plate).then((response) =>
-      setBikePartList(response.data)
-    );
+    getBikePartListRequest().then((response) => setBikePartList(response.data));
   }
 
   function closeBikePartModal() {
@@ -150,17 +150,6 @@ function EditBudgetPage() {
     const reducedArray = [...laborOrBikePartBudgetList];
     reducedArray.splice(index, 1);
     setLaborOrBikePartBudgetList(reducedArray);
-  }
-
-  function openBikeDataModal() {
-    getBikeByPlateRequest(plate).then((response) => {
-      setBikeData(response.data);
-    });
-    setBikeDataModal(true);
-  }
-
-  function closeBikeDataModal() {
-    setBikeDataModal(false);
   }
 
   function openClientDataModal() {
@@ -210,13 +199,7 @@ function EditBudgetPage() {
           <p className="mb-0 mt-3 font-size-20">Placa:</p>
           <input type="text" defaultValue={plate} disabled />
           <p className="mb-0 mt-3 font-size-20">Moto:</p>
-          <input type="text" defaultValue={bike} disabled className="me-3" />
-          <button
-            className="btn btn-outline-primary"
-            onClick={openBikeDataModal}
-          >
-            <VisibilityIcon />
-          </button>
+          <input type="text" defaultValue={bike} disabled />
           <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
           <input type="number" defaultValue={kilometersDriven} disabled />
           <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
@@ -336,11 +319,6 @@ function EditBudgetPage() {
         show={clientDataModal}
         close={closeClientDataModal}
         budgetId={pathname.id}
-      />
-      <BikeDataModal
-        show={bikeDataModal}
-        close={closeBikeDataModal}
-        bike={bikeData}
       />
     </div>
   );

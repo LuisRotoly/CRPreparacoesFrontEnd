@@ -6,15 +6,12 @@ import {
 } from "../../services/bikeService";
 import { isEmpty } from "../../stringHelper";
 import { getBikeBrandListRequest } from "../../services/bikeBrandService";
-import InputMask from "react-input-mask";
 
 function EditBikePage() {
   const pathname = useParams();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [brand, setBrand] = useState([]);
-  const [engineCapacity, setEngineCapacity] = useState("");
-  const [year, setYear] = useState("");
   const [brandList, setBrandList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -23,8 +20,6 @@ function EditBikePage() {
     getBikeByIdRequest(pathname.id).then((response) => {
       setName(response.data.name);
       setBrand(response.data.bikeBrand);
-      setEngineCapacity(response.data.engineCapacity);
-      setYear(response.data.year);
     });
     getBikeBrandList();
   }, [pathname.id]);
@@ -43,16 +38,8 @@ function EditBikePage() {
     });
   }
 
-  function handleEngineCapacityChange(event) {
-    setEngineCapacity(event.target.value);
-  }
-
   function handleNameChange(event) {
     setName(event.target.value);
-  }
-
-  function handleYearChange(event) {
-    setYear(event.target.value);
   }
 
   function isValidEntrances() {
@@ -61,7 +48,7 @@ function EditBikePage() {
 
   function editBike() {
     if (isValidEntrances()) {
-      editBikeRequest(pathname.id, name, brand.id, engineCapacity, year)
+      editBikeRequest(pathname.id, name, brand.id)
         .then((_) => setSuccessMessage("Moto editada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -112,21 +99,6 @@ function EditBikePage() {
             })}
           </select>
           <br />
-          <p className="mb-0 mt-3 font-size-20">Cilindrada:</p>
-          <input
-            type="text"
-            maxLength="10"
-            value={engineCapacity}
-            onChange={handleEngineCapacityChange}
-          />
-          <p className="mb-0 mt-3 font-size-20">Ano:</p>
-          <InputMask
-            mask="9999"
-            maskChar=""
-            type="text"
-            value={year}
-            onChange={handleYearChange}
-          />
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar

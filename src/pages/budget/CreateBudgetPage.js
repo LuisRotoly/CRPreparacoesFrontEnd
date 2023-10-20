@@ -5,7 +5,7 @@ import { addBudgetRequest } from "../../services/budgetService";
 import { getClientsListRequest } from "../../services/clientService";
 import { listClientBikeById } from "../../services/clientBikeService";
 import { getStatusListRequest } from "../../services/statusService";
-import { getBikePartByPlateRequest } from "../../services/bikePartService";
+import { getBikePartListRequest } from "../../services/bikePartService";
 import AddBikePartModal from "../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../components/budgetModal/AddBikeServiceModal";
 import Table from "react-bootstrap/Table";
@@ -17,6 +17,7 @@ function CreateBudgetPage() {
   const navigate = useNavigate();
   const [plate, setPlate] = useState("");
   const [bike, setBike] = useState("");
+  const [year, setYear] = useState("");
   const [clientBikeList, setClientBikeList] = useState([]);
   const [client, setClient] = useState("");
   const [clientList, setClientList] = useState([]);
@@ -42,6 +43,7 @@ function CreateBudgetPage() {
     getPaymentFormatListRequest().then((response) => {
       setPaymentFormatList(response.data);
     });
+    getBikePartList();
   }, []);
 
   function handleClientChange(event) {
@@ -51,6 +53,7 @@ function CreateBudgetPage() {
     );
     setBike("");
     setPlate("");
+    setYear("");
     resetFields();
   }
 
@@ -65,6 +68,7 @@ function CreateBudgetPage() {
     let clientBike = clientBikeList[event.target.selectedIndex - 1];
     setBike(clientBike.bike);
     setPlate(clientBike.plate);
+    setYear(clientBike.year);
     resetFields();
   }
 
@@ -81,7 +85,7 @@ function CreateBudgetPage() {
   }
 
   function handlePaymentFormatChange(event) {
-    setPaymentFormat(paymentFormatList[event.target.selectedIndex]);
+    setPaymentFormat(paymentFormatList[event.target.selectedIndex - 1]);
   }
 
   function handleDiscountPercentageChange(event) {
@@ -106,8 +110,7 @@ function CreateBudgetPage() {
         plate,
         bike.name,
         bike.bikeBrand.name,
-        bike.engineCapacity,
-        bike.year,
+        year,
         paymentFormat,
         kilometersDriven,
         laborOrBikePartBudgetList,
@@ -143,14 +146,11 @@ function CreateBudgetPage() {
   }
 
   function openBikePartModal() {
-    getBikePartList();
     setBikePartModal(true);
   }
 
   function getBikePartList() {
-    getBikePartByPlateRequest(plate).then((response) =>
-      setBikePartList(response.data)
-    );
+    getBikePartListRequest().then((response) => setBikePartList(response.data));
   }
 
   function closeBikePartModal() {
@@ -222,10 +222,10 @@ function CreateBudgetPage() {
                 <option key="blankChoice" hidden value="">
                   Selecione...
                 </option>
-                {clientBikeList.map(({ plate, bike }) => {
+                {clientBikeList.map(({ plate, bike, year }) => {
                   return (
                     <option key={plate} value={plate}>
-                      {plate}, {bike.name}, {bike.bikeBrand.name}
+                      {plate}, {bike.name}, {bike.bikeBrand.name}, {year}
                     </option>
                   );
                 })}

@@ -2,10 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addBikePartRequest } from "../../services/bikePartService";
 import { isEmpty } from "../../stringHelper";
-import "./bikePart.css";
-import DeleteModal from "../../components/modal/DeleteModal";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddBikeModal from "../../components/modal/AddBikeModal";
 
 function CreateBikePartPage() {
   const navigate = useNavigate();
@@ -16,10 +12,6 @@ function CreateBikePartPage() {
   const [stockQuantity, setStockQuantity] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [bikeList, setBikeList] = useState([]);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [removeBike, setRemoveBike] = useState("");
-  const [addBikeModal, setAddBikeModal] = useState(false);
 
   function handleProfitPercentageChange(event) {
     setProfitPercentage(event.target.value);
@@ -42,14 +34,13 @@ function CreateBikePartPage() {
       !isEmpty(name) &&
       !isEmpty(value) &&
       !isEmpty(profitPercentage) &&
-      !isEmpty(stockQuantity) &&
-      bikeList.length !== 0
+      !isEmpty(stockQuantity)
     );
   }
 
   function createBikePart() {
     if (isValidEntrances()) {
-      addBikePartRequest(name, value, profitPercentage, stockQuantity, bikeList)
+      addBikePartRequest(name, value, profitPercentage, stockQuantity)
         .then((_) => setSuccessMessage("Peça criada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -66,35 +57,6 @@ function CreateBikePartPage() {
       parseFloat(value) +
       (parseFloat(value) * parseFloat(profitPercentage)) / 100;
     setFinalValue(finalValue);
-  }
-
-  function openDeleteModal(index) {
-    setRemoveBike(index);
-    setDeleteModal(true);
-  }
-
-  function closeDeleteModal() {
-    setDeleteModal(false);
-  }
-
-  function deleteBike() {
-    const reducedArray = [...bikeList];
-    reducedArray.splice(removeBike, 1);
-    setBikeList(reducedArray);
-    closeDeleteModal();
-  }
-
-  function openModalAddBike() {
-    setAddBikeModal(true);
-  }
-
-  function closeModalAddBike() {
-    setAddBikeModal(false);
-  }
-
-  function addBike(bike) {
-    setBikeList((oldList) => [...oldList, bike]);
-    closeModalAddBike();
   }
 
   return (
@@ -151,31 +113,6 @@ function CreateBikePartPage() {
             value={stockQuantity}
             onChange={handleStockQuantityChange}
           />
-          <div>
-            {bikeList.map(
-              ({ name, bikeBrand, engineCapacity, year }, index) => {
-                return (
-                  <div key={index} className="align-center mt-3">
-                    <div className="bike-container">
-                      <DeleteIcon
-                        className="remove-icon"
-                        onClick={() => openDeleteModal(index)}
-                      />
-                      <p className="mt-3">
-                        {name} {engineCapacity}
-                      </p>
-                      <p className="mt-3">
-                        {bikeBrand.name}, {year}
-                      </p>
-                    </div>
-                  </div>
-                );
-              }
-            )}
-            <button className="btn btn-info mt-3" onClick={openModalAddBike}>
-              Adicionar Moto
-            </button>
-          </div>
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar
@@ -187,17 +124,6 @@ function CreateBikePartPage() {
           <p className="text-danger font-size-18">{errorMessage}</p>
         </div>
       )}
-      <AddBikeModal
-        show={addBikeModal}
-        close={closeModalAddBike}
-        addBike={addBike}
-      />
-      <DeleteModal
-        show={deleteModal}
-        close={closeDeleteModal}
-        title={"Excluir a moto?"}
-        remove={deleteBike}
-      />
     </div>
   );
 }

@@ -9,15 +9,12 @@ import {
 import CreateNewBikeBrandModal from "../../components/modal/CreateNewBikeBrandModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import InputMask from "react-input-mask";
 import { toastProperties } from "../../constants";
 
 function CreateBikePage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [brand, setBrand] = useState([]);
-  const [engineCapacity, setEngineCapacity] = useState("");
-  const [year, setYear] = useState("");
   const [brandList, setBrandList] = useState([]);
   const [modalNewBrand, setModalNewBrand] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,16 +38,8 @@ function CreateBikePage() {
     });
   }
 
-  function handleEngineCapacityChange(event) {
-    setEngineCapacity(event.target.value);
-  }
-
   function handleNameChange(event) {
     setName(event.target.value);
-  }
-
-  function handleYearChange(event) {
-    setYear(event.target.value);
   }
 
   function isValidEntrances() {
@@ -59,7 +48,7 @@ function CreateBikePage() {
 
   function createBike() {
     if (isValidEntrances()) {
-      addBikeRequest(name, brand.id, engineCapacity, year)
+      addBikeRequest(name, brand.id)
         .then((_) => setSuccessMessage("Moto criada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -134,21 +123,6 @@ function CreateBikePage() {
           >
             Criar Nova Marca
           </button>
-          <p className="mb-0 mt-3 font-size-20">Cilindrada:</p>
-          <input
-            type="text"
-            maxLength="10"
-            value={engineCapacity}
-            onChange={handleEngineCapacityChange}
-          />
-          <p className="mb-0 mt-3 font-size-20">Ano:</p>
-          <InputMask
-            mask="9999"
-            maskChar=""
-            type="text"
-            value={year}
-            onChange={handleYearChange}
-          />
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar

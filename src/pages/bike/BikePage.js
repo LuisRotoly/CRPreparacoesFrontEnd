@@ -58,18 +58,14 @@ function BikePage() {
             <tr>
               <th>Nome</th>
               <th>Marca</th>
-              <th>Cilindrada</th>
-              <th>Ano</th>
               <th>Editar</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, bikeBrand, engineCapacity, year }) => (
+            {data.map(({ id, name, bikeBrand }) => (
               <tr key={id}>
                 <td>{name}</td>
                 <td>{bikeBrand.name}</td>
-                <td>{engineCapacity}</td>
-                <td>{year}</td>
                 <td>
                   <Link to={`/bike/edit/${id}`}>
                     <EditIcon className="edit-icon" />

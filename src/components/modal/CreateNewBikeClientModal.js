@@ -9,6 +9,7 @@ function CreateNewBikeClientModal(props) {
   const { addClientBike } = props;
   const [plate, setPlate] = useState("");
   const [bike, setBike] = useState("");
+  const [year, setYear] = useState("");
   const [bikeList, setBikeList] = useState([]);
 
   useEffect(() => {
@@ -21,8 +22,12 @@ function CreateNewBikeClientModal(props) {
     setPlate(event.target.value);
   }
 
+  function handleYearChange(event) {
+    setYear(event.target.value);
+  }
+
   function addNewPlate() {
-    addClientBike(plate, bike);
+    addClientBike(plate, bike, year);
     resetFields();
   }
 
@@ -56,18 +61,20 @@ function CreateNewBikeClientModal(props) {
             <Select
               defaultValue=""
               getOptionLabel={(option) =>
-                option.name +
-                ", " +
-                option.bikeBrand.name +
-                ", " +
-                option.engineCapacity +
-                ", " +
-                option.year
+                option.name + ", " + option.bikeBrand.name
               }
               onChange={handleBikeChange}
               options={bikeList}
               getOptionValue={(option) => option.name}
               placeholder={"Selecione..."}
+            />
+            <p className="mb-0 mt-3 font-size-20">Ano:</p>
+            <InputMask
+              mask="9999"
+              maskChar=""
+              type="text"
+              value={year}
+              onChange={handleYearChange}
             />
           </Modal.Body>
           <Modal.Footer>
