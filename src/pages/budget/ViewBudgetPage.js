@@ -4,11 +4,9 @@ import {
   editBudgetNotesRequest,
   getBudgetByIdRequest,
 } from "../../services/budgetService";
-import { getBikeByPlateRequest } from "../../services/clientBikeService";
 import Table from "react-bootstrap/Table";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClientDataModal from "../../components/budgetModal/ClientDataModal";
-import BikeDataModal from "../../components/budgetModal/BikeDataModal";
 import { isEmpty } from "../../stringHelper";
 
 function ViewBudgetPage() {
@@ -27,13 +25,17 @@ function ViewBudgetPage() {
   const [notes, setNotes] = useState("");
   const [createdDate, setCreatedDate] = useState("");
   const [clientDataModal, setClientDataModal] = useState(false);
-  const [bikeDataModal, setBikeDataModal] = useState(false);
-  const [bikeData, setBikeData] = useState("");
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
       setClient(response.data.client.name);
-      setBike(response.data.bikeName + " " + response.data.bikeBrand);
+      setBike(
+        response.data.bikeName +
+          " " +
+          response.data.bikeBrand +
+          ", " +
+          response.data.year
+      );
       setPlate(response.data.plate);
       setLaborOrBikePartBudgetList(response.data.laborOrBikePartBudgetList);
       setDiscountPercentage(response.data.discountPercentage);
@@ -47,17 +49,6 @@ function ViewBudgetPage() {
 
   function gotoBackPage() {
     navigate("/budget");
-  }
-
-  function openBikeDataModal() {
-    getBikeByPlateRequest(plate).then((response) => {
-      setBikeData(response.data);
-    });
-    setBikeDataModal(true);
-  }
-
-  function closeBikeDataModal() {
-    setBikeDataModal(false);
   }
 
   function openClientDataModal() {
@@ -104,9 +95,6 @@ function ViewBudgetPage() {
         </button>
         <p className="mb-0 mt-3 font-size-20">Placa:</p>
         <input type="text" defaultValue={plate} disabled className="me-3" />
-        <button className="btn btn-outline-primary" onClick={openBikeDataModal}>
-          <VisibilityIcon />
-        </button>
         <p className="mb-0 mt-3 font-size-20">Moto:</p>
         <input type="text" defaultValue={bike} disabled />
         <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
@@ -171,11 +159,6 @@ function ViewBudgetPage() {
         show={clientDataModal}
         close={closeClientDataModal}
         budgetId={pathname.id}
-      />
-      <BikeDataModal
-        show={bikeDataModal}
-        close={closeBikeDataModal}
-        bike={bikeData}
       />
     </div>
   );

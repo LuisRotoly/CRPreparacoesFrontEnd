@@ -12,21 +12,17 @@ export async function filterBikeListRequest(word) {
   return await api.get("filterListBikes?word=" + word);
 }
 
-export async function addBikeRequest(name, brandId, engineCapacity, year) {
+export async function addBikeRequest(name, brandId) {
   return await api.post("addBike", {
     name: name,
     brandId: brandId,
-    engineCapacity: engineCapacity,
-    year: year,
   });
 }
 
-export async function editBikeRequest(id, name, brandId, engineCapacity, year) {
+export async function editBikeRequest(id, name, brandId) {
   return await api.post("editBike", {
     id: id,
     name: name,
     brandId: brandId,
-    engineCapacity: engineCapacity,
-    year: year,
   });
 }

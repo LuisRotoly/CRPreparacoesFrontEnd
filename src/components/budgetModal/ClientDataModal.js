@@ -28,6 +28,7 @@ function ClientDataModal(props) {
             <p className="mb-0 mt-3 font-size-20">
               {client.name}, {client.cpfcnpj}, {client.nickname}
             </p>
+            <p className="mb-0 mt-3 font-size-20">{client.birthDate}</p>
             <p className="mb-0 mt-3 font-size-20">
               {client.phone}, {client.optionalPhone}
             </p>

@@ -5,10 +5,6 @@ import {
   getBikePartByIdRequest,
 } from "../../services/bikePartService";
 import { isEmpty } from "../../stringHelper";
-import "./bikePart.css";
-import DeleteModal from "../../components/modal/DeleteModal";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddBikeModal from "../../components/modal/AddBikeModal";
 
 function EditBikePartPage() {
   const pathname = useParams();
@@ -19,10 +15,6 @@ function EditBikePartPage() {
   const [finalValue, setFinalValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [bikeList, setBikeList] = useState([]);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [removeBike, setRemoveBike] = useState("");
-  const [addBikeModal, setAddBikeModal] = useState(false);
 
   useEffect(() => {
     getBikePartByIdRequest(pathname.id).then((response) => {
@@ -30,7 +22,6 @@ function EditBikePartPage() {
       setValue(response.data.value);
       setProfitPercentage(response.data.profitPercentage);
       setFinalValue(response.data.finalValue);
-      setBikeList(response.data.bikeList);
     });
   }, [pathname.id]);
 
@@ -47,17 +38,12 @@ function EditBikePartPage() {
   }
 
   function isValidEntrances() {
-    return (
-      !isEmpty(name) &&
-      !isEmpty(value) &&
-      !isEmpty(profitPercentage) &&
-      bikeList.length !== 0
-    );
+    return !isEmpty(name) && !isEmpty(value) && !isEmpty(profitPercentage);
   }
 
   function editBikePart() {
     if (isValidEntrances()) {
-      editBikePartRequest(pathname.id, name, value, profitPercentage, bikeList)
+      editBikePartRequest(pathname.id, name, value, profitPercentage)
         .then((_) => setSuccessMessage("Peça editada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -74,35 +60,6 @@ function EditBikePartPage() {
       parseFloat(value) +
       (parseFloat(value) * parseFloat(profitPercentage)) / 100;
     setFinalValue(finalValue);
-  }
-
-  function openDeleteModal(index) {
-    setRemoveBike(index);
-    setDeleteModal(true);
-  }
-
-  function closeDeleteModal() {
-    setDeleteModal(false);
-  }
-
-  function deleteBike() {
-    const reducedArray = [...bikeList];
-    reducedArray.splice(removeBike, 1);
-    setBikeList(reducedArray);
-    closeDeleteModal();
-  }
-
-  function openModalAddBike() {
-    setAddBikeModal(true);
-  }
-
-  function closeModalAddBike() {
-    setAddBikeModal(false);
-  }
-
-  function addBike(bike) {
-    setBikeList((oldList) => [...oldList, bike]);
-    closeModalAddBike();
   }
 
   return (
@@ -148,31 +105,6 @@ function EditBikePartPage() {
           </button>
           <p className="mb-0 mt-3 font-size-20">Valor final:</p>
           <input type="number" disabled value={finalValue} />
-          <div>
-            {bikeList.map(
-              ({ name, bikeBrand, engineCapacity, year }, index) => {
-                return (
-                  <div key={index} className="align-center mt-3">
-                    <div className="bike-container">
-                      <DeleteIcon
-                        className="remove-icon"
-                        onClick={() => openDeleteModal(index)}
-                      />
-                      <p className="mt-3">
-                        {name} {engineCapacity}
-                      </p>
-                      <p className="mt-3">
-                        {bikeBrand.name}, {year}
-                      </p>
-                    </div>
-                  </div>
-                );
-              }
-            )}
-            <button className="btn btn-info mt-3" onClick={openModalAddBike}>
-              Adicionar Moto
-            </button>
-          </div>
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar
@@ -184,17 +116,6 @@ function EditBikePartPage() {
           <p className="text-danger font-size-18">{errorMessage}</p>
         </div>
       )}
-      <AddBikeModal
-        show={addBikeModal}
-        close={closeModalAddBike}
-        addBike={addBike}
-      />
-      <DeleteModal
-        show={deleteModal}
-        close={closeDeleteModal}
-        title={"Excluir a moto?"}
-        remove={deleteBike}
-      />
     </div>
   );
 }

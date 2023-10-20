@@ -15,6 +15,7 @@ function CreateClientPage() {
   const [cpfcnpj, setCpfcnpj] = useState("");
   const [cep, setCep] = useState("");
   const [addressNumber, setAddressNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [phone, setPhone] = useState("");
   const [optionalPhone, setOptionalPhone] = useState("");
   const [notes, setNotes] = useState("");
@@ -56,6 +57,10 @@ function CreateClientPage() {
     setName(event.target.value);
   }
 
+  function handleBirthDateChange(event) {
+    setBirthDate(event.target.value);
+  }
+
   function handleNicknameChange(event) {
     setNickname(event.target.value);
   }
@@ -75,6 +80,7 @@ function CreateClientPage() {
         cpfcnpj,
         cep,
         addressNumber,
+        birthDate,
         phone,
         optionalPhone,
         notes,
@@ -100,8 +106,8 @@ function CreateClientPage() {
     setPlateModal(false);
   }
 
-  function addClientBike(plate, bike) {
-    const newClientBike = { plate, bike };
+  function addClientBike(plate, bike, year) {
+    const newClientBike = { plate, bike, year };
     setClientBikeList((oldList) => [...oldList, newClientBike]);
     closeModalBikePlate();
   }
@@ -202,6 +208,14 @@ function CreateClientPage() {
               <input type="text" value={addressList.uf} disabled />
             </div>
           ) : null}
+          <p className="mb-0 mt-3 font-size-20">Data de nascimento:</p>
+          <InputMask
+            mask={"99/99/99"}
+            maskChar=""
+            type="text"
+            value={birthDate}
+            onChange={handleBirthDateChange}
+          />
           <p className="mb-0 mt-3 font-size-20">Telefone:*</p>
           <InputMask
             required
@@ -245,7 +259,7 @@ function CreateClientPage() {
             onChange={handleNotesChange}
           />
           <div>
-            {clientBikeList.map(({ plate, bike }, index) => {
+            {clientBikeList.map(({ plate, bike, year }, index) => {
               return (
                 <div key={index} className="align-center mt-3">
                   <div className="bike-client-container">
@@ -255,7 +269,7 @@ function CreateClientPage() {
                     />
                     <p className="mt-3">{plate}</p>
                     <p className="mt-3">
-                      {bike.bikeBrand.name}, {bike.name}, {bike.engineCapacity}
+                      {bike.bikeBrand.name}, {bike.name}, {year}
                     </p>
                   </div>
                 </div>

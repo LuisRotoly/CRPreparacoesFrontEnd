@@ -13,12 +13,10 @@ function EditStockPage() {
   const [stockQuantity, setStockQuantity] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [bikeList, setBikeList] = useState([]);
 
   useEffect(() => {
     getBikePartByIdRequest(pathname.id).then((response) => {
       setBikePartName(response.data.name);
-      setBikeList(response.data.bikeList);
       setStockQuantity(response.data.stockQuantity);
     });
   }, [pathname.id]);
@@ -62,30 +60,12 @@ function EditStockPage() {
             value={stockQuantity}
             onChange={handleStockQuantityChange}
           />
-          <div>
-            {bikeList.map(
-              ({ name, bikeBrand, engineCapacity, year }, index) => {
-                return (
-                  <div key={index} className="align-center mt-3">
-                    <div className="bike-container">
-                      <p className="mt-3">
-                        {name} {engineCapacity}
-                      </p>
-                      <p className="mt-3">
-                        {bikeBrand.name}, {year}
-                      </p>
-                    </div>
-                  </div>
-                );
-              }
-            )}
-          </div>
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar
             </button>
             <button className="btn btn-success" onClick={editBikePartStock}>
-              Alterar Estoque
+              Alterar
             </button>
           </div>
           <p className="text-danger font-size-18">{errorMessage}</p>

@@ -20,6 +20,7 @@ function EditClientPage() {
   const [cpfcnpj, setCpfcnpj] = useState("");
   const [cep, setCep] = useState("");
   const [addressNumber, setAddressNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [phone, setPhone] = useState("");
   const [optionalPhone, setOptionalPhone] = useState("");
   const [notes, setNotes] = useState("");
@@ -39,6 +40,7 @@ function EditClientPage() {
       setCpfcnpj(response.data.cpfcnpj);
       setCep(response.data.cep);
       setAddressNumber(response.data.addressNumber);
+      setBirthDate(response.data.birthDate);
       setPhone(response.data.phone);
       setOptionalPhone(response.data.optionalPhone);
       setNotes(response.data.notes);
@@ -52,6 +54,10 @@ function EditClientPage() {
 
   function handleOptionalPhoneChange(event) {
     setOptionalPhone(event.target.value);
+  }
+
+  function handleBirthDateChange(event) {
+    setBirthDate(event.target.value);
   }
 
   function handleAddressNumberChange(event) {
@@ -98,6 +104,7 @@ function EditClientPage() {
         cpfcnpj,
         cep,
         addressNumber,
+        birthDate,
         phone,
         optionalPhone,
         notes,
@@ -123,8 +130,8 @@ function EditClientPage() {
     setPlateModal(false);
   }
 
-  function addClientBike(plate, bike) {
-    const newClientBike = { plate, bike };
+  function addClientBike(plate, bike, year) {
+    const newClientBike = { plate, bike, year };
     setClientBikeList((oldList) => [...oldList, newClientBike]);
     closeModalBikePlate();
   }
@@ -224,6 +231,14 @@ function EditClientPage() {
               <input type="text" value={addressList.uf} disabled />
             </div>
           ) : null}
+          <p className="mb-0 mt-3 font-size-20">Data de nascimento:</p>
+          <InputMask
+            mask={"99/99/99"}
+            maskChar=""
+            type="text"
+            value={birthDate}
+            onChange={handleBirthDateChange}
+          />
           <p className="mb-0 mt-3 font-size-20">Telefone:*</p>
           <InputMask
             required
@@ -267,7 +282,7 @@ function EditClientPage() {
             onChange={handleNotesChange}
           />
           <div>
-            {clientBikeList.map(({ plate, bike }, index) => {
+            {clientBikeList.map(({ plate, bike, year }, index) => {
               return (
                 <div key={index} className="align-center mt-3">
                   <div className="bike-client-container">
@@ -277,7 +292,7 @@ function EditClientPage() {
                     />
                     <p className="mt-3">{plate}</p>
                     <p className="mt-3">
-                      {bike.bikeBrand.name}, {bike.name}, {bike.engineCapacity}
+                      {bike.bikeBrand.name}, {bike.name}, {year}
                     </p>
                   </div>
                 </div>
