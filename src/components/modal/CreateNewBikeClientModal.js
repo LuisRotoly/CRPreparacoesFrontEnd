@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getBikeListRequest } from "../../services/bikeService";
 import InputMask from "react-input-mask";
 import Select from "react-select";
+import AddNewBikeModal from "./AddNewBikeModal";
 
 function CreateNewBikeClientModal(props) {
   const { addClientBike } = props;
@@ -11,12 +12,17 @@ function CreateNewBikeClientModal(props) {
   const [bike, setBike] = useState("");
   const [year, setYear] = useState("");
   const [bikeList, setBikeList] = useState([]);
+  const [addNewBikeModal, setAddNewBikeModal] = useState(false);
 
   useEffect(() => {
+    getBikeList();
+  }, []);
+
+  function getBikeList() {
     getBikeListRequest().then((response) => {
       setBikeList(response.data);
     });
-  }, []);
+  }
 
   function handlePlateChange(event) {
     setPlate(event.target.value);
@@ -38,6 +44,15 @@ function CreateNewBikeClientModal(props) {
 
   function handleBikeChange(event) {
     setBike(event);
+  }
+
+  function openAddNewBikeModal() {
+    setAddNewBikeModal(true);
+  }
+
+  function closeAddNewBikeModal() {
+    getBikeList();
+    setAddNewBikeModal(false);
   }
 
   return (
@@ -78,6 +93,9 @@ function CreateNewBikeClientModal(props) {
             />
           </Modal.Body>
           <Modal.Footer>
+            <Button variant="info" onClick={openAddNewBikeModal}>
+              Criar nova moto
+            </Button>
             <Button variant="secondary" onClick={props.close}>
               Cancelar
             </Button>
@@ -87,6 +105,7 @@ function CreateNewBikeClientModal(props) {
           </Modal.Footer>
         </Modal>
       }
+      <AddNewBikeModal show={addNewBikeModal} close={closeAddNewBikeModal} />
     </div>
   );
 }

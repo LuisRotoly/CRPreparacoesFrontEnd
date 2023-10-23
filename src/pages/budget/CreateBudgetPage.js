@@ -48,20 +48,24 @@ function CreateBudgetPage() {
 
   function handleClientChange(event) {
     setClient(event.id);
+    setClientBikeList([]);
     listClientBikeById(event.id).then((response) =>
       setClientBikeList(response.data)
     );
-    setBike("");
-    setPlate("");
-    setYear("");
     resetFields();
   }
 
   function resetFields() {
+    setBike("");
+    setPlate("");
+    setYear("");
     setErrorMessage("");
+    setPaymentFormat("");
+    setKilometersDriven("");
     setLaborOrBikePartBudgetList([]);
     setStatus("");
     setDiscountPercentage("");
+    setNotes("");
   }
 
   function handleBikeChange(event) {
@@ -69,7 +73,7 @@ function CreateBudgetPage() {
     setBike(clientBike.bike);
     setPlate(clientBike.plate);
     setYear(clientBike.year);
-    resetFields();
+    setErrorMessage("");
   }
 
   function handleStatusChange(event) {
