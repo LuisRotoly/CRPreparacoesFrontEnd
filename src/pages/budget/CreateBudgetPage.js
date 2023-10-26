@@ -12,6 +12,8 @@ import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
 import Select from "react-select";
+import CostModal from "../../components/budgetModal/CostModal";
+import { getLaborOrBikePartByName } from "../../services/budgetService";
 
 function CreateBudgetPage() {
   const navigate = useNavigate();
@@ -36,6 +38,8 @@ function CreateBudgetPage() {
   const [paymentFormat, setPaymentFormat] = useState("");
   const [paymentFormatList, setPaymentFormatList] = useState([]);
   const [notes, setNotes] = useState("");
+  const [cost, setCost] = useState("");
+  const [costModal, setCostModal] = useState(false);
 
   useEffect(() => {
     getClientsListRequest().then((response) => setClientList(response.data));
@@ -187,6 +191,17 @@ function CreateBudgetPage() {
     }
   }
 
+  function showCostValue(laborOrBikePartName) {
+    getLaborOrBikePartByName(laborOrBikePartName).then((response) => {
+      setCost(response.data);
+      setCostModal(true);
+    });
+  }
+
+  function closeCostModal() {
+    setCostModal(false);
+  }
+
   return (
     <div className="text-center mt-5">
       {successMessage !== "" ? (
@@ -292,7 +307,9 @@ function CreateBudgetPage() {
                         <tr key={index}>
                           <td>{name}</td>
                           <td>{quantity}</td>
-                          <td>R$ {value}</td>
+                          <td onClick={() => showCostValue(name)}>
+                            R$ {value}
+                          </td>
                           <td>R$ {quantity * value}</td>
                           <td>
                             <DeleteIcon
@@ -367,6 +384,7 @@ function CreateBudgetPage() {
         close={closeBikeServiceModal}
         addBikeServiceToBudget={addBikeServiceToBudget}
       />
+      <CostModal show={costModal} close={closeCostModal} cost={cost} />
     </div>
   );
 }

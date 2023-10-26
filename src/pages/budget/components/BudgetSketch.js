@@ -86,17 +86,19 @@ function BudgetSketch() {
               <th>Cliente</th>
               <th>Placa</th>
               <th>Moto</th>
+              <th>Valor Total</th>
               <th>Editar</th>
               <th>Remover</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, client, plate, bike, createdAt }) => (
+            {data.map(({ id, client, plate, bike, totalValue, createdAt }) => (
               <tr key={id}>
                 <td>{new Date(createdAt).toLocaleDateString()}</td>
                 <td>{client}</td>
                 <td>{plate}</td>
                 <td>{bike}</td>
+                <td>R$ {totalValue}</td>
                 <td>
                   <Link to={`/budget/sketch/edit/${id}`}>
                     <EditIcon className="edit-icon" />

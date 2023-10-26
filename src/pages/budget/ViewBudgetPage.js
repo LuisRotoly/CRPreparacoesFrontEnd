@@ -8,6 +8,12 @@ import Table from "react-bootstrap/Table";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClientDataModal from "../../components/budgetModal/ClientDataModal";
 import { isEmpty } from "../../stringHelper";
+import PrintIcon from "@mui/icons-material/Print";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import BudgetPdf from "../../components/pdf/BudgetPdf";
+import { getCepRequest } from "../../services/cepService";
+import CostModal from "../../components/budgetModal/CostModal";
+import { getLaborOrBikePartByName } from "../../services/budgetService";
 
 function ViewBudgetPage() {
   const pathname = useParams();
@@ -25,6 +31,14 @@ function ViewBudgetPage() {
   const [notes, setNotes] = useState("");
   const [createdDate, setCreatedDate] = useState("");
   const [clientDataModal, setClientDataModal] = useState(false);
+  const [pdfClientData, setPdfClientData] = useState([]);
+  const [pdfBikeData, setPdfBikeData] = useState([]);
+  const [address, setAddress] = useState("");
+  const [totalValueBikeService, setTotalValueBikeService] = useState(0);
+  const [totalValueBikePart, setTotalValueBikePart] = useState(0);
+  const [totalValue, setTotalValue] = useState(0);
+  const [cost, setCost] = useState("");
+  const [costModal, setCostModal] = useState(false);
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -44,6 +58,24 @@ function ViewBudgetPage() {
       setKilometersDriven(response.data.kilometersDriven);
       setNotes(response.data.notes);
       setCreatedDate(response.data.createdAt);
+      getAddress(response.data.client.cep);
+      setPdfClientData([
+        response.data.client.name,
+        response.data.client.addressNumber,
+        response.data.client.cpfcnpj,
+        response.data.client.phone,
+        response.data.client.birthDate,
+      ]);
+      setPdfBikeData([
+        response.data.plate,
+        response.data.bikeName,
+        response.data.year,
+        response.data.kilometersDriven,
+        response.data.bikeBrand,
+      ]);
+      setTotalValue(response.data.totalValue);
+      setTotalValueBikePart(response.data.totalValueBikePart);
+      setTotalValueBikeService(response.data.totalValueBikeService);
     });
   }, [pathname.id]);
 
@@ -67,23 +99,54 @@ function ViewBudgetPage() {
     editBudgetNotesRequest(pathname.id, notes).then((_) => gotoBackPage());
   }
 
-  function getTotalValue() {
-    let totalValue = 0;
-    laborOrBikePartBudgetList.forEach((element) => {
-      totalValue = totalValue + element.quantity * element.value;
-    });
-    if (isEmpty(discountPercentage)) {
-      return totalValue;
-    } else {
-      return totalValue - (totalValue * discountPercentage) / 100;
+  function getAddress(cep) {
+    if (!isEmpty(cep) && cep.length === 9) {
+      getCepRequest(cep).then((response) => {
+        if (response.data.erro) {
+          setAddress("");
+        } else {
+          setAddress(response.data.logradouro);
+        }
+      });
     }
+  }
+
+  function showCostValue(laborOrBikePartName) {
+    getLaborOrBikePartByName(laborOrBikePartName).then((response) => {
+      setCost(response.data);
+      setCostModal(true);
+    });
+  }
+
+  function closeCostModal() {
+    setCostModal(false);
   }
 
   return (
     <div className="text-center mt-5">
       <div>
         <div className="data">
-          Data: {new Date(createdDate).toLocaleDateString()}
+          <div className="me-3">
+            Data: {new Date(createdDate).toLocaleDateString()}
+          </div>
+          <PDFDownloadLink
+            document={
+              <BudgetPdf
+                client={pdfClientData}
+                bike={pdfBikeData}
+                address={address}
+                laborOrBikePartBudgetList={laborOrBikePartBudgetList}
+                discountPercentage={discountPercentage}
+                totalValueBikePart={totalValueBikePart}
+                totalValueBikeService={totalValueBikeService}
+                totalValue={totalValue}
+                createdDate={createdDate}
+              />
+            }
+            fileName={client + "-orcamento.pdf"}
+          >
+            <PrintIcon />
+          </PDFDownloadLink>
         </div>
         <p className="mb-0 mt-3 font-size-20">Cliente:</p>
         <input type="text" defaultValue={client} disabled className="me-3" />
@@ -122,7 +185,7 @@ function ViewBudgetPage() {
                   <tr key={index}>
                     <td>{name}</td>
                     <td>{quantity}</td>
-                    <td>R$ {value}</td>
+                    <td onClick={() => showCostValue(name)}>R$ {value}</td>
                     <td>R$ {quantity * value}</td>
                   </tr>
                 )
@@ -134,7 +197,7 @@ function ViewBudgetPage() {
         <input type="number" defaultValue={discountPercentage} disabled />
         <span>%</span>
         <p className="mb-0 mt-5 font-size-20 fw-bold">
-          Valor Total: {getTotalValue()} Reais
+          Valor Total: {totalValue} Reais
         </p>
         <p className="mb-0 mt-3 font-size-20">Status:</p>
         <input type="text" defaultValue={status.description} disabled />
@@ -160,6 +223,7 @@ function ViewBudgetPage() {
         close={closeClientDataModal}
         budgetId={pathname.id}
       />
+      <CostModal show={costModal} close={closeCostModal} cost={cost} />
     </div>
   );
 }

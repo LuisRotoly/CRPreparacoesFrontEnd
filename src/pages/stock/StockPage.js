@@ -31,6 +31,12 @@ function StockPage() {
     }
   }
 
+  function getColor(stockQuantity) {
+    if (stockQuantity <= 0) {
+      return "text-danger";
+    }
+  }
+
   return (
     <div>
       <div className="text-center div-title">
@@ -57,7 +63,9 @@ function StockPage() {
               return (
                 <tr key={id}>
                   <td>{name}</td>
-                  <td>{stockQuantity} peças</td>
+                  <td className={getColor(stockQuantity)}>
+                    {stockQuantity} peças
+                  </td>
                   <td>
                     <Link to={`/stock/edit/${id}`}>
                       <EditIcon className="edit-icon" />
