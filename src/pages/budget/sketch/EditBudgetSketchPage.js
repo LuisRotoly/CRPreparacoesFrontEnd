@@ -11,6 +11,12 @@ import {
 } from "../../../services/budgetSketchService";
 import { getBikePartListRequest } from "../../../services/bikePartService";
 import InputMask from "react-input-mask";
+import PrintIcon from "@mui/icons-material/Print";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import BudgetPdf from "../../../components/pdf/BudgetPdf";
+import { getBikeServiceListRequest } from "../../../services/bikeServiceService";
+import { getLaborOrBikePartByName } from "../../../services/budgetService";
+import CostModal from "../../../components/budgetModal/CostModal";
 
 function EditBudgetSketchPage() {
   const pathname = useParams();
@@ -28,6 +34,14 @@ function EditBudgetSketchPage() {
   const [notes, setNotes] = useState("");
   const [bikePartList, setBikePartList] = useState([]);
   const [createdDate, setCreatedDate] = useState("");
+  const [pdfClientData, setPdfClientData] = useState([]);
+  const [pdfBikeData, setPdfBikeData] = useState([]);
+  const [totalValueBikeService, setTotalValueBikeService] = useState(0);
+  const [totalValueBikePart, setTotalValueBikePart] = useState(0);
+  const [totalValue, setTotalValue] = useState(0);
+  const [bikeServiceList, setBikeServiceList] = useState([]);
+  const [cost, setCost] = useState("");
+  const [costModal, setCostModal] = useState(false);
 
   useEffect(() => {
     getBudgetSketchByIdRequest(pathname.id).then((response) => {
@@ -40,8 +54,16 @@ function EditBudgetSketchPage() {
       );
       setNotes(response.data.notes);
       setCreatedDate(response.data.createdAt);
+      setPdfClientData([response.data.client, "", "", response.data.phone, ""]);
+      setPdfBikeData([response.data.plate, response.data.bike, "", "", ""]);
+      setTotalValue(response.data.totalValue);
+      setTotalValueBikePart(response.data.totalValueBikePart);
+      setTotalValueBikeService(response.data.totalValueBikeService);
     });
     getBikePartList();
+    getBikeServiceListRequest().then((response) =>
+      setBikeServiceList(response.data)
+    );
   }, [pathname.id]);
 
   function getBikePartList() {
@@ -101,6 +123,10 @@ function EditBudgetSketchPage() {
       { name, quantity, value },
     ]);
     closeBikeServiceModal();
+    getNewTotalValues([
+      ...laborOrBikePartBudgetSketchList,
+      { name, quantity, value },
+    ]);
   }
 
   function addBikePartToBudget(name, quantity, value) {
@@ -109,6 +135,10 @@ function EditBudgetSketchPage() {
       { name, quantity, value },
     ]);
     closeBikePartModal();
+    getNewTotalValues([
+      ...laborOrBikePartBudgetSketchList,
+      { name, quantity, value },
+    ]);
   }
 
   function openBikePartModal() {
@@ -131,14 +161,42 @@ function EditBudgetSketchPage() {
     const reducedArray = [...laborOrBikePartBudgetSketchList];
     reducedArray.splice(index, 1);
     setLaborOrBikePartBudgetSketchList(reducedArray);
+    getNewTotalValues(reducedArray);
   }
 
-  function getTotalValue() {
+  function getNewTotalValues(laborOrBikePartBudgetList) {
     let totalValue = 0;
-    laborOrBikePartBudgetSketchList.forEach((element) => {
+    let totalValueBikePart = 0;
+    let totalValueBikeService = 0;
+    laborOrBikePartBudgetList.forEach((element) => {
+      let match = false;
+      bikeServiceList.forEach((bikeService) => {
+        if (element.name === bikeService.name) {
+          totalValueBikeService =
+            totalValueBikeService + element.quantity * element.value;
+          match = true;
+        }
+      });
+      if (!match) {
+        totalValueBikePart =
+          totalValueBikePart + element.quantity * element.value;
+      }
       totalValue = totalValue + element.quantity * element.value;
     });
-    return totalValue;
+    setTotalValueBikePart(totalValueBikePart);
+    setTotalValueBikeService(totalValueBikeService);
+    setTotalValue(totalValue);
+  }
+
+  function showCostValue(laborOrBikePartName) {
+    getLaborOrBikePartByName(laborOrBikePartName).then((response) => {
+      setCost(response.data);
+      setCostModal(true);
+    });
+  }
+
+  function closeCostModal() {
+    setCostModal(false);
   }
 
   return (
@@ -155,7 +213,27 @@ function EditBudgetSketchPage() {
       ) : (
         <div>
           <div className="data">
-            Data: {new Date(createdDate).toLocaleDateString()}
+            <div className="me-3">
+              Data: {new Date(createdDate).toLocaleDateString()}
+            </div>
+            <PDFDownloadLink
+              document={
+                <BudgetPdf
+                  client={pdfClientData}
+                  bike={pdfBikeData}
+                  address={""}
+                  laborOrBikePartBudgetList={laborOrBikePartBudgetSketchList}
+                  discountPercentage={""}
+                  totalValueBikePart={totalValueBikePart}
+                  totalValueBikeService={totalValueBikeService}
+                  totalValue={totalValue}
+                  createdDate={createdDate}
+                />
+              }
+              fileName={client + "-orcamento.pdf"}
+            >
+              <PrintIcon />
+            </PDFDownloadLink>
           </div>
           <p className="mb-0 mt-3 font-size-20">Cliente:</p>
           <input type="text" defaultValue={client} disabled />
@@ -219,7 +297,7 @@ function EditBudgetSketchPage() {
                     <tr key={index}>
                       <td>{name}</td>
                       <td>{quantity}</td>
-                      <td>R$ {value}</td>
+                      <td onClick={() => showCostValue(name)}>R$ {value}</td>
                       <td>R$ {quantity * value}</td>
                       <td>
                         <DeleteIcon
@@ -234,7 +312,7 @@ function EditBudgetSketchPage() {
             </Table>
           </div>
           <p className="mb-0 mt-5 font-size-20 fw-bold">
-            Valor Total: {getTotalValue()} Reais
+            Valor Total: {totalValue} Reais
           </p>
           <p className="mb-0 mt-3 font-size-20">Observações:</p>
           <textarea
@@ -267,6 +345,7 @@ function EditBudgetSketchPage() {
         close={closeBikeServiceModal}
         addBikeServiceToBudget={addBikeServiceToBudget}
       />
+      <CostModal show={costModal} close={closeCostModal} cost={cost} />
     </div>
   );
 }

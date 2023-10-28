@@ -8,6 +8,8 @@ import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { addBudgetSketchRequest } from "../../../services/budgetSketchService";
 import InputMask from "react-input-mask";
+import CostModal from "../../../components/budgetModal/CostModal";
+import { getLaborOrBikePartByName } from "../../../services/budgetService";
 
 function CreateBudgetSketchPage() {
   const navigate = useNavigate();
@@ -23,6 +25,8 @@ function CreateBudgetSketchPage() {
   const [bikeServiceModal, setBikeServiceModal] = useState(false);
   const [notes, setNotes] = useState("");
   const [bikePartList, setBikePartList] = useState([]);
+  const [cost, setCost] = useState("");
+  const [costModal, setCostModal] = useState(false);
 
   useEffect(() => {
     getBikePartList();
@@ -128,6 +132,17 @@ function CreateBudgetSketchPage() {
     return totalValue;
   }
 
+  function showCostValue(laborOrBikePartName) {
+    getLaborOrBikePartByName(laborOrBikePartName).then((response) => {
+      setCost(response.data);
+      setCostModal(true);
+    });
+  }
+
+  function closeCostModal() {
+    setCostModal(false);
+  }
+
   return (
     <div className="text-center mt-5">
       {successMessage !== "" ? (
@@ -210,7 +225,7 @@ function CreateBudgetSketchPage() {
                     <tr key={index}>
                       <td>{name}</td>
                       <td>{quantity}</td>
-                      <td>R$ {value}</td>
+                      <td onClick={() => showCostValue(name)}>R$ {value}</td>
                       <td>R$ {quantity * value}</td>
                       <td>
                         <DeleteIcon
@@ -258,6 +273,7 @@ function CreateBudgetSketchPage() {
         close={closeBikeServiceModal}
         addBikeServiceToBudget={addBikeServiceToBudget}
       />
+      <CostModal show={costModal} close={closeCostModal} cost={cost} />
     </div>
   );
 }

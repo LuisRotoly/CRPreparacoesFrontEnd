@@ -86,6 +86,7 @@ function BudgetFullContent() {
               <th>Placa</th>
               <th>Moto</th>
               <th>Status</th>
+              <th>Valor Total</th>
               <th>Editar</th>
               <th>Visualizar</th>
               <th>Remover</th>
@@ -100,6 +101,7 @@ function BudgetFullContent() {
                 bikeBrand,
                 bikeName,
                 status,
+                totalValue,
                 createdAt,
               }) => (
                 <tr key={id}>
@@ -110,6 +112,7 @@ function BudgetFullContent() {
                     {bikeName} {bikeBrand}
                   </td>
                   <td>{status.description}</td>
+                  <td>R$ {totalValue}</td>
                   <td>
                     {status.description === "Cancelado" ||
                     status.description === "Finalizado" ? null : (
