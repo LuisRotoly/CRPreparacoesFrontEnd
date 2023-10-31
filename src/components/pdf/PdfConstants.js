@@ -7,7 +7,8 @@ export const styles = StyleSheet.create({
   },
   rowColored: {
     flexDirection: "row",
-    backgroundColor: "#4A86E8",
+    backgroundColor: "black",
+    color: "white",
     margin: 10,
     padding: 5,
   },
@@ -79,10 +80,6 @@ export const styles = StyleSheet.create({
   row50Centered: {
     width: "50%",
     textAlign: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: "Times-Bold",
   },
   titleData: {
     fontFamily: "Times-Bold",

@@ -13,6 +13,7 @@ function TopBar() {
         <TopBarItem url="/stock" title="Estoque" />
         <TopBarItem url="/services" title="Serviços" />
         <TopBarItem url="/supplier" title="Fornecedores" />
+        <TopBarItem url="/finance" title="Financeiro" />
       </div>
     </div>
   );

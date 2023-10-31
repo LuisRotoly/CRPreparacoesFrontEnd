@@ -14,7 +14,6 @@ function BudgetPdf(props) {
             <Image src={logo} style={styles.image} />
           </View>
           <View style={styles.row50Centered}>
-            <Text style={styles.title}>Ordem de Serviço</Text>
             <Text style={styles.titleData}>Chico Racing Oficina</Text>
             <Text style={styles.titleData}>
               Rua Francisca da Luz Quartim Barbosa, 50

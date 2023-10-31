@@ -11,6 +11,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteModal from "../../../components/modal/DeleteModal";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
 function BudgetFullContent() {
   const navigate = useNavigate();
@@ -89,6 +90,7 @@ function BudgetFullContent() {
               <th>Valor Total</th>
               <th>Editar</th>
               <th>Visualizar</th>
+              <th>Pagar</th>
               <th>Remover</th>
             </tr>
           </thead>
@@ -125,6 +127,13 @@ function BudgetFullContent() {
                     <Link to={`/budget/view/${id}`}>
                       <VisibilityIcon />
                     </Link>
+                  </td>
+                  <td>
+                    {status.description === "Finalizado" ? (
+                      <Link to={`/finance/pay/${id}`}>
+                        <AttachMoneyIcon className="money-icon" />
+                      </Link>
+                    ) : null}
                   </td>
                   <td>
                     <DeleteIcon

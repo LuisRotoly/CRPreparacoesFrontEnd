@@ -25,6 +25,8 @@ import StockPage from "./pages/stock/StockPage";
 import EditStockPage from "./pages/stock/EditStockPage";
 import CreateBudgetSketchPage from "./pages/budget/sketch/CreateBudgetSketchPage";
 import EditBudgetSketchPage from "./pages/budget/sketch/EditBudgetSketchPage";
+import FinancePage from "./pages/finance/FinancePage";
+import FinancePayPage from "./pages/finance/FinancePayPage";
 
 function App() {
   return (
@@ -62,6 +64,8 @@ function App() {
             path="/budget/sketch/edit/:id"
             element={<EditBudgetSketchPage />}
           />
+          <Route path="/finance" element={<FinancePage />} />
+          <Route path="/finance/pay/:id" element={<FinancePayPage />} />
         </Route>
       </Routes>
     </div>
