@@ -15,6 +15,7 @@ function EditBikePartPage() {
   const [finalValue, setFinalValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     getBikePartByIdRequest(pathname.id).then((response) => {
@@ -22,6 +23,7 @@ function EditBikePartPage() {
       setValue(response.data.value);
       setProfitPercentage(response.data.profitPercentage);
       setFinalValue(response.data.finalValue);
+      setNotes(response.data.notes);
     });
   }, [pathname.id]);
 
@@ -37,13 +39,17 @@ function EditBikePartPage() {
     setName(event.target.value);
   }
 
+  function handleNotesChange(event) {
+    setNotes(event.target.value);
+  }
+
   function isValidEntrances() {
     return !isEmpty(name) && !isEmpty(value) && !isEmpty(profitPercentage);
   }
 
   function editBikePart() {
     if (isValidEntrances()) {
-      editBikePartRequest(pathname.id, name, value, profitPercentage)
+      editBikePartRequest(pathname.id, name, value, profitPercentage, notes)
         .then((_) => setSuccessMessage("Peça editada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -105,6 +111,14 @@ function EditBikePartPage() {
           </button>
           <p className="mb-0 mt-3 font-size-20">Valor final:</p>
           <input type="number" disabled value={finalValue} />
+          <p className="mb-0 mt-3 font-size-20">Observações:</p>
+          <textarea
+            className="text-area-size"
+            type="text"
+            maxLength="255"
+            value={notes}
+            onChange={handleNotesChange}
+          />
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar

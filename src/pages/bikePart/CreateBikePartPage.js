@@ -12,6 +12,7 @@ function CreateBikePartPage() {
   const [stockQuantity, setStockQuantity] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [notes, setNotes] = useState("");
 
   function handleProfitPercentageChange(event) {
     setProfitPercentage(event.target.value);
@@ -29,6 +30,10 @@ function CreateBikePartPage() {
     setStockQuantity(event.target.value);
   }
 
+  function handleNotesChange(event) {
+    setNotes(event.target.value);
+  }
+
   function isValidEntrances() {
     return (
       !isEmpty(name) &&
@@ -40,7 +45,7 @@ function CreateBikePartPage() {
 
   function createBikePart() {
     if (isValidEntrances()) {
-      addBikePartRequest(name, value, profitPercentage, stockQuantity)
+      addBikePartRequest(name, value, profitPercentage, stockQuantity, notes)
         .then((_) => setSuccessMessage("Peça criada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -112,6 +117,14 @@ function CreateBikePartPage() {
             maxLength="10"
             value={stockQuantity}
             onChange={handleStockQuantityChange}
+          />
+          <p className="mb-0 mt-3 font-size-20">Observações:</p>
+          <textarea
+            className="text-area-size"
+            type="text"
+            maxLength="255"
+            value={notes}
+            onChange={handleNotesChange}
           />
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
