@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../stringHelper";
 import { addBudgetRequest } from "../../services/budgetService";
 import { getClientsListRequest } from "../../services/clientService";
 import { listClientBikeById } from "../../services/clientBikeService";
@@ -215,7 +215,7 @@ function CreateBudgetPage() {
         </div>
       ) : (
         <div>
-          <p className="data">Data: {new Date().toLocaleDateString()}</p>
+          <p className="data">Data: {getFormmatedDate(new Date())}</p>
           <p className="mb-0 mt-3 font-size-20">Cliente:*</p>
           <div className="d-flex justify-content-center">
             <Select

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { isEmpty } from "../../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../../stringHelper";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   getBudgetListRequest,
@@ -107,7 +107,7 @@ function BudgetFullContent() {
                 createdAt,
               }) => (
                 <tr key={id}>
-                  <td>{new Date(createdAt).toLocaleDateString()}</td>
+                  <td>{getFormmatedDate(createdAt)}</td>
                   <td>{client.name}</td>
                   <td>{plate}</td>
                   <td>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Page, Text, View, Document, Image } from "@react-pdf/renderer";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../stringHelper";
 import logo from "../../images/ChicoRacingLogo.png";
 import { styles } from "./PdfConstants";
 
@@ -106,7 +106,7 @@ function BudgetPdf(props) {
         )}
         <View style={styles.spaceTop}>
           <Text style={styles.data}>
-            Data: {new Date(props.createdDate).toLocaleDateString()}
+            Data: {getFormmatedDate(props.createdDate)}
           </Text>
         </View>
       </Page>

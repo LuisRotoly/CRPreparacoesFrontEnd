@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../stringHelper";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import {
   filterFinanceBudgetListRequest,
@@ -72,7 +72,7 @@ function FinancePage() {
                 totalValue,
               }) => (
                 <tr key={budgetId}>
-                  <td>{new Date(finalizedAt).toLocaleDateString()}</td>
+                  <td>{getFormmatedDate(finalizedAt)}</td>
                   <td>{clientName}</td>
                   <td>{plate}</td>
                   <td>{bikeNameAndBrand}</td>

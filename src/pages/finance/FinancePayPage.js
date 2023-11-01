@@ -11,7 +11,7 @@ import {
 import DeleteModal from "../../components/modal/DeleteModal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../stringHelper";
 
 function FinancePayPage() {
   const pathname = useParams();
@@ -174,7 +174,7 @@ function FinancePayPage() {
           <tbody>
             {financeBudgetList.map(({ id, value, paymentFormat, paidAt }) => (
               <tr key={id}>
-                <td>{new Date(paidAt).toLocaleDateString()}</td>
+                <td>{getFormmatedDate(paidAt)}</td>
                 <td>{paymentFormat.type}</td>
                 <td>R$ {value}</td>
                 <td>

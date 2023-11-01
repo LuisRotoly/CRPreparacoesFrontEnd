@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { isEmpty } from "../../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../../stringHelper";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   getBudgetSketchListRequest,
@@ -94,7 +94,7 @@ function BudgetSketch() {
           <tbody>
             {data.map(({ id, client, plate, bike, totalValue, createdAt }) => (
               <tr key={id}>
-                <td>{new Date(createdAt).toLocaleDateString()}</td>
+                <td>{getFormmatedDate(createdAt)}</td>
                 <td>{client}</td>
                 <td>{plate}</td>
                 <td>{bike}</td>
