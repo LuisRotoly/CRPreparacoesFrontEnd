@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { isEmpty } from "../../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../../stringHelper";
 import { getBikePartListRequest } from "../../../services/bikePartService";
 import AddBikePartModal from "../../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../../components/budgetModal/AddBikeServiceModal";
@@ -156,7 +156,7 @@ function CreateBudgetSketchPage() {
         </div>
       ) : (
         <div>
-          <p className="data">Data: {new Date().toLocaleDateString()}</p>
+          <p className="data">Data: {getFormmatedDate(new Date())}</p>
           <p className="mb-0 mt-3 font-size-20">Cliente:*</p>
           <input
             maxLength="100"

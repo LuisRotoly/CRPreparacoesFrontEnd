@@ -90,3 +90,16 @@ code {
   background-size: 100%;
   background-repeat: no-repeat;
 }
+
+.money-icon {
+  color: rgb(224, 204, 0);
+}
+
+.red-color-toBePaid {
+  color: red;
+  font-weight: bold;
+}
+
+.magin-left-30 {
+  margin-left: 30px;
+}

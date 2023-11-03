@@ -8,4 +8,8 @@ function isEmpty(string) {
   return string === null || string.length === 0;
 }
 
-export { getLastSegment, isEmpty };
+function getFormmatedDate(date) {
+  return new Date(date).toLocaleDateString();
+}
+
+export { getLastSegment, isEmpty, getFormmatedDate };

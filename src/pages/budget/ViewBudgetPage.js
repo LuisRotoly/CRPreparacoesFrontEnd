@@ -7,7 +7,7 @@ import {
 import Table from "react-bootstrap/Table";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClientDataModal from "../../components/budgetModal/ClientDataModal";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../stringHelper";
 import PrintIcon from "@mui/icons-material/Print";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import BudgetPdf from "../../components/pdf/BudgetPdf";
@@ -126,9 +126,7 @@ function ViewBudgetPage() {
     <div className="text-center mt-5">
       <div>
         <div className="data">
-          <div className="me-3">
-            Data: {new Date(createdDate).toLocaleDateString()}
-          </div>
+          <div className="me-3">Data: {getFormmatedDate(createdDate)}</div>
           <PDFDownloadLink
             document={
               <BudgetPdf

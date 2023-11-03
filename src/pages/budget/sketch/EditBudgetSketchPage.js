@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { isEmpty } from "../../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../../stringHelper";
 import AddBikePartModal from "../../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../../components/budgetModal/AddBikeServiceModal";
 import Table from "react-bootstrap/Table";
@@ -213,9 +213,7 @@ function EditBudgetSketchPage() {
       ) : (
         <div>
           <div className="data">
-            <div className="me-3">
-              Data: {new Date(createdDate).toLocaleDateString()}
-            </div>
+            <div className="me-3">Data: {getFormmatedDate(createdDate)}</div>
             <PDFDownloadLink
               document={
                 <BudgetPdf
