@@ -16,22 +16,31 @@ export async function addBikePartRequest(
   name,
   value,
   profitPercentage,
-  stockQuantity
+  stockQuantity,
+  notes
 ) {
   return await api.post("addBikePart", {
     name: name,
     value: value,
     profitPercentage: profitPercentage,
     stockQuantity: stockQuantity,
+    notes: notes,
   });
 }
 
-export async function editBikePartRequest(id, name, value, profitPercentage) {
+export async function editBikePartRequest(
+  id,
+  name,
+  value,
+  profitPercentage,
+  notes
+) {
   return await api.post("editBikePart", {
     id: id,
     name: name,
     value: value,
     profitPercentage: profitPercentage,
+    notes: notes,
   });
 }
 
