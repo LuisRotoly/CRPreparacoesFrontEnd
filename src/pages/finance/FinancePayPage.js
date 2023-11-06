@@ -81,7 +81,6 @@ function FinancePayPage() {
 
   function resetFields() {
     setErrorMessage("");
-    setPaymentFormat("");
     setPaymentValue("");
   }
 
@@ -136,7 +135,7 @@ function FinancePayPage() {
         />
         <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
         <select
-          value={paymentFormat}
+          value={paymentFormat.type}
           className="select-width mb-3"
           onChange={handlePaymentFormatChange}
         >

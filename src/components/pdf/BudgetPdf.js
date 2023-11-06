@@ -49,6 +49,17 @@ function BudgetPdf(props) {
           <Text style={styles.row60}>Data Nasc: {props.client[4]}</Text>
           <Text style={styles.row40}>Marca: {props.bike[4]}</Text>
         </View>
+
+        <View style={styles.spaceTop}></View>
+        <View style={styles.rowColored}>
+          <Text style={styles.boldAndFontSize16}>
+            Problemas Relatados Pelo Cliente
+          </Text>
+        </View>
+        <View style={styles.row}>
+          <Text>{props.problems}</Text>
+        </View>
+
         <View style={styles.spaceTop}></View>
         <View style={styles.rowColored}>
           <Text style={styles.boldAndFontSize16}>Peças/Serviços</Text>

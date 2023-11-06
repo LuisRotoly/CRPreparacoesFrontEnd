@@ -33,6 +33,8 @@ function EditClientPage() {
   const [removeClientBike, setRemoveClientBike] = useState("");
   const [addressList, setAddressList] = useState("");
   const [cepError, setCepError] = useState("");
+  const [street, setStreet] = useState("");
+  const [district, setDistrict] = useState("");
 
   useEffect(() => {
     getClientByIdRequest(pathname.id).then((response) => {
@@ -45,7 +47,7 @@ function EditClientPage() {
       setOptionalPhone(response.data.optionalPhone);
       setNotes(response.data.notes);
       setNickname(response.data.nickname);
-      getCep(response.data.cep);
+      getCep(response.data.cep, response.data.street, response.data.district);
     });
     listClientBikeById(pathname.id).then((response) =>
       setClientBikeList(response.data)
@@ -62,6 +64,14 @@ function EditClientPage() {
 
   function handleAddressNumberChange(event) {
     setAddressNumber(event.target.value);
+  }
+
+  function handleStreetChange(event) {
+    setStreet(event.target.value);
+  }
+
+  function handleDistrictChange(event) {
+    setDistrict(event.target.value);
   }
 
   function handleNotesChange(event) {
@@ -103,7 +113,9 @@ function EditClientPage() {
         name,
         cpfcnpj,
         cep,
+        street,
         addressNumber,
+        district,
         birthDate,
         phone,
         optionalPhone,
@@ -152,7 +164,7 @@ function EditClientPage() {
     closeDeleteModal();
   }
 
-  function getCep(cep) {
+  function getCep(cep, streetDB, districtDB) {
     if (!isEmpty(cep) && cep.length === 9) {
       getCepRequest(cep).then((response) => {
         if (response.data.erro) {
@@ -161,6 +173,16 @@ function EditClientPage() {
           setAddressNumber("");
         } else {
           setAddressList(response.data);
+          if (streetDB !== "") {
+            setStreet(streetDB);
+          } else {
+            setStreet(response.data.logradouro);
+          }
+          if (districtDB !== "") {
+            setDistrict(districtDB);
+          } else {
+            setDistrict(response.data.bairro);
+          }
           setCepError("");
         }
       });
@@ -208,14 +230,22 @@ function EditClientPage() {
             onChange={handleCepChange}
           />
           <br />
-          <button className="btn btn-primary mt-2" onClick={() => getCep(cep)}>
+          <button
+            className="btn btn-primary mt-2"
+            onClick={() => getCep(cep, "", "")}
+          >
             Pesquisar CEP
           </button>
           <p className="text-danger font-size-18">{cepError}</p>
           {!isEmpty(addressList) ? (
             <div>
               <p className="mb-0 mt-3 font-size-20">Rua:</p>
-              <input type="text" value={addressList.logradouro} disabled />
+              <input
+                type="text"
+                maxLength="100"
+                value={street}
+                onChange={handleStreetChange}
+              />
               <p className="mb-0 mt-3 font-size-20">Número:</p>
               <input
                 type="text"
@@ -224,7 +254,12 @@ function EditClientPage() {
                 onChange={handleAddressNumberChange}
               />
               <p className="mb-0 mt-3 font-size-20">Bairro:</p>
-              <input type="text" value={addressList.bairro} disabled />
+              <input
+                type="text"
+                maxLength="70"
+                value={district}
+                onChange={handleDistrictChange}
+              />
               <p className="mb-0 mt-3 font-size-20">Cidade:</p>
               <input type="text" value={addressList.localidade} disabled />
               <p className="mb-0 mt-3 font-size-20">Estado:</p>

@@ -23,7 +23,8 @@ export async function addBudgetRequest(
   laborOrBikePartBudgetList,
   discountPercentage,
   status,
-  notes
+  notes,
+  problems
 ) {
   return await api.post("addBudget", {
     clientId: clientId,
@@ -37,6 +38,7 @@ export async function addBudgetRequest(
     discountPercentage: discountPercentage,
     status: status,
     notes: notes,
+    problems: problems,
   });
 }
 
@@ -46,7 +48,8 @@ export async function editBudgetRequest(
   laborOrBikePartBudgetList,
   discountPercentage,
   status,
-  notes
+  notes,
+  problems
 ) {
   return await api.post("editBudget", {
     id: id,
@@ -55,6 +58,7 @@ export async function editBudgetRequest(
     discountPercentage,
     status: status,
     notes: notes,
+    problems: problems,
   });
 }
 

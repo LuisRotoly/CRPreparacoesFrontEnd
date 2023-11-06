@@ -54,6 +54,7 @@ function EditBudgetPage() {
   const [bikeServiceList, setBikeServiceList] = useState([]);
   const [cost, setCost] = useState("");
   const [costModal, setCostModal] = useState(false);
+  const [problems, setProblems] = useState("");
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -72,6 +73,7 @@ function EditBudgetPage() {
       setPaymentFormat(response.data.paymentFormat);
       setKilometersDriven(response.data.kilometersDriven);
       setNotes(response.data.notes);
+      setProblems(response.data.problems);
       setCreatedDate(response.data.createdAt);
       getAddress(response.data.client.cep);
       setPdfClientData([
@@ -108,6 +110,10 @@ function EditBudgetPage() {
 
   function handleNotesChange(event) {
     setNotes(event.target.value);
+  }
+
+  function handleProblemsChange(event) {
+    setProblems(event.target.value);
   }
 
   function handlePaymentFormatChange(event) {
@@ -147,7 +153,8 @@ function EditBudgetPage() {
         laborOrBikePartBudgetList,
         discountPercentage,
         status,
-        notes
+        notes,
+        problems
       )
         .then((_) => setSuccessMessage("Orçamento editado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
@@ -297,6 +304,7 @@ function EditBudgetPage() {
                   totalValueBikeService={totalValueBikeService}
                   totalValue={totalValue}
                   createdDate={createdDate}
+                  problems={problems}
                 />
               }
               fileName={client + "-orcamento.pdf"}
@@ -318,6 +326,14 @@ function EditBudgetPage() {
           <input type="text" defaultValue={bike} disabled />
           <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
           <input type="number" defaultValue={kilometersDriven} disabled />
+          <p className="mb-0 mt-3 font-size-20">Problemas Relatados:</p>
+          <textarea
+            className="text-area-size"
+            type="text"
+            maxLength="255"
+            value={problems}
+            onChange={handleProblemsChange}
+          />
           <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
           <select
             value={paymentFormat.type}

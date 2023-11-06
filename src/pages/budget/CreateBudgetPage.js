@@ -40,6 +40,7 @@ function CreateBudgetPage() {
   const [notes, setNotes] = useState("");
   const [cost, setCost] = useState("");
   const [costModal, setCostModal] = useState(false);
+  const [problems, setProblems] = useState("");
 
   useEffect(() => {
     getClientsListRequest().then((response) => setClientList(response.data));
@@ -88,6 +89,10 @@ function CreateBudgetPage() {
     setNotes(event.target.value);
   }
 
+  function handleProblemsChange(event) {
+    setProblems(event.target.value);
+  }
+
   function handleKilometersDrivenChange(event) {
     setKilometersDriven(event.target.value);
   }
@@ -124,7 +129,8 @@ function CreateBudgetPage() {
         laborOrBikePartBudgetList,
         discountPercentage,
         status,
-        notes
+        notes,
+        problems
       )
         .then((_) => setSuccessMessage("Orçamento criado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
@@ -259,6 +265,14 @@ function CreateBudgetPage() {
                 required
                 value={kilometersDriven}
                 onChange={handleKilometersDrivenChange}
+              />
+              <p className="mb-0 mt-3 font-size-20">Problemas Relatados:</p>
+              <textarea
+                className="text-area-size"
+                type="text"
+                maxLength="255"
+                value={problems}
+                onChange={handleProblemsChange}
               />
               <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
               <select

@@ -39,6 +39,7 @@ function ViewBudgetPage() {
   const [totalValue, setTotalValue] = useState(0);
   const [cost, setCost] = useState("");
   const [costModal, setCostModal] = useState(false);
+  const [problems, setProblems] = useState("");
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -57,6 +58,7 @@ function ViewBudgetPage() {
       setPaymentFormat(response.data.paymentFormat);
       setKilometersDriven(response.data.kilometersDriven);
       setNotes(response.data.notes);
+      setProblems(response.data.problems);
       setCreatedDate(response.data.createdAt);
       getAddress(response.data.client.cep);
       setPdfClientData([
@@ -139,6 +141,7 @@ function ViewBudgetPage() {
                 totalValueBikeService={totalValueBikeService}
                 totalValue={totalValue}
                 createdDate={createdDate}
+                problems={problems}
               />
             }
             fileName={client + "-orcamento.pdf"}
@@ -160,6 +163,13 @@ function ViewBudgetPage() {
         <input type="text" defaultValue={bike} disabled />
         <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
         <input type="number" defaultValue={kilometersDriven} disabled />
+        <p className="mb-0 mt-3 font-size-20">Problemas Relatados:</p>
+        <textarea
+          type="text"
+          className="text-area-size"
+          defaultValue={problems}
+          disabled
+        />
         <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:</p>
         <input
           type="text"

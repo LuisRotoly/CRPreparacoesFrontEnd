@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import { useEffect, useState } from "react";
 import { getClientByBudgetIdRequest } from "../../services/budgetService";
 import { getCepRequest } from "../../services/cepService";
+import { isEmpty } from "../../stringHelper";
 
 function ClientDataModal(props) {
   const [client, setClient] = useState("");
@@ -11,9 +12,11 @@ function ClientDataModal(props) {
   useEffect(() => {
     getClientByBudgetIdRequest(props.budgetId).then((response) => {
       setClient(response.data);
-      getCepRequest(response.data.cep).then((cepResponse) =>
-        setCep(cepResponse.data)
-      );
+      if (!isEmpty(response.data.cep) && response.data.cep.length === 9) {
+        getCepRequest(response.data.cep).then((cepResponse) =>
+          setCep(cepResponse.data)
+        );
+      }
     });
   }, [props.budgetId]);
 

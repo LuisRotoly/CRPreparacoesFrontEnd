@@ -28,6 +28,8 @@ function CreateClientPage() {
   const [removeClientBike, setRemoveClientBike] = useState("");
   const [addressList, setAddressList] = useState("");
   const [cepError, setCepError] = useState("");
+  const [street, setStreet] = useState("");
+  const [district, setDistrict] = useState("");
 
   function handleOptionalPhoneChange(event) {
     setOptionalPhone(event.target.value);
@@ -35,6 +37,14 @@ function CreateClientPage() {
 
   function handleAddressNumberChange(event) {
     setAddressNumber(event.target.value);
+  }
+
+  function handleStreetChange(event) {
+    setStreet(event.target.value);
+  }
+
+  function handleDistrictChange(event) {
+    setDistrict(event.target.value);
   }
 
   function handleNotesChange(event) {
@@ -79,7 +89,9 @@ function CreateClientPage() {
         name,
         cpfcnpj,
         cep,
+        street,
         addressNumber,
+        district,
         birthDate,
         phone,
         optionalPhone,
@@ -137,6 +149,8 @@ function CreateClientPage() {
           setAddressNumber("");
         } else {
           setAddressList(response.data);
+          setStreet(response.data.logradouro);
+          setDistrict(response.data.bairro);
           setCepError("");
         }
       });
@@ -192,7 +206,12 @@ function CreateClientPage() {
           {!isEmpty(addressList) ? (
             <div>
               <p className="mb-0 mt-3 font-size-20">Rua:</p>
-              <input type="text" value={addressList.logradouro} disabled />
+              <input
+                type="text"
+                maxLength="100"
+                value={street}
+                onChange={handleStreetChange}
+              />
               <p className="mb-0 mt-3 font-size-20">Número:</p>
               <input
                 type="text"
@@ -201,7 +220,12 @@ function CreateClientPage() {
                 onChange={handleAddressNumberChange}
               />
               <p className="mb-0 mt-3 font-size-20">Bairro:</p>
-              <input type="text" value={addressList.bairro} disabled />
+              <input
+                type="text"
+                maxLength="70"
+                value={district}
+                onChange={handleDistrictChange}
+              />
               <p className="mb-0 mt-3 font-size-20">Cidade:</p>
               <input type="text" value={addressList.localidade} disabled />
               <p className="mb-0 mt-3 font-size-20">Estado:</p>
