@@ -75,8 +75,12 @@ function BudgetPdf(props) {
             <View style={styles.row} key={index}>
               <Text style={styles.row60}>{name}</Text>
               <Text style={styles.row10Centered}>{quantity}</Text>
-              <Text style={styles.row15Centered}>R$ {value}</Text>
-              <Text style={styles.row15Centered}>R$ {quantity * value}</Text>
+              <Text style={styles.row15Centered}>
+                R$ {parseFloat(value).toFixed(2)}
+              </Text>
+              <Text style={styles.row15Centered}>
+                R$ {parseFloat(quantity * value).toFixed(2)}
+              </Text>
             </View>
           )
         )}
@@ -90,20 +94,26 @@ function BudgetPdf(props) {
           <Text style={styles.description}></Text>
           <Text style={styles.quantity}></Text>
           <Text style={styles.parts}>Total Serviços</Text>
-          <Text style={styles.parts}>R$ {props.totalValueBikeService}</Text>
+          <Text style={styles.parts}>
+            R$ {parseFloat(props.totalValueBikeService).toFixed(2)}
+          </Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.description}></Text>
           <Text style={styles.quantity}></Text>
           <Text style={styles.parts}>Total Peças</Text>
-          <Text style={styles.parts}>R$ {props.totalValueBikePart}</Text>
+          <Text style={styles.parts}>
+            R$ {parseFloat(props.totalValueBikePart).toFixed(2)}
+          </Text>
         </View>
         {isEmpty(props.discountPercentage) ? (
           <View style={styles.row}>
             <Text style={styles.description}></Text>
             <Text style={styles.quantity}></Text>
             <Text style={styles.value}>Total Geral</Text>
-            <Text style={styles.total}>R$ {props.totalValue}</Text>
+            <Text style={styles.total}>
+              R$ {parseFloat(props.totalValue).toFixed(2)}
+            </Text>
           </View>
         ) : (
           <View style={styles.row}>
@@ -112,9 +122,16 @@ function BudgetPdf(props) {
             </Text>
             <Text style={styles.quantity}></Text>
             <Text style={styles.value}>Total Geral</Text>
-            <Text style={styles.total}>R$ {props.totalValue}</Text>
+            <Text style={styles.total}>
+              R$ {parseFloat(props.totalValue).toFixed(2)}
+            </Text>
           </View>
         )}
+        <View style={styles.space60Top}>
+          <Text style={styles.data}>
+            ______________________________________________
+          </Text>
+        </View>
         <View style={styles.spaceTop}>
           <Text style={styles.data}>
             Data: {getFormmatedDate(props.createdDate)}

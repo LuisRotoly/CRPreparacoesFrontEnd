@@ -87,12 +87,7 @@ function EditBudgetSketchPage() {
   }
 
   function isValidEntrances() {
-    return (
-      !isEmpty(bike) &&
-      !isEmpty(client) &&
-      !isEmpty(plate) &&
-      !isEmpty(laborOrBikePartBudgetSketchList)
-    );
+    return !isEmpty(bike) && !isEmpty(client) && !isEmpty(plate);
   }
 
   function editBudgetSketch() {
@@ -295,8 +290,10 @@ function EditBudgetSketchPage() {
                     <tr key={index}>
                       <td>{name}</td>
                       <td>{quantity}</td>
-                      <td onClick={() => showCostValue(name)}>R$ {value}</td>
-                      <td>R$ {quantity * value}</td>
+                      <td onClick={() => showCostValue(name)}>
+                        R$ {value.toFixed(2)}
+                      </td>
+                      <td>R$ {(quantity * value).toFixed(2)}</td>
                       <td>
                         <DeleteIcon
                           className="default-remove-icon"

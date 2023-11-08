@@ -98,7 +98,7 @@ function BudgetSketch() {
                 <td>{client}</td>
                 <td>{plate}</td>
                 <td>{bike}</td>
-                <td>R$ {totalValue}</td>
+                <td>R$ {totalValue.toFixed(2)}</td>
                 <td>
                   <Link to={`/budget/sketch/edit/${id}`}>
                     <EditIcon className="edit-icon" />

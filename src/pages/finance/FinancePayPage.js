@@ -118,10 +118,12 @@ function FinancePayPage() {
           Moto {bikeNameAndBrand}, Placa {plate}
         </p>
         <p className="font-size-20">
-          <span>Valor Total R$ {totalValue}</span>
+          <span>Valor Total R$ {parseFloat(totalValue).toFixed(2)}</span>
           <span className="magin-left-30">
             Resta à Pagar R${" "}
-            <span className="red-color-toBePaid">{toBePaid}</span>
+            <span className="red-color-toBePaid">
+              {parseFloat(toBePaid).toFixed(2)}
+            </span>
           </span>
         </p>
       </div>
@@ -175,7 +177,7 @@ function FinancePayPage() {
               <tr key={id}>
                 <td>{getFormmatedDate(paidAt)}</td>
                 <td>{paymentFormat.type}</td>
-                <td>R$ {value}</td>
+                <td>R$ {value.toFixed(2)}</td>
                 <td>
                   <DeleteIcon
                     className="default-remove-icon"

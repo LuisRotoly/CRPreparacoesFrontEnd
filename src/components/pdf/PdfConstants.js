@@ -49,6 +49,9 @@ export const styles = StyleSheet.create({
   spaceTop: {
     marginTop: 20,
   },
+  space60Top: {
+    marginTop: 60,
+  },
   description: {
     width: "60%",
     fontSize: 16,

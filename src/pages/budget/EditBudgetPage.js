@@ -138,11 +138,7 @@ function EditBudgetPage() {
   }
 
   function isValidEntrances() {
-    return (
-      !isEmpty(status) &&
-      !isEmpty(paymentFormat) &&
-      !isEmpty(laborOrBikePartBudgetList)
-    );
+    return !isEmpty(status) && !isEmpty(paymentFormat);
   }
 
   function editBudget() {
@@ -378,8 +374,10 @@ function EditBudgetPage() {
                     <tr key={index}>
                       <td>{name}</td>
                       <td>{quantity}</td>
-                      <td onClick={() => showCostValue(name)}>R$ {value}</td>
-                      <td>R$ {quantity * value}</td>
+                      <td onClick={() => showCostValue(name)}>
+                        R$ {value.toFixed(2)}
+                      </td>
+                      <td>R$ {(quantity * value).toFixed(2)}</td>
                       <td>
                         <DeleteIcon
                           className="default-remove-icon"

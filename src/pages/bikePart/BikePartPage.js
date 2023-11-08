@@ -69,7 +69,7 @@ function BikePartPage() {
               return (
                 <tr key={id}>
                   <td>{name}</td>
-                  <td>R$ {finalValue}</td>
+                  <td>R$ {finalValue.toFixed(2)}</td>
                   <td>
                     <Link to={`/part/edit/${id}`}>
                       <EditIcon className="edit-icon" />

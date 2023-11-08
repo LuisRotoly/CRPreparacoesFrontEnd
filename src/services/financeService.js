@@ -31,3 +31,7 @@ export async function addPaymentRequest(budgetId, paymentValue, paymentFormat) {
 export async function getToBePaidRequest(budgetId) {
   return await api.get("getToBePaidById?id=" + budgetId);
 }
+
+export async function getTotalToReceiveRequest() {
+  return await api.get("getTotalToReceive");
+}

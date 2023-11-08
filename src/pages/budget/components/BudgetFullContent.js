@@ -114,7 +114,7 @@ function BudgetFullContent() {
                     {bikeName} {bikeBrand}
                   </td>
                   <td>{status.description}</td>
-                  <td>R$ {totalValue}</td>
+                  <td>R$ {totalValue.toFixed(2)}</td>
                   <td>
                     {status.description === "Cancelado" ||
                     status.description === "Finalizado" ? null : (

@@ -111,8 +111,7 @@ function CreateBudgetPage() {
       !isEmpty(client) &&
       !isEmpty(status) &&
       !isEmpty(kilometersDriven) &&
-      !isEmpty(paymentFormat) &&
-      !isEmpty(laborOrBikePartBudgetList)
+      !isEmpty(paymentFormat)
     );
   }
 
@@ -322,9 +321,9 @@ function CreateBudgetPage() {
                           <td>{name}</td>
                           <td>{quantity}</td>
                           <td onClick={() => showCostValue(name)}>
-                            R$ {value}
+                            R$ {value.toFixed(2)}
                           </td>
-                          <td>R$ {quantity * value}</td>
+                          <td>R$ {(quantity * value).toFixed(2)}</td>
                           <td>
                             <DeleteIcon
                               className="default-remove-icon"
