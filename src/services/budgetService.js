@@ -8,8 +8,10 @@ export async function getBudgetByIdRequest(bikeId) {
   return await api.get("listBudgetById?id=" + bikeId);
 }
 
-export async function filterBudgetListRequest(word) {
-  return await api.get("filterListBudgets?word=" + word);
+export async function filterBudgetListRequest(word, statusId) {
+  return await api.get(
+    "filterListBudgets?word=" + word + "&statusId=" + statusId
+  );
 }
 
 export async function addBudgetRequest(

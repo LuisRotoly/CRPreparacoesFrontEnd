@@ -1,0 +1,26 @@
+.scroll-tbody {
+  display: block;
+  height: 500px;
+  overflow: auto;
+  width: 100%;
+}
+
+.scroll-trow {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.scroll-thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.status {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+  margin: auto;
+}

@@ -10,6 +10,7 @@ import {
 } from "../../../services/budgetSketchService";
 import DeleteModal from "../../../components/modal/DeleteModal";
 import DeleteIcon from "@mui/icons-material/Delete";
+import "./budget.css";
 
 function BudgetSketch() {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ function BudgetSketch() {
       </div>
       <div className="align-center">
         <Table className="table-preferences">
-          <thead>
+          <thead className="scroll-thead">
             <tr>
               <th>Data</th>
               <th>Cliente</th>
@@ -91,9 +92,9 @@ function BudgetSketch() {
               <th>Remover</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="scroll-tbody">
             {data.map(({ id, client, plate, bike, totalValue, createdAt }) => (
-              <tr key={id}>
+              <tr key={id} className="scroll-trow">
                 <td>{getFormmatedDate(createdAt)}</td>
                 <td>{client}</td>
                 <td>{plate}</td>

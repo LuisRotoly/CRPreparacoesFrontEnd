@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { getFormmatedDate, isEmpty } from "../../../stringHelper";
+import { getFormmatedDate } from "../../../stringHelper";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   getBudgetListRequest,
@@ -12,35 +12,39 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteModal from "../../../components/modal/DeleteModal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import "./budget.css";
+import { getStatusListRequest } from "../../../services/statusService";
 
 function BudgetFullContent() {
   const navigate = useNavigate();
-  const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [deleteModal, setDeleteModal] = useState(false);
   const [removeBudget, setRemoveBudget] = useState("");
+  const [statusId, setStatusId] = useState(-1);
+  const [statusList, setStatusList] = useState([]);
+  const [isChecked, setIsChecked] = useState(
+    Array(statusList.length).fill(false)
+  );
 
   useEffect(() => {
     getBudgetList();
+    getStatusListRequest().then((response) => {
+      setStatusList(response.data);
+    });
   }, []);
 
   function getBudgetList() {
     getBudgetListRequest().then((response) => {
       setData(response.data);
-      setOriginalData(response.data);
     });
   }
 
   function handleSearchChange(event) {
     setSearch(event.target.value);
-    if (!isEmpty(event.target.value)) {
-      filterBudgetListRequest(event.target.value).then((response) => {
-        setData(response.data);
-      });
-    } else {
-      setData(originalData);
-    }
+    filterBudgetListRequest(event.target.value, statusId).then((response) => {
+      setData(response.data);
+    });
   }
 
   function gotoCreatePage() {
@@ -62,6 +66,24 @@ function BudgetFullContent() {
     closeDeleteModal();
   }
 
+  function handleIsCheckedChange(index, id) {
+    if (isChecked[index] === true) {
+      setIsChecked(Array(statusList.length).fill(false));
+      setStatusId(-1);
+      filterBudgetListRequest(search, -1).then((response) => {
+        setData(response.data);
+      });
+    } else {
+      let newList = [Array(statusList.length).fill(false)];
+      newList[index] = true;
+      setIsChecked(newList);
+      setStatusId(id);
+      filterBudgetListRequest(search, id).then((response) => {
+        setData(response.data);
+      });
+    }
+  }
+
   return (
     <div>
       <div className="text-center div-title">
@@ -78,9 +100,22 @@ function BudgetFullContent() {
           Criar Novo Orçamento
         </button>
       </div>
+      <div className="status mb-3">
+        {statusList.map(({ id, description }, index) => (
+          <div key={id}>
+            <input
+              className="me-1"
+              type="checkbox"
+              defaultChecked={isChecked[index]}
+              onChange={() => handleIsCheckedChange(index, id)}
+            />{" "}
+            <span>{description}</span>
+          </div>
+        ))}
+      </div>
       <div className="align-center">
         <Table className="table-preferences">
-          <thead>
+          <thead className="scroll-thead">
             <tr>
               <th>Data</th>
               <th>Cliente</th>
@@ -94,7 +129,7 @@ function BudgetFullContent() {
               <th>Remover</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="scroll-tbody">
             {data.map(
               ({
                 id,
@@ -106,7 +141,7 @@ function BudgetFullContent() {
                 totalValue,
                 createdAt,
               }) => (
-                <tr key={id}>
+                <tr key={id} className="scroll-trow">
                   <td>{getFormmatedDate(createdAt)}</td>
                   <td>{client.name}</td>
                   <td>{plate}</td>
