@@ -20,11 +20,17 @@ export async function removePaymentByIdRequest(financeBudgetId) {
   return await api.delete("removePaymentById?id=" + financeBudgetId);
 }
 
-export async function addPaymentRequest(budgetId, paymentValue, paymentFormat) {
+export async function addPaymentRequest(
+  budgetId,
+  paymentValue,
+  paymentFormat,
+  notes
+) {
   return await api.post("addPayment", {
     budgetId: budgetId,
     paymentValue: paymentValue,
     paymentFormat: paymentFormat,
+    notes: notes,
   });
 }
 

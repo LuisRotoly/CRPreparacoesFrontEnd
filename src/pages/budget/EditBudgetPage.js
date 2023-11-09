@@ -375,9 +375,9 @@ function EditBudgetPage() {
                       <td>{name}</td>
                       <td>{quantity}</td>
                       <td onClick={() => showCostValue(name)}>
-                        R$ {value.toFixed(2)}
+                        R$ {parseFloat(value).toFixed(2)}
                       </td>
-                      <td>R$ {(quantity * value).toFixed(2)}</td>
+                      <td>R$ {parseFloat(quantity * value).toFixed(2)}</td>
                       <td>
                         <DeleteIcon
                           className="default-remove-icon"

@@ -65,7 +65,7 @@ function BudgetSketch() {
   return (
     <div>
       <div className="text-center div-title">
-        <p className="page-title">Avulso</p>
+        <p className="page-title">Pré-Orçamento</p>
         <span className="font-size-18">Pesquisar: </span>
         <input
           maxLength="100"
@@ -75,7 +75,7 @@ function BudgetSketch() {
           className="me-5"
         />
         <button className="btn btn-outline-primary" onClick={gotoCreatePage}>
-          Criar Novo Avulso
+          Criar Novo Pré-Orçamento
         </button>
       </div>
       <div className="align-center">

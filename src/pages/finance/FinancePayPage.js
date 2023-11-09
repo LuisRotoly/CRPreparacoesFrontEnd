@@ -28,6 +28,7 @@ function FinancePayPage() {
   const [paymentFormat, setPaymentFormat] = useState("");
   const [paymentValue, setPaymentValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     getFinanceBudgetByIdRequest(pathname.id).then((response) => {
@@ -37,6 +38,7 @@ function FinancePayPage() {
       setFinanceBudgetList(response.data.financeBudgetList);
       setTotalValue(response.data.totalValue);
       setToBePaid(response.data.toBePaid);
+      setNotes(response.data.notes);
     });
     getPaymentFormatListRequest().then((response) =>
       setPaymentFormatList(response.data)
@@ -82,6 +84,7 @@ function FinancePayPage() {
   function resetFields() {
     setErrorMessage("");
     setPaymentValue("");
+    setNotes("");
   }
 
   function isValidEntrances() {
@@ -90,7 +93,7 @@ function FinancePayPage() {
 
   function addNewPayment() {
     if (isValidEntrances()) {
-      addPaymentRequest(pathname.id, paymentValue, paymentFormat)
+      addPaymentRequest(pathname.id, paymentValue, paymentFormat, notes)
         .then((_) => {
           getFinanceBudgetList();
           resetFields();
@@ -100,6 +103,10 @@ function FinancePayPage() {
     } else {
       setErrorMessage("Preencha todos os campos obrigatórios!");
     }
+  }
+
+  function handleNotesChange(event) {
+    setNotes(event.target.value);
   }
 
   function handlePaymentValueChange(event) {
@@ -138,7 +145,7 @@ function FinancePayPage() {
         <p className="mb-0 mt-3 font-size-20">Forma de Pagamento:*</p>
         <select
           value={paymentFormat.type}
-          className="select-width mb-3"
+          className="select-width"
           onChange={handlePaymentFormatChange}
         >
           <option key="blankChoice" hidden value="">
@@ -152,6 +159,13 @@ function FinancePayPage() {
             );
           })}
         </select>
+        <p className="mb-0 mt-3 font-size-20">Observações:</p>
+        <input
+          type="text"
+          className="mb-3"
+          value={notes}
+          onChange={handleNotesChange}
+        />
         <br />
         <button
           className="btn btn-outline-primary mb-4"
@@ -167,25 +181,29 @@ function FinancePayPage() {
           <thead>
             <tr>
               <th>Data de Pagamento</th>
+              <th>Observações</th>
               <th>Forma</th>
               <th>Valor</th>
               <th>Deletar</th>
             </tr>
           </thead>
           <tbody>
-            {financeBudgetList.map(({ id, value, paymentFormat, paidAt }) => (
-              <tr key={id}>
-                <td>{getFormmatedDate(paidAt)}</td>
-                <td>{paymentFormat.type}</td>
-                <td>R$ {value.toFixed(2)}</td>
-                <td>
-                  <DeleteIcon
-                    className="default-remove-icon"
-                    onClick={() => openDeleteModal(id)}
-                  />
-                </td>
-              </tr>
-            ))}
+            {financeBudgetList.map(
+              ({ id, value, notes, paymentFormat, paidAt }) => (
+                <tr key={id}>
+                  <td>{getFormmatedDate(paidAt)}</td>
+                  <td>{notes}</td>
+                  <td>{paymentFormat.type}</td>
+                  <td>R$ {value.toFixed(2)}</td>
+                  <td>
+                    <DeleteIcon
+                      className="default-remove-icon"
+                      onClick={() => openDeleteModal(id)}
+                    />
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </Table>
       </div>
