@@ -345,7 +345,7 @@ function CreateBudgetPage() {
               />
               <span>%</span>
               <p className="mb-0 mt-5 font-size-20 fw-bold">
-                Valor Total: {getTotalValue()} Reais
+                Valor Total: {getTotalValue().toFixed(2)} Reais
               </p>
               <p className="mb-0 mt-3 font-size-20">Status:*</p>
               <select
