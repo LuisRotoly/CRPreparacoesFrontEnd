@@ -190,9 +190,9 @@ function CreateBudgetPage() {
       totalValue = totalValue + element.quantity * element.value;
     });
     if (isEmpty(discountPercentage)) {
-      return totalValue;
+      return totalValue.toFixed(2);
     } else {
-      return totalValue - (totalValue * discountPercentage) / 100;
+      return (totalValue - (totalValue * discountPercentage) / 100).toFixed(2);
     }
   }
 
@@ -345,7 +345,7 @@ function CreateBudgetPage() {
               />
               <span>%</span>
               <p className="mb-0 mt-5 font-size-20 fw-bold">
-                Valor Total: {getTotalValue().toFixed(2)} Reais
+                Valor Total: {getTotalValue()} Reais
               </p>
               <p className="mb-0 mt-3 font-size-20">Status:*</p>
               <select
