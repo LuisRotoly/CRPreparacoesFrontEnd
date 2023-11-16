@@ -216,6 +216,10 @@ function TransformBudgetPage() {
     setCostModal(false);
   }
 
+  function getOptionLabel(option) {
+    return option.name + ", " + option.cpfcnpj + ", " + option.nickname;
+  }
+
   return (
     <div className="text-center mt-5">
       {successMessage !== "" ? (
@@ -234,9 +238,7 @@ function TransformBudgetPage() {
           <div className="d-flex justify-content-center">
             <Select
               defaultValue=""
-              getOptionLabel={(option) =>
-                option.name + ", " + option.cpfcnpj + ", " + option.nickname
-              }
+              getOptionLabel={(option) => getOptionLabel(option)}
               onChange={handleClientChange}
               options={clientList}
               getOptionValue={(option) => option.name}
