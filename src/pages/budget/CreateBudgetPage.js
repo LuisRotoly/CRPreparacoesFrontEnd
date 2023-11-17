@@ -190,9 +190,9 @@ function CreateBudgetPage() {
       totalValue = totalValue + element.quantity * element.value;
     });
     if (isEmpty(discountPercentage)) {
-      return totalValue;
+      return totalValue.toFixed(2);
     } else {
-      return totalValue - (totalValue * discountPercentage) / 100;
+      return (totalValue - (totalValue * discountPercentage) / 100).toFixed(2);
     }
   }
 

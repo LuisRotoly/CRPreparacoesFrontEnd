@@ -307,7 +307,7 @@ function EditBudgetSketchPage() {
             </Table>
           </div>
           <p className="mb-0 mt-5 font-size-20 fw-bold">
-            Valor Total: {totalValue} Reais
+            Valor Total: {totalValue.toFixed(2)} Reais
           </p>
           <p className="mb-0 mt-3 font-size-20">Observações:</p>
           <textarea

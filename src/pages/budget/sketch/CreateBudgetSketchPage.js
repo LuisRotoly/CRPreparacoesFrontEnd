@@ -124,7 +124,7 @@ function CreateBudgetSketchPage() {
     laborOrBikePartBudgetSketchList.forEach((element) => {
       totalValue = totalValue + element.quantity * element.value;
     });
-    return totalValue;
+    return totalValue.toFixed(2);
   }
 
   function showCostValue(laborOrBikePartName) {
