@@ -124,7 +124,7 @@ function CreateBudgetSketchPage() {
     laborOrBikePartBudgetSketchList.forEach((element) => {
       totalValue = totalValue + element.quantity * element.value;
     });
-    return totalValue;
+    return totalValue.toFixed(2);
   }
 
   function showCostValue(laborOrBikePartName) {
@@ -237,7 +237,7 @@ function CreateBudgetSketchPage() {
             </Table>
           </div>
           <p className="mb-0 mt-5 font-size-20 fw-bold">
-            Valor Total: {getTotalValue().toFixed(2)} Reais
+            Valor Total: {getTotalValue()} Reais
           </p>
           <p className="mb-0 mt-3 font-size-20">Observações:</p>
           <textarea
