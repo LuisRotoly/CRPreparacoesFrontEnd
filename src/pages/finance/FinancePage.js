@@ -11,10 +11,10 @@ import {
 import "./finance.css";
 
 function FinancePage() {
-  const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [totalToReceive, setTotalToReceive] = useState(0);
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     getFinanceBudgetList();
@@ -26,26 +26,41 @@ function FinancePage() {
   function getFinanceBudgetList() {
     getFinanceBudgetListRequest().then((response) => {
       setData(response.data);
-      setOriginalData(response.data);
     });
   }
 
   function handleSearchChange(event) {
     setSearch(event.target.value);
-    if (!isEmpty(event.target.value)) {
-      filterFinanceBudgetListRequest(event.target.value).then((response) => {
+    if (isChecked === false && isEmpty(event.target.value)) {
+      getFinanceBudgetList();
+    } else {
+      filterFinanceBudgetListRequest(event.target.value, isChecked).then(
+        (response) => {
+          setData(response.data);
+        }
+      );
+    }
+  }
+
+  function handleIsCheckedChange() {
+    if (!isChecked === true) {
+      filterFinanceBudgetListRequest(search, !isChecked).then((response) => {
         setData(response.data);
       });
+    } else if (!isChecked === false && isEmpty(search)) {
+      getFinanceBudgetList();
     } else {
-      setData(originalData);
+      filterFinanceBudgetListRequest(search, !isChecked).then((response) => {
+        setData(response.data);
+      });
     }
+    setIsChecked(!isChecked);
   }
 
   return (
     <div>
       <div className="text-center div-title">
         <p className="page-title">Lista de Serviços Realizados</p>
-
         <span className="font-size-18">Pesquisar: </span>
         <input
           maxLength="100"
@@ -53,6 +68,15 @@ function FinancePage() {
           value={search}
           onChange={handleSearchChange}
         />
+        <div className="mt-3">
+          <input
+            className="me-1"
+            type="checkbox"
+            defaultChecked={isChecked}
+            onChange={handleIsCheckedChange}
+          />
+          <span>Em débito</span>
+        </div>
         <span className="total-to-receive">
           Total a Receber: R$ {totalToReceive.toFixed(2)}
         </span>
