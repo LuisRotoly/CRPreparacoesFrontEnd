@@ -24,3 +24,11 @@
   width: 50%;
   margin: auto;
 }
+
+.transform-to-budget {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+  margin-right: 20px;
+  margin-bottom: -40px;
+}

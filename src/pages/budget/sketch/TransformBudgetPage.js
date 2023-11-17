@@ -1,21 +1,23 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { getFormmatedDate, isEmpty } from "../../stringHelper";
-import { addBudgetRequest } from "../../services/budgetService";
-import { getClientsListRequest } from "../../services/clientService";
-import { listClientBikeById } from "../../services/clientBikeService";
-import { getStatusListRequest } from "../../services/statusService";
-import { getBikePartListRequest } from "../../services/bikePartService";
-import AddBikePartModal from "../../components/budgetModal/AddBikePartModal";
-import AddBikeServiceModal from "../../components/budgetModal/AddBikeServiceModal";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getFormmatedDate, isEmpty } from "../../../stringHelper";
+import { addBudgetRequest } from "../../../services/budgetService";
+import { getClientsListRequest } from "../../../services/clientService";
+import { listClientBikeById } from "../../../services/clientBikeService";
+import { getStatusListRequest } from "../../../services/statusService";
+import { getBikePartListRequest } from "../../../services/bikePartService";
+import AddBikePartModal from "../../../components/budgetModal/AddBikePartModal";
+import AddBikeServiceModal from "../../../components/budgetModal/AddBikeServiceModal";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
+import { getPaymentFormatListRequest } from "../../../services/paymentFormatService";
 import Select from "react-select";
-import CostModal from "../../components/budgetModal/CostModal";
-import { getLaborOrBikePartByName } from "../../services/budgetService";
+import CostModal from "../../../components/budgetModal/CostModal";
+import { getLaborOrBikePartByName } from "../../../services/budgetService";
+import { removeBudgetSketchByIdRequest } from "../../../services/budgetSketchService";
 
-function CreateBudgetPage() {
+function TransformBudgetPage() {
+  const { state } = useLocation();
   const navigate = useNavigate();
   const [plate, setPlate] = useState("");
   const [bike, setBike] = useState("");
@@ -49,7 +51,9 @@ function CreateBudgetPage() {
       setPaymentFormatList(response.data);
     });
     getBikePartList();
-  }, []);
+    setLaborOrBikePartBudgetList(state.laborOrBikePartBudgetSketchList);
+    setNotes(state.notes);
+  }, [state]);
 
   function handleClientChange(event) {
     setClient(event.id);
@@ -67,10 +71,8 @@ function CreateBudgetPage() {
     setErrorMessage("");
     setPaymentFormat("");
     setKilometersDriven("");
-    setLaborOrBikePartBudgetList([]);
     setStatus("");
     setDiscountPercentage("");
-    setNotes("");
   }
 
   function handleBikeChange(event) {
@@ -131,7 +133,10 @@ function CreateBudgetPage() {
         notes,
         problems
       )
-        .then((_) => setSuccessMessage("Orçamento criado com sucesso!"))
+        .then((_) => {
+          setSuccessMessage("Orçamento criado com sucesso!");
+          removeBudgetSketchByIdRequest(state.budgetSketchId);
+        })
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
       setErrorMessage("Preencha todos os campos obrigatórios!");
@@ -139,6 +144,10 @@ function CreateBudgetPage() {
   }
 
   function gotoBackPage() {
+    navigate(`/budget/sketch/edit/${state.budgetSketchId}`);
+  }
+
+  function gotoBudgetBackPage() {
     navigate("/budget");
   }
 
@@ -190,9 +199,9 @@ function CreateBudgetPage() {
       totalValue = totalValue + element.quantity * element.value;
     });
     if (isEmpty(discountPercentage)) {
-      return totalValue.toFixed(2);
+      return totalValue;
     } else {
-      return (totalValue - (totalValue * discountPercentage) / 100).toFixed(2);
+      return totalValue - (totalValue * discountPercentage) / 100;
     }
   }
 
@@ -217,7 +226,7 @@ function CreateBudgetPage() {
         <div>
           <p className="text-success font-size-18">{successMessage}</p>
           <div className="text-center">
-            <button className="btn btn-primary" onClick={gotoBackPage}>
+            <button className="btn btn-primary" onClick={gotoBudgetBackPage}>
               Voltar
             </button>
           </div>
@@ -403,4 +412,4 @@ function CreateBudgetPage() {
     </div>
   );
 }
-export default CreateBudgetPage;
+export default TransformBudgetPage;

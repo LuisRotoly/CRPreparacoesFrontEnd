@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getFormmatedDate, isEmpty } from "../../../stringHelper";
 import AddBikePartModal from "../../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../../components/budgetModal/AddBikeServiceModal";
@@ -17,6 +17,7 @@ import BudgetPdf from "../../../components/pdf/BudgetPdf";
 import { getBikeServiceListRequest } from "../../../services/bikeServiceService";
 import { getLaborOrBikePartByName } from "../../../services/budgetService";
 import CostModal from "../../../components/budgetModal/CostModal";
+import "../components/budget.css";
 
 function EditBudgetSketchPage() {
   const pathname = useParams();
@@ -227,6 +228,21 @@ function EditBudgetSketchPage() {
             >
               <PrintIcon />
             </PDFDownloadLink>
+          </div>
+          <div className="transform-to-budget">
+            <Link
+              to="/budget/sketch/transform"
+              state={{
+                budgetSketchId: pathname.id,
+                laborOrBikePartBudgetSketchList:
+                  laborOrBikePartBudgetSketchList,
+                notes: notes,
+              }}
+            >
+              <button className="btn btn-primary">
+                Transformar em Orçamento
+              </button>
+            </Link>
           </div>
           <p className="mb-0 mt-3 font-size-20">Cliente:</p>
           <input type="text" defaultValue={client} disabled />
