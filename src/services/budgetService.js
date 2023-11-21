@@ -82,3 +82,7 @@ export async function editBudgetNotesRequest(id, notes) {
 export async function getLaborOrBikePartByName(name) {
   return await api.get("findLaborOrBikePartByName?name=" + name);
 }
+
+export async function getListBudgetByClientIdRequest(clientId) {
+  return await api.get("listBudgetByClientId?clientId=" + clientId);
+}
