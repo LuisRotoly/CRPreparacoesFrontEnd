@@ -27,8 +27,33 @@
 
 .transform-to-budget {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 50px;
-  margin-right: 20px;
-  margin-bottom: -40px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.data-sketch {
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.container-form-sketch {
+  flex-direction: column;
+  flex: 5;
+}
+
+.container-data-transform-button {
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-container {
+  display: flex;
+}
+
+.blank-container {
+  flex-direction: column;
+  flex: 1;
 }
