@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   editClientRequest,
   getClientByIdRequest,
@@ -12,6 +12,10 @@ import "./client.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteModal from "../../components/modal/DeleteModal";
 import InputMask from "react-input-mask";
+import { getListBudgetByClientIdRequest } from "../../services/budgetService";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Table from "react-bootstrap/Table";
+import { getFormmatedDate } from "../../stringHelper";
 
 function EditClientPage() {
   const pathname = useParams();
@@ -35,6 +39,7 @@ function EditClientPage() {
   const [cepError, setCepError] = useState("");
   const [street, setStreet] = useState("");
   const [district, setDistrict] = useState("");
+  const [budgetList, setBudgetList] = useState([]);
 
   useEffect(() => {
     getClientByIdRequest(pathname.id).then((response) => {
@@ -51,6 +56,9 @@ function EditClientPage() {
     });
     listClientBikeById(pathname.id).then((response) =>
       setClientBikeList(response.data)
+    );
+    getListBudgetByClientIdRequest(pathname.id).then((response) =>
+      setBudgetList(response.data)
     );
   }, [pathname.id]);
 
@@ -316,7 +324,7 @@ function EditClientPage() {
             defaultValue={notes}
             onChange={handleNotesChange}
           />
-          <div>
+          <div className="mb-3">
             {clientBikeList.map(({ plate, bike, year }, index) => {
               return (
                 <div key={index} className="align-center mt-3">
@@ -336,6 +344,48 @@ function EditClientPage() {
             <button className="btn btn-info mt-3" onClick={openModalBikePlate}>
               Adicionar Moto
             </button>
+          </div>
+          <div className="align-center">
+            <Table className="table-preferences">
+              <thead className="scroll-thead">
+                <tr>
+                  <th>Data</th>
+                  <th>Placa</th>
+                  <th>Moto</th>
+                  <th>Status</th>
+                  <th>Valor Total</th>
+                  <th>Visualizar</th>
+                </tr>
+              </thead>
+              <tbody className="scroll-tbody">
+                {budgetList.map(
+                  ({
+                    id,
+                    plate,
+                    bikeBrand,
+                    bikeName,
+                    status,
+                    totalValue,
+                    createdAt,
+                  }) => (
+                    <tr key={id} className="scroll-trow">
+                      <td>{getFormmatedDate(createdAt)}</td>
+                      <td>{plate}</td>
+                      <td>
+                        {bikeName} {bikeBrand}
+                      </td>
+                      <td>{status.description}</td>
+                      <td>R$ {totalValue.toFixed(2)}</td>
+                      <td>
+                        <Link to={`/budget/view/${id}`}>
+                          <VisibilityIcon />
+                        </Link>
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </Table>
           </div>
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
