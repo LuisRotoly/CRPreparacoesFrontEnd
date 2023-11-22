@@ -108,6 +108,10 @@ function EditBudgetPage() {
     setStatus(statusList[event.target.selectedIndex]);
   }
 
+  function handleKilometersDrivenChange(event) {
+    setKilometersDriven(event.target.value);
+  }
+
   function handleNotesChange(event) {
     setNotes(event.target.value);
   }
@@ -138,13 +142,16 @@ function EditBudgetPage() {
   }
 
   function isValidEntrances() {
-    return !isEmpty(status) && !isEmpty(paymentFormat);
+    return (
+      !isEmpty(status) && !isEmpty(paymentFormat) && !isEmpty(kilometersDriven)
+    );
   }
 
   function editBudget() {
     if (isValidEntrances()) {
       editBudgetRequest(
         pathname.id,
+        kilometersDriven,
         paymentFormat,
         laborOrBikePartBudgetList,
         discountPercentage,
@@ -320,8 +327,13 @@ function EditBudgetPage() {
           <input type="text" defaultValue={plate} disabled />
           <p className="mb-0 mt-3 font-size-20">Moto:</p>
           <input type="text" defaultValue={bike} disabled />
-          <p className="mb-0 mt-3 font-size-20">Quilometragem:</p>
-          <input type="number" defaultValue={kilometersDriven} disabled />
+          <p className="mb-0 mt-3 font-size-20">Quilometragem:*</p>
+          <input
+            type="number"
+            required
+            value={kilometersDriven}
+            onChange={handleKilometersDrivenChange}
+          />
           <p className="mb-0 mt-3 font-size-20">Problemas Relatados:</p>
           <textarea
             className="text-area-size"
