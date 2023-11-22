@@ -55,7 +55,18 @@ function CreateBudgetPage() {
     setClient(event.id);
     setClientBikeList([]);
     listClientBikeById(event.id).then((response) =>
-      setClientBikeList(response.data)
+      setClientBikeList([
+        ...response.data,
+        {
+          bike: {
+            id: 0,
+            name: "Sem Marca",
+            bikeBrand: { id: 0, name: "Sem Marca" },
+          },
+          plate: "000-0000",
+          year: "0000",
+        },
+      ])
     );
     resetFields();
   }
