@@ -208,87 +208,98 @@ function EditBudgetSketchPage() {
         </div>
       ) : (
         <div>
-          <div className="data">
-            <div className="me-3">Data: {getFormmatedDate(createdDate)}</div>
-            <PDFDownloadLink
-              document={
-                <BudgetPdf
-                  client={pdfClientData}
-                  bike={pdfBikeData}
-                  address={""}
-                  laborOrBikePartBudgetList={laborOrBikePartBudgetSketchList}
-                  discountPercentage={""}
-                  totalValueBikePart={totalValueBikePart}
-                  totalValueBikeService={totalValueBikeService}
-                  totalValue={totalValue}
-                  createdDate={createdDate}
-                />
-              }
-              fileName={client + "-orcamento.pdf"}
-            >
-              <PrintIcon />
-            </PDFDownloadLink>
-          </div>
-          <div className="transform-to-budget">
-            <Link
-              to="/budget/sketch/transform"
-              state={{
-                budgetSketchId: pathname.id,
-                laborOrBikePartBudgetSketchList:
-                  laborOrBikePartBudgetSketchList,
-                notes: notes,
-              }}
-            >
-              <button className="btn btn-primary">
-                Transformar em Orçamento
+          <div className="full-container">
+            <div className="blank-container"></div>
+            <div className="container-form-sketch">
+              <p className="mb-0 mt-3 font-size-20">Cliente:</p>
+              <input type="text" defaultValue={client} disabled />
+              <p className="mb-0 mt-3 font-size-20">Placa:*</p>
+              <InputMask
+                type="text"
+                required
+                mask={"***-****"}
+                maskChar=""
+                value={plate}
+                onChange={handlePlateChange}
+              />
+              <p className="mb-0 mt-3 font-size-20">Moto:*</p>
+              <input
+                maxLength="100"
+                type="text"
+                required
+                value={bike}
+                onChange={handleBikeChange}
+              />
+              <p className="mb-0 mt-3 font-size-20">Telefone:</p>
+              <InputMask
+                required
+                mask={
+                  phone.length >= 5 && phone[4] === "9"
+                    ? "(99)99999-9999"
+                    : "(99)9999-9999"
+                }
+                maskChar=""
+                type="text"
+                value={phone}
+                onChange={handlePhoneChange}
+              />
+              <br />
+              <button
+                className="btn btn-primary me-3 mt-5  mb-3"
+                onClick={openBikePartModal}
+              >
+                Adicionar Peça
               </button>
-            </Link>
+              <button
+                className="btn btn-primary me-3 mt-5  mb-3"
+                onClick={openBikeServiceModal}
+              >
+                Adicionar Serviço
+              </button>
+            </div>
+            <div className="container-data-transform-button">
+              <div className="data-sketch">
+                <div className="me-3">
+                  Data: {getFormmatedDate(createdDate)}
+                </div>
+                <PDFDownloadLink
+                  document={
+                    <BudgetPdf
+                      client={pdfClientData}
+                      bike={pdfBikeData}
+                      address={""}
+                      laborOrBikePartBudgetList={
+                        laborOrBikePartBudgetSketchList
+                      }
+                      discountPercentage={""}
+                      totalValueBikePart={totalValueBikePart}
+                      totalValueBikeService={totalValueBikeService}
+                      totalValue={totalValue}
+                      createdDate={createdDate}
+                    />
+                  }
+                  fileName={client + "-orcamento.pdf"}
+                >
+                  <PrintIcon />
+                </PDFDownloadLink>
+              </div>
+              <div className="transform-to-budget">
+                <Link
+                  to="/budget/sketch/transform"
+                  state={{
+                    budgetSketchId: pathname.id,
+                    laborOrBikePartBudgetSketchList:
+                      laborOrBikePartBudgetSketchList,
+                    notes: notes,
+                  }}
+                >
+                  <button className="btn btn-primary">
+                    Transformar em Orçamento
+                  </button>
+                </Link>
+              </div>
+            </div>
           </div>
-          <p className="mb-0 mt-3 font-size-20">Cliente:</p>
-          <input type="text" defaultValue={client} disabled />
-          <p className="mb-0 mt-3 font-size-20">Placa:*</p>
-          <InputMask
-            type="text"
-            required
-            mask={"***-****"}
-            maskChar=""
-            value={plate}
-            onChange={handlePlateChange}
-          />
-          <p className="mb-0 mt-3 font-size-20">Moto:*</p>
-          <input
-            maxLength="100"
-            type="text"
-            required
-            value={bike}
-            onChange={handleBikeChange}
-          />
-          <p className="mb-0 mt-3 font-size-20">Telefone:</p>
-          <InputMask
-            required
-            mask={
-              phone.length >= 5 && phone[4] === "9"
-                ? "(99)99999-9999"
-                : "(99)9999-9999"
-            }
-            maskChar=""
-            type="text"
-            value={phone}
-            onChange={handlePhoneChange}
-          />
-          <br />
-          <button
-            className="btn btn-primary me-3 mt-5  mb-3"
-            onClick={openBikePartModal}
-          >
-            Adicionar Peça
-          </button>
-          <button
-            className="btn btn-primary me-3 mt-5  mb-3"
-            onClick={openBikeServiceModal}
-          >
-            Adicionar Serviço
-          </button>
           <div className="align-center">
             <Table className="table-preferences">
               <thead>
