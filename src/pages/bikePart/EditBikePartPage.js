@@ -4,7 +4,9 @@ import {
   editBikePartRequest,
   getBikePartByIdRequest,
 } from "../../services/bikePartService";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedDate, isEmpty } from "../../stringHelper";
+import { Table } from "react-bootstrap";
+import { getBudgetHistoryByBikePartIdRequest } from "../../services/budgetService";
 
 function EditBikePartPage() {
   const pathname = useParams();
@@ -16,6 +18,7 @@ function EditBikePartPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [notes, setNotes] = useState("");
+  const [budgetList, setBudgetList] = useState([]);
 
   useEffect(() => {
     getBikePartByIdRequest(pathname.id).then((response) => {
@@ -25,6 +28,9 @@ function EditBikePartPage() {
       setFinalValue(response.data.finalValue);
       setNotes(response.data.notes);
     });
+    getBudgetHistoryByBikePartIdRequest(pathname.id).then((response) =>
+      setBudgetList(response.data)
+    );
   }, [pathname.id]);
 
   function handleProfitPercentageChange(event) {
@@ -119,6 +125,43 @@ function EditBikePartPage() {
             value={notes}
             onChange={handleNotesChange}
           />
+          <p className="mb-2 mt-5 font-size-22">Histórico de Orçamentos</p>
+          <div className="align-center">
+            <Table className="table-preferences">
+              <thead className="scroll-thead">
+                <tr>
+                  <th>Data</th>
+                  <th>Cliente</th>
+                  <th>Placa</th>
+                  <th>Moto</th>
+                  <th>Quantidade de Peças</th>
+                </tr>
+              </thead>
+              <tbody className="scroll-tbody">
+                {budgetList.map(
+                  ({
+                    id,
+                    client,
+                    plate,
+                    bikeBrand,
+                    bikeName,
+                    bikePartQuantity,
+                    createdAt,
+                  }) => (
+                    <tr key={id} className="scroll-trow">
+                      <td>{getFormmatedDate(createdAt)}</td>
+                      <td>{client.name}</td>
+                      <td>{plate}</td>
+                      <td>
+                        {bikeName} {bikeBrand}
+                      </td>
+                      <td>{bikePartQuantity}</td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </Table>
+          </div>
           <div className="text-center mt-4">
             <button className="btn btn-primary me-3" onClick={gotoBackPage}>
               Voltar

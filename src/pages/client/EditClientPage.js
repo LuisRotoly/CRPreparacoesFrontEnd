@@ -345,6 +345,7 @@ function EditClientPage() {
               Adicionar Moto
             </button>
           </div>
+          <p className="mb-2 mt-5 font-size-22">Histórico de Serviços</p>
           <div className="align-center">
             <Table className="table-preferences">
               <thead className="scroll-thead">
