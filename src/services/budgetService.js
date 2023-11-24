@@ -88,3 +88,7 @@ export async function getLaborOrBikePartByName(name) {
 export async function getListBudgetByClientIdRequest(clientId) {
   return await api.get("listBudgetByClientId?clientId=" + clientId);
 }
+
+export async function getBudgetHistoryByBikePartIdRequest(bikePartId) {
+  return await api.get("getBudgetHistoryByBikePartId?bikePartId=" + bikePartId);
+}
