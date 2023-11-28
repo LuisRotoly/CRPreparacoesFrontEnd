@@ -29,7 +29,7 @@ function SingleSalePage() {
   }
 
   function isValidEntrances() {
-    return !isEmpty(client); //verify labororbikepartList
+    return !isEmpty(client) && !isEmpty(laborOrBikePartList);
   }
 
   function createBudgetSketch() {
