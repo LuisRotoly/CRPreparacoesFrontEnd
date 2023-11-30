@@ -76,6 +76,10 @@ function SingleSalePage() {
     return totalValue.toFixed(2);
   }
 
+  function getLaborOrBikePartTotalValue(quantity, value) {
+    return parseFloat(quantity * value).toFixed(2);
+  }
+
   return (
     <div className="text-center mt-5">
       {successMessage !== "" ? (
@@ -122,7 +126,7 @@ function SingleSalePage() {
                     <td>{name}</td>
                     <td>{quantity}</td>
                     <td>R$ {parseFloat(value).toFixed(2)}</td>
-                    <td>R$ {parseFloat(quantity * value).toFixed(2)}</td>
+                    <td>R$ {getLaborOrBikePartTotalValue(quantity, value)}</td>
                     <td>
                       <DeleteIcon
                         className="default-remove-icon"
