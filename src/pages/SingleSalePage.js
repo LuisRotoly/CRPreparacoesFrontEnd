@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { getBikePartListRequest } from "../services/bikePartService";
 import { useState, useEffect } from "react";
 import { getFormmatedDate, isEmpty } from "../stringHelper";
-import AddBikePartModal from "../components/budgetModal/AddBikePartModal";
+import AddBikePartSingleSaleModal from "../components/budgetModal/AddBikePartSingleSaleModal";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { addSingleSaleRequest } from "../services/singleSaleService";
@@ -10,7 +10,9 @@ import { addSingleSaleRequest } from "../services/singleSaleService";
 function SingleSalePage() {
   const navigate = useNavigate();
   const [client, setClient] = useState("");
-  const [laborOrBikePartList, setLaborOrBikePartList] = useState([]);
+  const [singleSaleRelBikePartList, setSingleSaleRelBikePartList] = useState(
+    []
+  );
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [bikePartModal, setBikePartModal] = useState(false);
@@ -29,12 +31,12 @@ function SingleSalePage() {
   }
 
   function isValidEntrances() {
-    return !isEmpty(client) && !isEmpty(laborOrBikePartList);
+    return !isEmpty(client) && !isEmpty(singleSaleRelBikePartList);
   }
 
   function createBudgetSketch() {
     if (isValidEntrances()) {
-      addSingleSaleRequest(client, laborOrBikePartList)
+      addSingleSaleRequest(client, singleSaleRelBikePartList)
         .then((_) => setSuccessMessage("Venda criada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -46,10 +48,10 @@ function SingleSalePage() {
     navigate("/");
   }
 
-  function addBikePart(name, quantity, value) {
-    setLaborOrBikePartList((oldList) => [
+  function addBikePart(bikePart, quantity, value) {
+    setSingleSaleRelBikePartList((oldList) => [
       ...oldList,
-      { name, quantity, value },
+      { bikePart, quantity, value },
     ]);
     closeBikePartModal();
   }
@@ -63,14 +65,14 @@ function SingleSalePage() {
   }
 
   function deleteLaborOrBikePartLine(index) {
-    const reducedArray = [...laborOrBikePartList];
+    const reducedArray = [...singleSaleRelBikePartList];
     reducedArray.splice(index, 1);
-    setLaborOrBikePartList(reducedArray);
+    setSingleSaleRelBikePartList(reducedArray);
   }
 
   function getTotalValue() {
     let totalValue = 0;
-    laborOrBikePartList.forEach((element) => {
+    singleSaleRelBikePartList.forEach((element) => {
       totalValue = totalValue + element.quantity * element.value;
     });
     return totalValue.toFixed(2);
@@ -121,20 +123,24 @@ function SingleSalePage() {
                 </tr>
               </thead>
               <tbody>
-                {laborOrBikePartList.map(({ name, quantity, value }, index) => (
-                  <tr key={index}>
-                    <td>{name}</td>
-                    <td>{quantity}</td>
-                    <td>R$ {parseFloat(value).toFixed(2)}</td>
-                    <td>R$ {getLaborOrBikePartTotalValue(quantity, value)}</td>
-                    <td>
-                      <DeleteIcon
-                        className="default-remove-icon"
-                        onClick={() => deleteLaborOrBikePartLine(index)}
-                      />
-                    </td>
-                  </tr>
-                ))}
+                {singleSaleRelBikePartList.map(
+                  ({ bikePart, quantity, value }, index) => (
+                    <tr key={index}>
+                      <td>{bikePart.name}</td>
+                      <td>{quantity}</td>
+                      <td>R$ {parseFloat(value).toFixed(2)}</td>
+                      <td>
+                        R$ {getLaborOrBikePartTotalValue(quantity, value)}
+                      </td>
+                      <td>
+                        <DeleteIcon
+                          className="default-remove-icon"
+                          onClick={() => deleteLaborOrBikePartLine(index)}
+                        />
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </Table>
           </div>
@@ -152,7 +158,7 @@ function SingleSalePage() {
           <p className="text-danger font-size-18">{errorMessage}</p>
         </div>
       )}
-      <AddBikePartModal
+      <AddBikePartSingleSaleModal
         show={bikePartModal}
         close={closeBikePartModal}
         bikePartList={bikePartList}

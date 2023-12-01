@@ -1,9 +1,9 @@
 import api from "./api";
 
-export async function addSingleSaleRequest(client, laborOrBikePartList) {
+export async function addSingleSaleRequest(client, singleSaleRelBikePartList) {
   return await api.post("addSingleSale", {
     client: client,
-    laborOrBikePartList: laborOrBikePartList,
+    singleSaleRelBikePartList: singleSaleRelBikePartList,
   });
 }
 
