@@ -9,7 +9,7 @@ function AddBikePartSingleSaleModal(props) {
   const { addBikePartToBudget } = props;
   const [bikePart, setBikePart] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [value, setValue] = useState("");
+  const [bikePartValue, setBikePartValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [addNewBikePartModal, setAddNewBikePartModal] = useState(false);
 
@@ -17,12 +17,12 @@ function AddBikePartSingleSaleModal(props) {
     let finalValue =
       parseFloat(event.value) +
       (parseFloat(event.value) * parseFloat(event.profitPercentage)) / 100;
-    setValue(finalValue);
+    setBikePartValue(finalValue);
     setBikePart(event);
   }
 
-  function handleValueChange(event) {
-    setValue(event.target.value);
+  function handleBikePartValueChange(event) {
+    setBikePartValue(event.target.value);
   }
 
   function handleQuantityChange(event) {
@@ -30,12 +30,12 @@ function AddBikePartSingleSaleModal(props) {
   }
 
   function isValidEntrances() {
-    return !isEmpty(bikePart) && !isEmpty(value) && !isEmpty(quantity);
+    return !isEmpty(bikePart) && !isEmpty(bikePartValue) && !isEmpty(quantity);
   }
 
   function addBikePart() {
     if (isValidEntrances()) {
-      addBikePartToBudget(bikePart, quantity, value);
+      addBikePartToBudget(bikePart, quantity, bikePartValue);
       resetFields();
     } else {
       setErrorMessage("Preencha todos os campos obrigatórios!");
@@ -44,7 +44,7 @@ function AddBikePartSingleSaleModal(props) {
 
   function resetFields() {
     setBikePart("");
-    setValue("");
+    setBikePartValue("");
     setQuantity(1);
   }
 
@@ -81,7 +81,11 @@ function AddBikePartSingleSaleModal(props) {
               onChange={handleQuantityChange}
             />
             <p className="mb-0 mt-3 font-size-20">Valor de cada peça:*</p>
-            <input type="number" value={value} onChange={handleValueChange} />
+            <input
+              type="number"
+              value={bikePartValue}
+              onChange={handleBikePartValueChange}
+            />
             <br />
             <p className="text-danger font-size-18">{errorMessage}</p>
           </Modal.Body>
