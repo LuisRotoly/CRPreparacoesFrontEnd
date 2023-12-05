@@ -7,6 +7,7 @@ import {
 import { getFormmatedDate, isEmpty } from "../../stringHelper";
 import { Table } from "react-bootstrap";
 import { getBudgetHistoryByBikePartIdRequest } from "../../services/budgetService";
+import { getSingleSaleHistoryByBikePartIdRequest } from "../../services/singleSaleService";
 
 function EditBikePartPage() {
   const pathname = useParams();
@@ -19,6 +20,7 @@ function EditBikePartPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [notes, setNotes] = useState("");
   const [budgetList, setBudgetList] = useState([]);
+  const [singleSaleList, setSingleSaleList] = useState([]);
 
   useEffect(() => {
     getBikePartByIdRequest(pathname.id).then((response) => {
@@ -30,6 +32,9 @@ function EditBikePartPage() {
     });
     getBudgetHistoryByBikePartIdRequest(pathname.id).then((response) =>
       setBudgetList(response.data)
+    );
+    getSingleSaleHistoryByBikePartIdRequest(pathname.id).then((response) =>
+      setSingleSaleList(response.data)
     );
   }, [pathname.id]);
 
@@ -125,7 +130,7 @@ function EditBikePartPage() {
             value={notes}
             onChange={handleNotesChange}
           />
-          <p className="mb-2 mt-5 font-size-22">Histórico de Orçamentos</p>
+          <p className="mb-2 mt-4 font-size-22">Histórico de Orçamentos</p>
           <div className="align-center">
             <Table className="table-preferences">
               <thead className="scroll-thead">
@@ -155,6 +160,29 @@ function EditBikePartPage() {
                       <td>
                         {bikeName} {bikeBrand}
                       </td>
+                      <td>{bikePartQuantity}</td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </Table>
+          </div>
+          <p className="mb-2 mt-4 font-size-22">Histórico de Vendas Avulsas</p>
+          <div className="align-center">
+            <Table className="table-preferences">
+              <thead className="scroll-thead">
+                <tr>
+                  <th>Data</th>
+                  <th>Cliente</th>
+                  <th>Quantidade de Peças</th>
+                </tr>
+              </thead>
+              <tbody className="scroll-tbody">
+                {singleSaleList.map(
+                  ({ id, client, bikePartQuantity, createdAt }) => (
+                    <tr key={id} className="scroll-trow">
+                      <td>{getFormmatedDate(createdAt)}</td>
+                      <td>{client}</td>
                       <td>{bikePartQuantity}</td>
                     </tr>
                   )
