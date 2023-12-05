@@ -43,7 +43,6 @@ function SingleSaleFinancePayPage() {
   function getSingleSaleFinanceList() {
     getSingleSalePaymentsListByIdRequest(pathname.id).then((response) => {
       setSingleSaleFinanceList(response.data);
-      console.log(response.data);
     });
   }
 
