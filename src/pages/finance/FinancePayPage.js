@@ -38,7 +38,6 @@ function FinancePayPage() {
       setFinanceBudgetList(response.data.financeBudgetList);
       setTotalValue(response.data.totalValue);
       setToBePaid(response.data.toBePaid);
-      setNotes(response.data.notes);
     });
     getPaymentFormatListRequest().then((response) =>
       setPaymentFormatList(response.data)

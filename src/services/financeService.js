@@ -8,9 +8,14 @@ export async function getFinanceBudgetByIdRequest(budgetId) {
   return await api.get("listFinanceBudgetById?id=" + budgetId);
 }
 
-export async function filterFinanceBudgetListRequest(word, isInDebit) {
+export async function filterFinanceBudgetListRequest(word, isInDebit, isPaid) {
   return await api.get(
-    "filterFinanceBudgetListRequest?word=" + word + "&isInDebit=" + isInDebit
+    "filterFinanceBudgetListRequest?word=" +
+      word +
+      "&isInDebit=" +
+      isInDebit +
+      "&isPaid=" +
+      isPaid
   );
 }
 
