@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getFormmatedDate, isEmpty } from "../../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../../stringHelper";
 import { addBudgetRequest } from "../../../services/budgetService";
 import { getClientsListRequest } from "../../../services/clientService";
 import { listClientBikeById } from "../../../services/clientBikeService";
@@ -332,9 +336,9 @@ function TransformBudgetPage() {
                           <td>{name}</td>
                           <td>{quantity}</td>
                           <td onClick={() => showCostValue(name)}>
-                            R$ {parseFloat(value).toFixed(2)}
+                            R$ {getFormmatedMoney(value)}
                           </td>
-                          <td>R$ {parseFloat(quantity * value).toFixed(2)}</td>
+                          <td>R$ {getFormmatedMoney(quantity * value)}</td>
                           <td>
                             <DeleteIcon
                               className="default-remove-icon"

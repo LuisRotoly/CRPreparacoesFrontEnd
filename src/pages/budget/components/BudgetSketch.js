@@ -1,7 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { getFormmatedDate, isEmpty } from "../../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../../stringHelper";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   getBudgetSketchListRequest,
@@ -99,7 +103,7 @@ function BudgetSketch() {
                 <td>{client}</td>
                 <td>{plate}</td>
                 <td>{bike}</td>
-                <td>R$ {totalValue.toFixed(2)}</td>
+                <td>R$ {getFormmatedMoney(totalValue)}</td>
                 <td>
                   <Link to={`/budget/sketch/edit/${id}`}>
                     <EditIcon className="edit-icon" />

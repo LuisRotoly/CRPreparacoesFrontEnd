@@ -11,7 +11,11 @@ import {
 import DeleteModal from "../../components/modal/DeleteModal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getPaymentFormatListRequest } from "../../services/paymentFormatService";
-import { getFormmatedDate, isEmpty } from "../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../stringHelper";
 
 function FinancePayPage() {
   const pathname = useParams();
@@ -125,11 +129,11 @@ function FinancePayPage() {
           Moto {bikeNameAndBrand}, Placa {plate}
         </p>
         <p className="font-size-20">
-          <span>Valor Total R$ {parseFloat(totalValue).toFixed(2)}</span>
+          <span>Valor Total R$ {getFormmatedMoney(totalValue)}</span>
           <span className="magin-left-30">
             Resta à Pagar R${" "}
             <span className="red-color-toBePaid">
-              {parseFloat(toBePaid).toFixed(2)}
+              {getFormmatedMoney(toBePaid)}
             </span>
           </span>
         </p>
@@ -194,7 +198,7 @@ function FinancePayPage() {
                   <td>{getFormmatedDate(paidAt)}</td>
                   <td>{notes}</td>
                   <td>{paymentFormat.type}</td>
-                  <td>R$ {value.toFixed(2)}</td>
+                  <td>R$ {getFormmatedMoney(value)}</td>
                   <td>
                     <DeleteIcon
                       className="default-remove-icon"

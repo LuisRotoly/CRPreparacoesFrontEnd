@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getFormmatedDate, isEmpty } from "../../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../../stringHelper";
 import AddBikePartModal from "../../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../../components/budgetModal/AddBikeServiceModal";
 import Table from "react-bootstrap/Table";
@@ -318,9 +322,9 @@ function EditBudgetSketchPage() {
                       <td>{name}</td>
                       <td>{quantity}</td>
                       <td onClick={() => showCostValue(name)}>
-                        R$ {parseFloat(value).toFixed(2)}
+                        R$ {getFormmatedMoney(value)}
                       </td>
-                      <td>R$ {parseFloat(quantity * value).toFixed(2)}</td>
+                      <td>R$ {getFormmatedMoney(quantity * value)}</td>
                       <td>
                         <DeleteIcon
                           className="default-remove-icon"
@@ -334,7 +338,7 @@ function EditBudgetSketchPage() {
             </Table>
           </div>
           <p className="mb-0 mt-5 font-size-20 fw-bold">
-            Valor Total: {totalValue.toFixed(2)} Reais
+            Valor Total: {getFormmatedMoney(totalValue)} Reais
           </p>
           <p className="mb-0 mt-3 font-size-20">Observações:</p>
           <textarea

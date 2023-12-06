@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { getFormmatedDate } from "../../../stringHelper";
+import { getFormmatedDate, getFormmatedMoney } from "../../../stringHelper";
 import EditIcon from "@mui/icons-material/Edit";
 import {
   getBudgetListRequest,
@@ -149,7 +149,7 @@ function BudgetFullContent() {
                     {bikeName} {bikeBrand}
                   </td>
                   <td>{status.description}</td>
-                  <td>R$ {totalValue.toFixed(2)}</td>
+                  <td>R$ {getFormmatedMoney(totalValue)}</td>
                   <td>
                     {status.description === "Cancelado" ||
                     status.description === "Finalizado" ? null : (

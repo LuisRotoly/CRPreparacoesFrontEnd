@@ -6,7 +6,7 @@ import {
   filterBikePartListRequest,
 } from "../../services/bikePartService";
 import EditIcon from "@mui/icons-material/Edit";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedMoney, isEmpty } from "../../stringHelper";
 
 function BikePartPage() {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ function BikePartPage() {
               return (
                 <tr key={id}>
                   <td>{name}</td>
-                  <td>R$ {finalValue.toFixed(2)}</td>
+                  <td>R$ {getFormmatedMoney(finalValue)}</td>
                   <td>
                     <Link to={`/part/edit/${id}`}>
                       <EditIcon className="edit-icon" />

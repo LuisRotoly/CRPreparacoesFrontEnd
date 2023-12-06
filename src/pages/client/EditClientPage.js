@@ -5,7 +5,7 @@ import {
   getClientByIdRequest,
 } from "../../services/clientService";
 import { getCepRequest } from "../../services/cepService";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedMoney, isEmpty } from "../../stringHelper";
 import { listClientBikeById } from "../../services/clientBikeService";
 import CreateNewBikeClientModal from "../../components/modal/CreateNewBikeClientModal";
 import "./client.css";
@@ -376,7 +376,7 @@ function EditClientPage() {
                         {bikeName} {bikeBrand}
                       </td>
                       <td>{status.description}</td>
-                      <td>R$ {totalValue.toFixed(2)}</td>
+                      <td>R$ {getFormmatedMoney(totalValue)}</td>
                       <td>
                         <Link to={`/budget/view/${id}`}>
                           <VisibilityIcon />

@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import { getFormmatedDate, isEmpty } from "../../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../../stringHelper";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import {
   filterFinanceBudgetListRequest,
@@ -78,7 +82,7 @@ function BudgetContent() {
           <span>Em débito</span>
         </div>
         <span className="total-to-receive">
-          Total a Receber: R$ {totalToReceive.toFixed(2)}
+          Total a Receber: R$ {getFormmatedMoney(totalToReceive)}
         </span>
       </div>
       <div className="align-center">
@@ -110,8 +114,8 @@ function BudgetContent() {
                   <td>{clientName}</td>
                   <td>{plate}</td>
                   <td>{bikeNameAndBrand}</td>
-                  <td>R$ {totalValue.toFixed(2)}</td>
-                  <td>R$ {toBePaid.toFixed(2)}</td>
+                  <td>R$ {getFormmatedMoney(totalValue)}</td>
+                  <td>R$ {getFormmatedMoney(toBePaid)}</td>
                   <td>
                     <Link to={`/finance/pay/${budgetId}`}>
                       <AttachMoneyIcon className="money-icon" />
