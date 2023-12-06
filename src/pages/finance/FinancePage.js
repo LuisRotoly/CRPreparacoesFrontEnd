@@ -11,7 +11,7 @@ import {
 import "./finance.css";
 
 function FinancePage() {
-  const [data, setData] = useState([]);
+  const [financeBudgetList, setFinanceBudgetList] = useState([]);
   const [search, setSearch] = useState("");
   const [totalToReceive, setTotalToReceive] = useState(0);
   const [isInDebtChecked, setIsInDebtChecked] = useState(false);
@@ -26,7 +26,7 @@ function FinancePage() {
 
   function getFinanceBudgetList() {
     getFinanceBudgetListRequest().then((response) => {
-      setData(response.data);
+      setFinanceBudgetList(response.data);
     });
   }
 
@@ -44,7 +44,7 @@ function FinancePage() {
         isInDebtChecked,
         isPaidChecked
       ).then((response) => {
-        setData(response.data);
+        setFinanceBudgetList(response.data);
       });
     }
   }
@@ -55,7 +55,7 @@ function FinancePage() {
     } else {
       filterFinanceBudgetListRequest(search, !isInDebtChecked, false).then(
         (response) => {
-          setData(response.data);
+          setFinanceBudgetList(response.data);
         }
       );
     }
@@ -69,7 +69,7 @@ function FinancePage() {
     } else {
       filterFinanceBudgetListRequest(search, false, !isPaidChecked).then(
         (response) => {
-          setData(response.data);
+          setFinanceBudgetList(response.data);
         }
       );
     }
@@ -126,7 +126,7 @@ function FinancePage() {
             </tr>
           </thead>
           <tbody>
-            {data.map(
+            {financeBudgetList.map(
               ({
                 budgetId,
                 clientName,
