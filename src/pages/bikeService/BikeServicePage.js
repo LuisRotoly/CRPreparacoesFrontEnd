@@ -8,7 +8,7 @@ import {
 } from "../../services/bikeServiceService";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { isEmpty } from "../../stringHelper";
+import { getFormmatedMoney, isEmpty } from "../../stringHelper";
 import DeleteModal from "../../components/modal/DeleteModal";
 
 function BikeServicePage() {
@@ -92,7 +92,7 @@ function BikeServicePage() {
             {data.map(({ id, name, value }) => (
               <tr key={id}>
                 <td>{name}</td>
-                <td>R$ {value.toFixed(2)}</td>
+                <td>R$ {getFormmatedMoney(value)}</td>
                 <td>
                   <Link to={`/services/edit/${id}`}>
                     <EditIcon className="edit-icon" />

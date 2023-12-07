@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { getBikePartListRequest } from "../services/bikePartService";
 import { useState, useEffect } from "react";
-import { getFormmatedDate, isEmpty } from "../stringHelper";
+import { getFormmatedDate, getFormmatedMoney, isEmpty } from "../stringHelper";
 import AddBikePartSingleSaleModal from "../components/budgetModal/AddBikePartSingleSaleModal";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -75,11 +75,11 @@ function SingleSalePage() {
     singleSaleRelBikePartList.forEach((element) => {
       totalValue = totalValue + element.quantity * element.value;
     });
-    return totalValue.toFixed(2);
+    return getFormmatedMoney(totalValue);
   }
 
   function getLaborOrBikePartTotalValue(quantity, value) {
-    return parseFloat(quantity * value).toFixed(2);
+    return getFormmatedMoney(quantity * value);
   }
 
   return (
@@ -128,7 +128,7 @@ function SingleSalePage() {
                     <tr key={index}>
                       <td>{bikePart.name}</td>
                       <td>{quantity}</td>
-                      <td>R$ {parseFloat(value).toFixed(2)}</td>
+                      <td>R$ {getFormmatedMoney(value)}</td>
                       <td>
                         R$ {getLaborOrBikePartTotalValue(quantity, value)}
                       </td>
