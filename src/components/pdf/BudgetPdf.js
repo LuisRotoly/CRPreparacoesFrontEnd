@@ -1,6 +1,10 @@
 import React from "react";
 import { Page, Text, View, Document, Image } from "@react-pdf/renderer";
-import { getFormmatedDate, isEmpty } from "../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../stringHelper";
 import logo from "../../images/ChicoRacingLogo.png";
 import { styles } from "./PdfConstants";
 
@@ -76,10 +80,10 @@ function BudgetPdf(props) {
               <Text style={styles.row60}>{name}</Text>
               <Text style={styles.row10Centered}>{quantity}</Text>
               <Text style={styles.row15Centered}>
-                R$ {parseFloat(value).toFixed(2)}
+                R$ {getFormmatedMoney(value)}
               </Text>
               <Text style={styles.row15Centered}>
-                R$ {parseFloat(quantity * value).toFixed(2)}
+                R$ {getFormmatedMoney(quantity * value)}
               </Text>
             </View>
           )
@@ -95,7 +99,7 @@ function BudgetPdf(props) {
           <Text style={styles.quantity}></Text>
           <Text style={styles.parts}>Total Serviços</Text>
           <Text style={styles.parts}>
-            R$ {parseFloat(props.totalValueBikeService).toFixed(2)}
+            R$ {getFormmatedMoney(props.totalValueBikeService)}
           </Text>
         </View>
         <View style={styles.row}>
@@ -103,7 +107,7 @@ function BudgetPdf(props) {
           <Text style={styles.quantity}></Text>
           <Text style={styles.parts}>Total Peças</Text>
           <Text style={styles.parts}>
-            R$ {parseFloat(props.totalValueBikePart).toFixed(2)}
+            R$ {getFormmatedMoney(props.totalValueBikePart)}
           </Text>
         </View>
         {isEmpty(props.discountPercentage) ? (
@@ -112,7 +116,7 @@ function BudgetPdf(props) {
             <Text style={styles.quantity}></Text>
             <Text style={styles.value}>Total Geral</Text>
             <Text style={styles.total}>
-              R$ {parseFloat(props.totalValue).toFixed(2)}
+              R$ {getFormmatedMoney(props.totalValue)}
             </Text>
           </View>
         ) : (
@@ -123,7 +127,7 @@ function BudgetPdf(props) {
             <Text style={styles.quantity}></Text>
             <Text style={styles.value}>Total Geral</Text>
             <Text style={styles.total}>
-              R$ {parseFloat(props.totalValue).toFixed(2)}
+              R$ {getFormmatedMoney(props.totalValue)}
             </Text>
           </View>
         )}

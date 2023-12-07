@@ -12,4 +12,8 @@ function getFormmatedDate(date) {
   return new Date(date).toLocaleDateString();
 }
 
-export { getLastSegment, isEmpty, getFormmatedDate };
+function getFormmatedMoney(number) {
+  return parseFloat(number).toFixed(2);
+}
+
+export { getLastSegment, isEmpty, getFormmatedDate, getFormmatedMoney };

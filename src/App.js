@@ -29,6 +29,7 @@ import FinancePage from "./pages/finance/FinancePage";
 import FinancePayPage from "./pages/finance/FinancePayPage";
 import TransformBudgetPage from "./pages/budget/sketch/TransformBudgetPage";
 import SingleSalePage from "./pages/SingleSalePage";
+import SingleSaleFinancePayPage from "./pages/finance/SingleSaleFinancePayPage";
 
 function App() {
   return (
@@ -73,6 +74,10 @@ function App() {
           <Route path="/finance" element={<FinancePage />} />
           <Route path="/finance/pay/:id" element={<FinancePayPage />} />
           <Route path="/singleSale" element={<SingleSalePage />} />
+          <Route
+            path="/finance/singleSalePay/:id"
+            element={<SingleSaleFinancePayPage />}
+          />
         </Route>
       </Routes>
     </div>

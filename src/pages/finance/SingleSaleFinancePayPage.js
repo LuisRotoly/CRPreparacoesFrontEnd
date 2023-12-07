@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import {
-  getFinanceBudgetByIdRequest,
-  getPaymentsListRequest,
-  removePaymentByIdRequest,
-  addPaymentRequest,
-  getToBePaidRequest,
+  getSingleSaleFinanceByIdRequest,
+  getSingleSalePaymentsListByIdRequest,
+  removeSingleSalePaymentByIdRequest,
+  addSingleSalePaymentRequest,
+  getSingleSaleToBePaidRequest,
 } from "../../services/financeService";
 import DeleteModal from "../../components/modal/DeleteModal";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,13 +17,11 @@ import {
   isEmpty,
 } from "../../stringHelper";
 
-function FinancePayPage() {
+function SingleSaleFinancePayPage() {
   const pathname = useParams();
   const navigate = useNavigate();
   const [client, setClient] = useState("");
-  const [plate, setPlate] = useState("");
-  const [bikeNameAndBrand, setBikeNameAndBrand] = useState("");
-  const [financeBudgetList, setFinanceBudgetList] = useState([]);
+  const [singleSaleFinanceList, setSingleSaleFinanceList] = useState([]);
   const [totalValue, setTotalValue] = useState("");
   const [toBePaid, setToBePaid] = useState("");
   const [deleteModal, setDeleteModal] = useState(false);
@@ -35,28 +33,25 @@ function FinancePayPage() {
   const [notes, setNotes] = useState("");
 
   useEffect(() => {
-    getFinanceBudgetByIdRequest(pathname.id).then((response) => {
+    getSingleSaleFinanceByIdRequest(pathname.id).then((response) => {
       setClient(response.data.clientName);
-      setPlate(response.data.plate);
-      setBikeNameAndBrand(response.data.bikeNameAndBrand);
-      setFinanceBudgetList(response.data.financeBudgetList);
       setTotalValue(response.data.totalValue);
       setToBePaid(response.data.toBePaid);
-      setNotes(response.data.notes);
+      setSingleSaleFinanceList(response.data.singleSaleFinanceList);
     });
     getPaymentFormatListRequest().then((response) =>
       setPaymentFormatList(response.data)
     );
   }, [pathname.id]);
 
-  function getFinanceBudgetList() {
-    getPaymentsListRequest(pathname.id).then((response) =>
-      setFinanceBudgetList(response.data)
-    );
+  function getSingleSaleFinanceList() {
+    getSingleSalePaymentsListByIdRequest(pathname.id).then((response) => {
+      setSingleSaleFinanceList(response.data);
+    });
   }
 
   function getToBePaid() {
-    getToBePaidRequest(pathname.id).then((response) =>
+    getSingleSaleToBePaidRequest(pathname.id).then((response) =>
       setToBePaid(response.data)
     );
   }
@@ -75,9 +70,9 @@ function FinancePayPage() {
   }
 
   function deletePayment() {
-    removePaymentByIdRequest(removePayment)
+    removeSingleSalePaymentByIdRequest(removePayment)
       .then(() => {
-        getFinanceBudgetList();
+        getSingleSaleFinanceList();
         getToBePaid();
       })
       .catch((e) => setErrorMessage(e.response.data.message));
@@ -97,9 +92,14 @@ function FinancePayPage() {
 
   function addNewPayment() {
     if (isValidEntrances()) {
-      addPaymentRequest(pathname.id, paymentValue, paymentFormat, notes)
+      addSingleSalePaymentRequest(
+        pathname.id,
+        paymentValue,
+        paymentFormat,
+        notes
+      )
         .then((_) => {
-          getFinanceBudgetList();
+          getSingleSaleFinanceList();
           resetFields();
           getToBePaid();
         })
@@ -125,9 +125,6 @@ function FinancePayPage() {
     <div className="text-center">
       <div className="div-title">
         <p className="page-title">Pagamento do {client}</p>
-        <p>
-          Moto {bikeNameAndBrand}, Placa {plate}
-        </p>
         <p className="font-size-20">
           <span>Valor Total R$ {getFormmatedMoney(totalValue)}</span>
           <span className="magin-left-30">
@@ -192,7 +189,7 @@ function FinancePayPage() {
             </tr>
           </thead>
           <tbody>
-            {financeBudgetList.map(
+            {singleSaleFinanceList.map(
               ({ id, value, notes, paymentFormat, paidAt }) => (
                 <tr key={id}>
                   <td>{getFormmatedDate(paidAt)}</td>
@@ -223,4 +220,4 @@ function FinancePayPage() {
     </div>
   );
 }
-export default FinancePayPage;
+export default SingleSaleFinancePayPage;

@@ -7,7 +7,11 @@ import {
 import Table from "react-bootstrap/Table";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClientDataModal from "../../components/budgetModal/ClientDataModal";
-import { getFormmatedDate, isEmpty } from "../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../stringHelper";
 import PrintIcon from "@mui/icons-material/Print";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import BudgetPdf from "../../components/pdf/BudgetPdf";
@@ -194,9 +198,9 @@ function ViewBudgetPage() {
                     <td>{name}</td>
                     <td>{quantity}</td>
                     <td onClick={() => showCostValue(name)}>
-                      R$ {value.toFixed(2)}
+                      R$ {getFormmatedMoney(value)}
                     </td>
-                    <td>R$ {(quantity * value).toFixed(2)}</td>
+                    <td>R$ {getFormmatedMoney(quantity * value)}</td>
                   </tr>
                 )
               )}
@@ -207,7 +211,7 @@ function ViewBudgetPage() {
         <input type="number" defaultValue={discountPercentage} disabled />
         <span>%</span>
         <p className="mb-0 mt-5 font-size-20 fw-bold">
-          Valor Total: {totalValue.toFixed(2)} Reais
+          Valor Total: {getFormmatedMoney(totalValue)} Reais
         </p>
         <p className="mb-0 mt-3 font-size-20">Status:</p>
         <input type="text" defaultValue={status.description} disabled />

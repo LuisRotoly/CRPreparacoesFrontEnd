@@ -43,3 +43,52 @@ export async function getToBePaidRequest(budgetId) {
 export async function getTotalToReceiveRequest() {
   return await api.get("getTotalToReceive");
 }
+
+export async function getSingleSaleFinanceListRequest() {
+  return await api.get("listSingleSaleFinance");
+}
+
+export async function getSingleSaleFinanceByIdRequest(singleSaleId) {
+  return await api.get("listSingleSaleFinanceById?id=" + singleSaleId);
+}
+
+export async function filterSingleSaleFinanceListRequest(word, isInDebit) {
+  return await api.get(
+    "filterSingleSaleFinanceListRequest?word=" +
+      word +
+      "&isInDebit=" +
+      isInDebit
+  );
+}
+
+export async function getSingleSalePaymentsListByIdRequest(singleSaleId) {
+  return await api.get("getSingleSalePaymentsListById?id=" + singleSaleId);
+}
+
+export async function removeSingleSalePaymentByIdRequest(singleSaleFinanceId) {
+  return await api.delete(
+    "removeSingleSalePaymentById?id=" + singleSaleFinanceId
+  );
+}
+
+export async function addSingleSalePaymentRequest(
+  singleSaleId,
+  paymentValue,
+  paymentFormat,
+  notes
+) {
+  return await api.post("addSingleSalePayment", {
+    singleSaleId: singleSaleId,
+    paymentValue: paymentValue,
+    paymentFormat: paymentFormat,
+    notes: notes,
+  });
+}
+
+export async function getSingleSaleToBePaidRequest(singleSaleId) {
+  return await api.get("getSingleSaleToBePaidById?id=" + singleSaleId);
+}
+
+export async function getSingleSaleTotalToReceiveRequest() {
+  return await api.get("getSingleSaleTotalToReceive");
+}

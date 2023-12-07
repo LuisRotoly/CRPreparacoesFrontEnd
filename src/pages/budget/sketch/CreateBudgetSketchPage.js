@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getFormmatedDate, isEmpty } from "../../../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../../stringHelper";
 import { getBikePartListRequest } from "../../../services/bikePartService";
 import AddBikePartModal from "../../../components/budgetModal/AddBikePartModal";
 import AddBikeServiceModal from "../../../components/budgetModal/AddBikeServiceModal";
@@ -124,7 +128,7 @@ function CreateBudgetSketchPage() {
     laborOrBikePartBudgetSketchList.forEach((element) => {
       totalValue = totalValue + element.quantity * element.value;
     });
-    return totalValue.toFixed(2);
+    return getFormmatedMoney(totalValue);
   }
 
   function showCostValue(laborOrBikePartName) {
@@ -221,9 +225,9 @@ function CreateBudgetSketchPage() {
                       <td>{name}</td>
                       <td>{quantity}</td>
                       <td onClick={() => showCostValue(name)}>
-                        R$ {parseFloat(value).toFixed(2)}
+                        R$ {getFormmatedMoney(value)}
                       </td>
-                      <td>R$ {parseFloat(quantity * value).toFixed(2)}</td>
+                      <td>R$ {getFormmatedMoney(quantity * value)}</td>
                       <td>
                         <DeleteIcon
                           className="default-remove-icon"
