@@ -57,12 +57,18 @@ export async function getSingleSaleFinanceByIdRequest(singleSaleId) {
   return await api.get("listSingleSaleFinanceById?id=" + singleSaleId);
 }
 
-export async function filterSingleSaleFinanceListRequest(word, isInDebit) {
+export async function filterSingleSaleFinanceListRequest(
+  word,
+  isInDebit,
+  isPaid
+) {
   return await api.get(
     "filterSingleSaleFinanceListRequest?word=" +
       word +
       "&isInDebit=" +
-      isInDebit
+      isInDebit +
+      "&isPaid=" +
+      isPaid
   );
 }
 
