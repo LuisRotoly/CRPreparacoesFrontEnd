@@ -4,3 +4,11 @@
   justify-content: flex-end;
   margin-right: 200px;
 }
+
+.filter-status {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 10%;
+  margin: auto;
+}
