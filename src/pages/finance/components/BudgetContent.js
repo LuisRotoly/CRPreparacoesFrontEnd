@@ -15,10 +15,11 @@ import {
 import "../finance.css";
 
 function BudgetContent() {
-  const [data, setData] = useState([]);
+  const [financeBudgetList, setFinanceBudgetList] = useState([]);
   const [search, setSearch] = useState("");
   const [totalToReceive, setTotalToReceive] = useState(0);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isInDebtChecked, setIsInDebtChecked] = useState(false);
+  const [isPaidChecked, setIsPaidChecked] = useState(false);
 
   useEffect(() => {
     getFinanceBudgetList();
@@ -29,36 +30,55 @@ function BudgetContent() {
 
   function getFinanceBudgetList() {
     getFinanceBudgetListRequest().then((response) => {
-      setData(response.data);
+      setFinanceBudgetList(response.data);
     });
   }
 
   function handleSearchChange(event) {
     setSearch(event.target.value);
-    if (isChecked === false && isEmpty(event.target.value)) {
+    if (
+      isPaidChecked === false &&
+      isInDebtChecked === false &&
+      isEmpty(event.target.value)
+    ) {
       getFinanceBudgetList();
     } else {
-      filterFinanceBudgetListRequest(event.target.value, isChecked).then(
-        (response) => {
-          setData(response.data);
-        }
-      );
+      filterFinanceBudgetListRequest(
+        event.target.value,
+        isInDebtChecked,
+        isPaidChecked
+      ).then((response) => {
+        setFinanceBudgetList(response.data);
+      });
     }
   }
 
-  function handleIsCheckedChange() {
-    if (!isChecked === true) {
-      filterFinanceBudgetListRequest(search, !isChecked).then((response) => {
-        setData(response.data);
-      });
-    } else if (!isChecked === false && isEmpty(search)) {
+  function handleIsInDebtCheckedChange() {
+    if (!isInDebtChecked === false && isEmpty(search)) {
       getFinanceBudgetList();
     } else {
-      filterFinanceBudgetListRequest(search, !isChecked).then((response) => {
-        setData(response.data);
-      });
+      filterFinanceBudgetListRequest(search, !isInDebtChecked, false).then(
+        (response) => {
+          setFinanceBudgetList(response.data);
+        }
+      );
     }
-    setIsChecked(!isChecked);
+    setIsInDebtChecked(!isInDebtChecked);
+    setIsPaidChecked(false);
+  }
+
+  function handleIsPaidCheckedChange() {
+    if (!isPaidChecked === false && isEmpty(search)) {
+      getFinanceBudgetList();
+    } else {
+      filterFinanceBudgetListRequest(search, false, !isPaidChecked).then(
+        (response) => {
+          setFinanceBudgetList(response.data);
+        }
+      );
+    }
+    setIsPaidChecked(!isPaidChecked);
+    setIsInDebtChecked(false);
   }
 
   return (
@@ -72,14 +92,25 @@ function BudgetContent() {
           value={search}
           onChange={handleSearchChange}
         />
-        <div className="mt-3">
-          <input
-            className="me-1"
-            type="checkbox"
-            defaultChecked={isChecked}
-            onChange={handleIsCheckedChange}
-          />
-          <span>Em débito</span>
+        <div className="filter-status mt-3">
+          <div>
+            <input
+              className="me-1"
+              type="checkbox"
+              checked={isInDebtChecked}
+              onChange={handleIsInDebtCheckedChange}
+            />
+            <span>Em débito</span>
+          </div>
+          <div>
+            <input
+              className="me-1"
+              type="checkbox"
+              checked={isPaidChecked}
+              onChange={handleIsPaidCheckedChange}
+            />
+            <span>Pago</span>
+          </div>
         </div>
         <span className="total-to-receive">
           Total a Receber: R$ {getFormmatedMoney(totalToReceive)}
@@ -99,7 +130,7 @@ function BudgetContent() {
             </tr>
           </thead>
           <tbody>
-            {data.map(
+            {financeBudgetList.map(
               ({
                 budgetId,
                 clientName,

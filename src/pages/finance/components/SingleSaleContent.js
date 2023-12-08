@@ -15,54 +15,70 @@ import {
 import "../finance.css";
 
 function SingleSaleContent() {
-  const [data, setData] = useState([]);
+  const [singleSaleFinanceList, setSingleSaleFinanceList] = useState([]);
   const [search, setSearch] = useState("");
   const [totalToReceive, setTotalToReceive] = useState(0);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isInDebtChecked, setIsInDebtChecked] = useState(false);
+  const [isPaidChecked, setIsPaidChecked] = useState(false);
 
   useEffect(() => {
-    getFinanceBudgetList();
+    getSingleSaleFinanceList();
     getSingleSaleTotalToReceiveRequest().then((response) =>
       setTotalToReceive(response.data)
     );
   }, []);
 
-  function getFinanceBudgetList() {
+  function getSingleSaleFinanceList() {
     getSingleSaleFinanceListRequest().then((response) => {
-      setData(response.data);
+      setSingleSaleFinanceList(response.data);
     });
   }
 
   function handleSearchChange(event) {
     setSearch(event.target.value);
-    if (isChecked === false && isEmpty(event.target.value)) {
-      getFinanceBudgetList();
+    if (
+      isPaidChecked === false &&
+      isInDebtChecked === false &&
+      isEmpty(event.target.value)
+    ) {
+      getSingleSaleFinanceList();
     } else {
-      filterSingleSaleFinanceListRequest(event.target.value, isChecked).then(
-        (response) => {
-          setData(response.data);
-        }
-      );
+      filterSingleSaleFinanceListRequest(
+        event.target.value,
+        isInDebtChecked,
+        isPaidChecked
+      ).then((response) => {
+        setSingleSaleFinanceList(response.data);
+      });
     }
   }
 
-  function handleIsCheckedChange() {
-    if (!isChecked === true) {
-      filterSingleSaleFinanceListRequest(search, !isChecked).then(
-        (response) => {
-          setData(response.data);
-        }
-      );
-    } else if (!isChecked === false && isEmpty(search)) {
-      getFinanceBudgetList();
+  function handleIsInDebtCheckedChange() {
+    if (!isInDebtChecked === false && isEmpty(search)) {
+      getSingleSaleFinanceList();
     } else {
-      filterSingleSaleFinanceListRequest(search, !isChecked).then(
+      filterSingleSaleFinanceListRequest(search, !isInDebtChecked, false).then(
         (response) => {
-          setData(response.data);
+          setSingleSaleFinanceList(response.data);
         }
       );
     }
-    setIsChecked(!isChecked);
+    setIsInDebtChecked(!isInDebtChecked);
+    setIsPaidChecked(false);
+  }
+
+  function handleIsPaidCheckedChange() {
+    if (!isPaidChecked === false && isEmpty(search)) {
+      getSingleSaleFinanceList();
+    } else {
+      filterSingleSaleFinanceListRequest(search, false, !isPaidChecked).then(
+        (response) => {
+          setSingleSaleFinanceList(response.data);
+        }
+      );
+    }
+    setIsPaidChecked(!isPaidChecked);
+    setIsInDebtChecked(false);
   }
 
   return (
@@ -76,14 +92,25 @@ function SingleSaleContent() {
           value={search}
           onChange={handleSearchChange}
         />
-        <div className="mt-3">
-          <input
-            className="me-1"
-            type="checkbox"
-            defaultChecked={isChecked}
-            onChange={handleIsCheckedChange}
-          />
-          <span>Em débito</span>
+        <div className="filter-status mt-3">
+          <div>
+            <input
+              className="me-1"
+              type="checkbox"
+              checked={isInDebtChecked}
+              onChange={handleIsInDebtCheckedChange}
+            />
+            <span>Em débito</span>
+          </div>
+          <div>
+            <input
+              className="me-1"
+              type="checkbox"
+              checked={isPaidChecked}
+              onChange={handleIsPaidCheckedChange}
+            />
+            <span>Pago</span>
+          </div>
         </div>
         <span className="total-to-receive">
           Total a Receber: R$ {getFormmatedMoney(totalToReceive)}
@@ -101,7 +128,7 @@ function SingleSaleContent() {
             </tr>
           </thead>
           <tbody>
-            {data.map(
+            {singleSaleFinanceList.map(
               ({
                 singleSaleId,
                 clientName,
