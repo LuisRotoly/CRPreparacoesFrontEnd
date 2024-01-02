@@ -80,6 +80,10 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Times-Bold",
   },
+  warranty: {
+    fontSize: 12,
+    textAlign: "center",
+  },
   row50Centered: {
     width: "50%",
     textAlign: "center",

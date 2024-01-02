@@ -26,7 +26,8 @@ export async function addBudgetRequest(
   discountPercentage,
   status,
   notes,
-  problems
+  problems,
+  warranty
 ) {
   return await api.post("addBudget", {
     clientId: clientId,
@@ -41,6 +42,7 @@ export async function addBudgetRequest(
     status: status,
     notes: notes,
     problems: problems,
+    warranty: warranty,
   });
 }
 
@@ -52,7 +54,8 @@ export async function editBudgetRequest(
   discountPercentage,
   status,
   notes,
-  problems
+  problems,
+  warranty
 ) {
   return await api.post("editBudget", {
     id: id,
@@ -63,6 +66,7 @@ export async function editBudgetRequest(
     status: status,
     notes: notes,
     problems: problems,
+    warranty: warranty,
   });
 }
 
@@ -91,4 +95,8 @@ export async function getListBudgetByClientIdRequest(clientId) {
 
 export async function getBudgetHistoryByBikePartIdRequest(bikePartId) {
   return await api.get("getBudgetHistoryByBikePartId?bikePartId=" + bikePartId);
+}
+
+export async function reopenBudgetByIdRequest(id) {
+  return await api.put("reopenBudget?budgetId=" + id);
 }

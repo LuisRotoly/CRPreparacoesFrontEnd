@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   editBudgetNotesRequest,
   getBudgetByIdRequest,
+  reopenBudgetByIdRequest,
 } from "../../services/budgetService";
 import Table from "react-bootstrap/Table";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -44,6 +45,7 @@ function ViewBudgetPage() {
   const [cost, setCost] = useState("");
   const [costModal, setCostModal] = useState(false);
   const [problems, setProblems] = useState("");
+  const [warranty, setWarranty] = useState("");
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -63,6 +65,7 @@ function ViewBudgetPage() {
       setKilometersDriven(response.data.kilometersDriven);
       setNotes(response.data.notes);
       setProblems(response.data.problems);
+      setWarranty(response.data.warranty);
       setCreatedDate(response.data.createdAt);
       getAddress(response.data.client.cep);
       setPdfClientData([
@@ -128,6 +131,10 @@ function ViewBudgetPage() {
     setCostModal(false);
   }
 
+  function reopenBudget() {
+    reopenBudgetByIdRequest(pathname.id).then((_) => gotoBackPage());
+  }
+
   return (
     <div className="text-center mt-5">
       <div>
@@ -146,6 +153,7 @@ function ViewBudgetPage() {
                 totalValue={totalValue}
                 createdDate={createdDate}
                 problems={problems}
+                warranty={warranty}
               />
             }
             fileName={client + "-orcamento.pdf"}
@@ -215,6 +223,8 @@ function ViewBudgetPage() {
         </p>
         <p className="mb-0 mt-3 font-size-20">Status:</p>
         <input type="text" defaultValue={status.description} disabled />
+        <p className="mb-0 mt-3 font-size-20">Garantia:</p>
+        <input type="text" defaultValue={warranty} disabled />
         <p className="mb-0 mt-3 font-size-20">Observações:</p>
         <textarea
           className="text-area-size"
@@ -227,9 +237,14 @@ function ViewBudgetPage() {
           <button className="btn btn-primary me-3" onClick={gotoBackPage}>
             Voltar
           </button>
-          <button className="btn btn-success" onClick={editBudget}>
+          <button className="btn btn-success me-3" onClick={editBudget}>
             Atualizar
           </button>
+          {status.description === "Finalizado" ? (
+            <button className="btn btn-info" onClick={reopenBudget}>
+              Reabrir
+            </button>
+          ) : null}
         </div>
       </div>
       <ClientDataModal

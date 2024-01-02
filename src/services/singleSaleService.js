@@ -12,3 +12,7 @@ export async function getSingleSaleHistoryByBikePartIdRequest(bikePartId) {
     "getSingleSaleHistoryByBikePartId?bikePartId=" + bikePartId
   );
 }
+
+export async function getSingleSaleByIdRequest(singleSaleId) {
+  return await api.get("getSingleSaleById?singleSaleId=" + singleSaleId);
+}
