@@ -13,6 +13,7 @@ import {
   getSingleSaleTotalToReceiveRequest,
 } from "../../../services/financeService";
 import "../finance.css";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function SingleSaleContent() {
   const [singleSaleFinanceList, setSingleSaleFinanceList] = useState([]);
@@ -118,16 +119,17 @@ function SingleSaleContent() {
       </div>
       <div className="align-center">
         <Table className="table-preferences">
-          <thead>
+          <thead className="scroll-thead">
             <tr>
               <th>Data de Finalização</th>
               <th>Cliente</th>
               <th>Valor Total</th>
               <th>Resta à Pagar</th>
               <th>Pagar</th>
+              <th>Visualizar</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="scroll-tbody">
             {singleSaleFinanceList.map(
               ({
                 singleSaleId,
@@ -136,7 +138,7 @@ function SingleSaleContent() {
                 toBePaid,
                 totalValue,
               }) => (
-                <tr key={singleSaleId}>
+                <tr key={singleSaleId} className="scroll-trow">
                   <td>{getFormmatedDate(finalizedAt)}</td>
                   <td>{clientName}</td>
                   <td>R$ {getFormmatedMoney(totalValue)}</td>
@@ -144,6 +146,11 @@ function SingleSaleContent() {
                   <td>
                     <Link to={`/finance/singleSalePay/${singleSaleId}`}>
                       <AttachMoneyIcon className="money-icon" />
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/singleSale/view/${singleSaleId}`}>
+                      <VisibilityIcon />
                     </Link>
                   </td>
                 </tr>

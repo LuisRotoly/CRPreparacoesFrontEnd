@@ -45,6 +45,7 @@ function CreateBudgetPage() {
   const [cost, setCost] = useState("");
   const [costModal, setCostModal] = useState(false);
   const [problems, setProblems] = useState("");
+  const [warranty, setWarranty] = useState("");
 
   useEffect(() => {
     getClientsListRequest().then((response) => setClientList(response.data));
@@ -86,6 +87,7 @@ function CreateBudgetPage() {
     setStatus("");
     setDiscountPercentage("");
     setNotes("");
+    setWarranty("");
   }
 
   function handleBikeChange(event) {
@@ -98,6 +100,10 @@ function CreateBudgetPage() {
 
   function handleStatusChange(event) {
     setStatus(statusList[event.target.selectedIndex - 1]);
+  }
+
+  function handleWarrantyChange(event) {
+    setWarranty(event.target.value);
   }
 
   function handleNotesChange(event) {
@@ -144,7 +150,8 @@ function CreateBudgetPage() {
         discountPercentage,
         status,
         notes,
-        problems
+        problems,
+        warranty
       )
         .then((_) => setSuccessMessage("Orçamento criado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
@@ -383,6 +390,13 @@ function CreateBudgetPage() {
                   );
                 })}
               </select>
+              <p className="mb-0 mt-3 font-size-20">Garantia:</p>
+              <input
+                type="text"
+                maxLength={100}
+                value={warranty}
+                onChange={handleWarrantyChange}
+              />
               <p className="mb-0 mt-3 font-size-20">Observações:</p>
               <textarea
                 className="text-area-size"

@@ -59,6 +59,7 @@ function EditBudgetPage() {
   const [cost, setCost] = useState("");
   const [costModal, setCostModal] = useState(false);
   const [problems, setProblems] = useState("");
+  const [warranty, setWarranty] = useState("");
 
   useEffect(() => {
     getBudgetByIdRequest(pathname.id).then((response) => {
@@ -78,6 +79,7 @@ function EditBudgetPage() {
       setKilometersDriven(response.data.kilometersDriven);
       setNotes(response.data.notes);
       setProblems(response.data.problems);
+      setWarranty(response.data.warranty);
       setCreatedDate(response.data.createdAt);
       getAddress(response.data.client.cep);
       setPdfClientData([
@@ -110,6 +112,10 @@ function EditBudgetPage() {
 
   function handleStatusChange(event) {
     setStatus(statusList[event.target.selectedIndex]);
+  }
+
+  function handleWarrantyChange(event) {
+    setWarranty(event.target.value);
   }
 
   function handleKilometersDrivenChange(event) {
@@ -161,7 +167,8 @@ function EditBudgetPage() {
         discountPercentage,
         status,
         notes,
-        problems
+        problems,
+        warranty
       )
         .then((_) => setSuccessMessage("Orçamento editado com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
@@ -312,6 +319,7 @@ function EditBudgetPage() {
                   totalValue={totalValue}
                   createdDate={createdDate}
                   problems={problems}
+                  warranty={warranty}
                 />
               }
               fileName={client + "-orcamento.pdf"}
@@ -430,6 +438,12 @@ function EditBudgetPage() {
               );
             })}
           </select>
+          <p className="mb-0 mt-3 font-size-20">Garantia:</p>
+          <input
+            type="text"
+            defaultValue={warranty}
+            onChange={handleWarrantyChange}
+          />
           <p className="mb-0 mt-3 font-size-20">Observações:</p>
           <textarea
             className="text-area-size"

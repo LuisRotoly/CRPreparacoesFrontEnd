@@ -74,7 +74,7 @@ function BudgetFullContent() {
         setData(response.data);
       });
     } else {
-      let newList = [Array(statusList.length).fill(false)];
+      let newList = Array(statusList.length).fill(false);
       newList[index] = true;
       setIsChecked(newList);
       setStatusId(id);

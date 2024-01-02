@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { getBikePartListRequest } from "../services/bikePartService";
+import { getBikePartListRequest } from "../../services/bikePartService";
 import { useState, useEffect } from "react";
-import { getFormmatedDate, getFormmatedMoney, isEmpty } from "../stringHelper";
-import AddBikePartSingleSaleModal from "../components/budgetModal/AddBikePartSingleSaleModal";
+import {
+  getFormmatedDate,
+  getFormmatedMoney,
+  isEmpty,
+} from "../../stringHelper";
+import AddBikePartSingleSaleModal from "../../components/budgetModal/AddBikePartSingleSaleModal";
 import Table from "react-bootstrap/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addSingleSaleRequest } from "../services/singleSaleService";
+import { addSingleSaleRequest } from "../../services/singleSaleService";
 
 function SingleSalePage() {
   const navigate = useNavigate();

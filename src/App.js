@@ -28,8 +28,9 @@ import EditBudgetSketchPage from "./pages/budget/sketch/EditBudgetSketchPage";
 import FinancePage from "./pages/finance/FinancePage";
 import FinancePayPage from "./pages/finance/FinancePayPage";
 import TransformBudgetPage from "./pages/budget/sketch/TransformBudgetPage";
-import SingleSalePage from "./pages/SingleSalePage";
+import SingleSalePage from "./pages/singleSale/SingleSalePage";
 import SingleSaleFinancePayPage from "./pages/finance/SingleSaleFinancePayPage";
+import ViewSingleSalePage from "./pages/singleSale/ViewSingleSalePage";
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           <Route path="/finance" element={<FinancePage />} />
           <Route path="/finance/pay/:id" element={<FinancePayPage />} />
           <Route path="/singleSale" element={<SingleSalePage />} />
+          <Route path="/singleSale/view/:id" element={<ViewSingleSalePage />} />
           <Route
             path="/finance/singleSalePay/:id"
             element={<SingleSaleFinancePayPage />}

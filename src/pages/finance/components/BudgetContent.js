@@ -118,7 +118,7 @@ function BudgetContent() {
       </div>
       <div className="align-center">
         <Table className="table-preferences">
-          <thead>
+          <thead className="scroll-thead">
             <tr>
               <th>Data de Finalização</th>
               <th>Cliente</th>
@@ -129,7 +129,7 @@ function BudgetContent() {
               <th>Pagar</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="scroll-tbody">
             {financeBudgetList.map(
               ({
                 budgetId,
@@ -140,7 +140,7 @@ function BudgetContent() {
                 toBePaid,
                 totalValue,
               }) => (
-                <tr key={budgetId}>
+                <tr key={budgetId} className="scroll-trow">
                   <td>{getFormmatedDate(finalizedAt)}</td>
                   <td>{clientName}</td>
                   <td>{plate}</td>
