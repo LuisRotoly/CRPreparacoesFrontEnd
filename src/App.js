@@ -21,8 +21,6 @@ import BudgetPage from "./pages/budget/BudgetPage";
 import CreateBudgetPage from "./pages/budget/CreateBudgetPage";
 import EditBudgetPage from "./pages/budget/EditBudgetPage";
 import ViewBudgetPage from "./pages/budget/ViewBudgetPage";
-import StockPage from "./pages/stock/StockPage";
-import EditStockPage from "./pages/stock/EditStockPage";
 import CreateBudgetSketchPage from "./pages/budget/sketch/CreateBudgetSketchPage";
 import EditBudgetSketchPage from "./pages/budget/sketch/EditBudgetSketchPage";
 import FinancePage from "./pages/finance/FinancePage";
@@ -31,6 +29,7 @@ import TransformBudgetPage from "./pages/budget/sketch/TransformBudgetPage";
 import SingleSalePage from "./pages/singleSale/SingleSalePage";
 import SingleSaleFinancePayPage from "./pages/finance/SingleSaleFinancePayPage";
 import ViewSingleSalePage from "./pages/singleSale/ViewSingleSalePage";
+import ReportPage from "./pages/report/ReportPage";
 
 function App() {
   return (
@@ -48,8 +47,6 @@ function App() {
           <Route path="/part" element={<BikePartPage />} />
           <Route path="/part/create" element={<CreateBikePartPage />} />
           <Route path="/part/edit/:id" element={<EditBikePartPage />} />
-          <Route path="/stock" element={<StockPage />} />
-          <Route path="/stock/edit/:id" element={<EditStockPage />} />
           <Route path="/supplier" element={<SupplierPage />} />
           <Route path="/supplier/create" element={<CreateSupplierPage />} />
           <Route path="/supplier/edit/:id" element={<EditSupplierPage />} />
@@ -80,6 +77,7 @@ function App() {
             path="/finance/singleSalePay/:id"
             element={<SingleSaleFinancePayPage />}
           />
+          <Route path="/report" element={<ReportPage />} />
         </Route>
       </Routes>
     </div>

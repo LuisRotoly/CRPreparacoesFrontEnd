@@ -33,7 +33,8 @@ export async function editBikePartRequest(
   name,
   value,
   profitPercentage,
-  notes
+  notes,
+  stockQuantity
 ) {
   return await api.post("editBikePart", {
     id: id,
@@ -41,6 +42,7 @@ export async function editBikePartRequest(
     value: value,
     profitPercentage: profitPercentage,
     notes: notes,
+    stockQuantity: stockQuantity,
   });
 }
 

@@ -345,7 +345,16 @@ function EditClientPage() {
               Adicionar Moto
             </button>
           </div>
-          <p className="mb-2 mt-5 font-size-22">Histórico de Serviços</p>
+          <div className="text-center mt-4">
+            <button className="btn btn-primary me-3" onClick={gotoBackPage}>
+              Voltar
+            </button>
+            <button className="btn btn-success" onClick={editClient}>
+              Editar
+            </button>
+          </div>
+          <p className="text-danger font-size-18">{errorMessage}</p>
+          <p className="mb-2 mt-4 font-size-22">Histórico de Serviços</p>
           <div className="align-center">
             <Table className="table-preferences">
               <thead className="scroll-thead">
@@ -388,15 +397,6 @@ function EditClientPage() {
               </tbody>
             </Table>
           </div>
-          <div className="text-center mt-4">
-            <button className="btn btn-primary me-3" onClick={gotoBackPage}>
-              Voltar
-            </button>
-            <button className="btn btn-success" onClick={editClient}>
-              Editar
-            </button>
-          </div>
-          <p className="text-danger font-size-18">{errorMessage}</p>
         </div>
       )}
       <CreateNewBikeClientModal

@@ -280,6 +280,7 @@ function EditBudgetSketchPage() {
                       totalValueBikeService={totalValueBikeService}
                       totalValue={totalValue}
                       createdDate={createdDate}
+                      warranty={""}
                     />
                   }
                   fileName={client + "-orcamento.pdf"}
