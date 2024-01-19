@@ -10,10 +10,10 @@ function TopBar() {
         <TopBarItem url="/client" title="Clientes" />
         <TopBarItem url="/bike" title="Motos" />
         <TopBarItem url="/part" title="Peças" />
-        <TopBarItem url="/stock" title="Estoque" />
         <TopBarItem url="/services" title="Serviços" />
         <TopBarItem url="/supplier" title="Fornecedores" />
         <TopBarItem url="/finance" title="Financeiro" />
+        <TopBarItem url="/report" title="Relatório" />
       </div>
     </div>
   );

@@ -36,6 +36,12 @@ function BikePartPage() {
     navigate("/part/create");
   }
 
+  function getColor(stockQuantity) {
+    if (stockQuantity <= 0) {
+      return "text-danger";
+    }
+  }
+
   return (
     <div>
       <div className="text-center div-title">
@@ -58,26 +64,32 @@ function BikePartPage() {
             <tr>
               <th>Peça</th>
               <th>Valor</th>
+              <th>Qtd Estoque</th>
               <th>Editar</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(({ id, name, value, profitPercentage }) => {
-              let finalValue =
-                parseFloat(value) +
-                (parseFloat(value) * parseFloat(profitPercentage)) / 100;
-              return (
-                <tr key={id}>
-                  <td>{name}</td>
-                  <td>R$ {getFormmatedMoney(finalValue)}</td>
-                  <td>
-                    <Link to={`/part/edit/${id}`}>
-                      <EditIcon className="edit-icon" />
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {data.map(
+              ({ id, name, value, profitPercentage, stockQuantity }) => {
+                let finalValue =
+                  parseFloat(value) +
+                  (parseFloat(value) * parseFloat(profitPercentage)) / 100;
+                return (
+                  <tr key={id}>
+                    <td>{name}</td>
+                    <td>R$ {getFormmatedMoney(finalValue)}</td>
+                    <td className={getColor(stockQuantity)}>
+                      {stockQuantity} peças
+                    </td>
+                    <td>
+                      <Link to={`/part/edit/${id}`}>
+                        <EditIcon className="edit-icon" />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </Table>
       </div>

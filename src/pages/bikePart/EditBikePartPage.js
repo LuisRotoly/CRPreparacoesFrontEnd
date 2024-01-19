@@ -21,6 +21,7 @@ function EditBikePartPage() {
   const [notes, setNotes] = useState("");
   const [budgetList, setBudgetList] = useState([]);
   const [singleSaleList, setSingleSaleList] = useState([]);
+  const [stockQuantity, setStockQuantity] = useState("");
 
   useEffect(() => {
     getBikePartByIdRequest(pathname.id).then((response) => {
@@ -29,6 +30,7 @@ function EditBikePartPage() {
       setProfitPercentage(response.data.profitPercentage);
       setFinalValue(response.data.finalValue);
       setNotes(response.data.notes);
+      setStockQuantity(response.data.stockQuantity);
     });
     getBudgetHistoryByBikePartIdRequest(pathname.id).then((response) =>
       setBudgetList(response.data)
@@ -37,6 +39,10 @@ function EditBikePartPage() {
       setSingleSaleList(response.data)
     );
   }, [pathname.id]);
+
+  function handleStockQuantityChange(event) {
+    setStockQuantity(event.target.value);
+  }
 
   function handleProfitPercentageChange(event) {
     setProfitPercentage(event.target.value);
@@ -55,12 +61,24 @@ function EditBikePartPage() {
   }
 
   function isValidEntrances() {
-    return !isEmpty(name) && !isEmpty(value) && !isEmpty(profitPercentage);
+    return (
+      !isEmpty(name) &&
+      !isEmpty(value) &&
+      !isEmpty(profitPercentage) &&
+      !isEmpty(stockQuantity)
+    );
   }
 
   function editBikePart() {
     if (isValidEntrances()) {
-      editBikePartRequest(pathname.id, name, value, profitPercentage, notes)
+      editBikePartRequest(
+        pathname.id,
+        name,
+        value,
+        profitPercentage,
+        notes,
+        stockQuantity
+      )
         .then((_) => setSuccessMessage("Peça editada com sucesso!"))
         .catch((e) => setErrorMessage(e.response.data.message));
     } else {
@@ -100,6 +118,13 @@ function EditBikePartPage() {
             value={name}
             onChange={handleNameChange}
           />
+          <p className="mb-0 mt-3 font-size-20">Quantidade Estoque*:</p>
+          <input
+            type="number"
+            required
+            value={stockQuantity}
+            onChange={handleStockQuantityChange}
+          />
           <p className="mb-0 mt-3 font-size-20">Valor:*</p>
           <input
             type="number"
@@ -130,6 +155,15 @@ function EditBikePartPage() {
             value={notes}
             onChange={handleNotesChange}
           />
+          <div className="text-center mt-4">
+            <button className="btn btn-primary me-3" onClick={gotoBackPage}>
+              Voltar
+            </button>
+            <button className="btn btn-success" onClick={editBikePart}>
+              Editar
+            </button>
+          </div>
+          <p className="text-danger font-size-18">{errorMessage}</p>
           <p className="mb-2 mt-4 font-size-22">Histórico de Orçamentos</p>
           <div className="align-center">
             <Table className="table-preferences">
@@ -190,15 +224,6 @@ function EditBikePartPage() {
               </tbody>
             </Table>
           </div>
-          <div className="text-center mt-4">
-            <button className="btn btn-primary me-3" onClick={gotoBackPage}>
-              Voltar
-            </button>
-            <button className="btn btn-success" onClick={editBikePart}>
-              Editar
-            </button>
-          </div>
-          <p className="text-danger font-size-18">{errorMessage}</p>
         </div>
       )}
     </div>
