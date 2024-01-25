@@ -1,89 +1,50 @@
-import { Chart } from "react-google-charts";
-import { useEffect, useState } from "react";
-import { getReportDataRequest } from "../../services/reportService";
+import { useState } from "react";
+import GrossIncome from "../../components/charts/GrossIncome";
+import NetRevenue from "../../components/charts/NetRevenue";
+import BikePartSpent from "../../components/charts/BikePartSpent";
 
 function ReportPage() {
-  const [year, setYear] = useState(
-    new Date().getFullYear().toString().substr(-4)
-  );
-  const [reportData, setReportData] = useState([]);
-  const meses = [
-    "Ano",
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-  ];
-  const data = [meses, formmatValueArray()];
+  const [buttonSelection, setButtonSelection] = useState("");
 
-  function formmatValueArray() {
-    const valueArray = [year.toString()];
-    for (let k = 0; k < reportData.length; k++) {
-      valueArray.push(reportData[k]);
+  function changeChart(chartName) {
+    setButtonSelection(chartName);
+  }
+
+  function isButtonActive(chartName) {
+    if (buttonSelection === chartName) {
+      return "btn btn-primary me-3";
+    } else {
+      return "btn btn-outline-primary me-3";
     }
-    return valueArray;
   }
-
-  function changeYear(year) {
-    setYear(year);
-    getReportDataRequest(year).then((response) => {
-      setReportData(response.data);
-    });
-    formmatValueArray();
-  }
-
-  const options = {
-    title: "Receita Total Oficina",
-    hAxis: {
-      title: "Ano",
-    },
-    vAxis: {
-      title: "Valores em Reais",
-    },
-    backgroundColor: "transparent",
-  };
-
-  useEffect(() => {
-    getReportDataRequest(year).then((response) => {
-      setReportData(response.data);
-    });
-  }, [year]);
 
   return (
     <div>
       <div className="text-center div-title">
-        <p className="font-size-22">Selecione o Ano:</p>
+        <p className="font-size-22">Selecione o gráfico:</p>
         <button
-          className="btn btn-primary me-3"
-          onClick={(e) => changeYear(year - 1)}
+          className={isButtonActive("grossIncome")}
+          onClick={(e) => changeChart("grossIncome")}
         >
-          Anterior
+          Receita Bruta
         </button>
-
-        <span className="me-3 font-size-18">{year}</span>
         <button
-          className="btn btn-primary"
-          onClick={(e) => changeYear(year + 1)}
+          className={isButtonActive("netRevenue")}
+          onClick={(e) => changeChart("netRevenue")}
         >
-          Próximo
+          Receita Líquida
+        </button>
+        <button
+          className={isButtonActive("bikePartSpent")}
+          onClick={(e) => changeChart("bikePartSpent")}
+        >
+          Gastos com peças
         </button>
       </div>
-      <div align="center">
-        <Chart
-          chartType="ColumnChart"
-          width="80%"
-          height="500px"
-          data={data}
-          options={options}
-        />
+      <div className="mt-5">
+        {buttonSelection === "grossIncome" ? <GrossIncome /> : null}
+        {buttonSelection === "netRevenue" ? <NetRevenue /> : null}
+        {buttonSelection === "bikePartSpent" ? <BikePartSpent /> : null}
       </div>
     </div>
   );
