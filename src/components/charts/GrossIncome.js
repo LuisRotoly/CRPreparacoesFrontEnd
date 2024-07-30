@@ -1,10 +1,11 @@
 import { Chart } from "react-google-charts";
 import { useEffect, useState } from "react";
 import { getGrossIncomeDataRequest } from "../../services/reportService";
+import Spinner from "react-bootstrap/Spinner";
 
 function GrossIncome() {
   const [year, setYear] = useState(
-    new Date().getFullYear().toString().substr(-4)
+    parseInt(new Date().getFullYear().toString().substr(-4))
   );
   const [grossIncomeData, setGrossIncomeData] = useState([]);
   const meses = [
@@ -23,6 +24,7 @@ function GrossIncome() {
     "Dezembro",
   ];
   const data = [meses, formmatValueArray()];
+  const [loader, setLoader] = useState(true);
 
   function formmatValueArray() {
     const valueArray = [year.toString()];
@@ -36,11 +38,13 @@ function GrossIncome() {
   }
 
   function changeYear(year) {
+    setLoader(true);
     setYear(year);
     getGrossIncomeDataRequest(year).then((response) => {
       setGrossIncomeData(response.data);
     });
     formmatValueArray();
+    setLoader(false);
   }
 
   const options = {
@@ -57,6 +61,7 @@ function GrossIncome() {
   useEffect(() => {
     getGrossIncomeDataRequest(year).then((response) => {
       setGrossIncomeData(response.data);
+      setLoader(false);
     });
   }, [year]);
 
@@ -80,13 +85,19 @@ function GrossIncome() {
         </button>
       </div>
       <div align="center">
-        <Chart
-          chartType="ColumnChart"
-          width="80%"
-          height="500px"
-          data={data}
-          options={options}
-        />
+        {!loader ? (
+          <Chart
+            chartType="ColumnChart"
+            width="80%"
+            height="500px"
+            data={data}
+            options={options}
+          />
+        ) : (
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
       </div>
     </div>
   );

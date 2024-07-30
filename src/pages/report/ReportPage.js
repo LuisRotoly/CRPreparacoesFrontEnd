@@ -38,7 +38,7 @@ function ReportPage() {
           className={isButtonActive("bikePartSpent")}
           onClick={(e) => changeChart("bikePartSpent")}
         >
-          Gastos com peças
+          Gastos
         </button>
       </div>
       <div className="mt-5">

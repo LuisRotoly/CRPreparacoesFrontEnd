@@ -46,6 +46,14 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     width: "15%",
   },
+  row20Centered: {
+    textAlign: "center",
+    width: "20%",
+  },
+  row25Centered: {
+    textAlign: "center",
+    width: "25%",
+  },
   spaceTop: {
     marginTop: 20,
   },
@@ -59,6 +67,36 @@ export const styles = StyleSheet.create({
   },
   quantity: {
     width: "10%",
+    fontSize: 16,
+    textAlign: "center",
+    fontFamily: "Times-Bold",
+  },
+  paymentData: {
+    width: "25%",
+    fontSize: 14,
+    textAlign: "center",
+    fontFamily: "Times-Bold",
+  },
+  paymentNotes: {
+    width: "40%",
+    fontSize: 14,
+    textAlign: "center",
+    fontFamily: "Times-Bold",
+  },
+  paymentFormat: {
+    width: "20%",
+    fontSize: 14,
+    textAlign: "center",
+    fontFamily: "Times-Bold",
+  },
+  paymentTotal: {
+    width: "15%",
+    fontSize: 14,
+    textAlign: "center",
+    fontFamily: "Times-Bold",
+  },
+  totalToBePaid: {
+    width: "25%",
     fontSize: 16,
     textAlign: "center",
     fontFamily: "Times-Bold",
@@ -77,6 +115,11 @@ export const styles = StyleSheet.create({
   },
   data: {
     fontSize: 16,
+    textAlign: "center",
+    fontFamily: "Times-Bold",
+  },
+  paymentFinalData: {
+    fontSize: 14,
     textAlign: "center",
     fontFamily: "Times-Bold",
   },
