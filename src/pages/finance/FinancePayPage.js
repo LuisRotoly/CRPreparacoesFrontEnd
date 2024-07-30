@@ -16,6 +16,9 @@ import {
   getFormmatedMoney,
   isEmpty,
 } from "../../stringHelper";
+import PrintIcon from "@mui/icons-material/Print";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PaymentPdf from "../../components/pdf/PaymentPdf";
 
 function FinancePayPage() {
   const pathname = useParams();
@@ -33,6 +36,7 @@ function FinancePayPage() {
   const [paymentValue, setPaymentValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [notes, setNotes] = useState("");
+  const [finalizedAt, setFinalizedAt] = useState("");
 
   useEffect(() => {
     getFinanceBudgetByIdRequest(pathname.id).then((response) => {
@@ -42,6 +46,7 @@ function FinancePayPage() {
       setFinanceBudgetList(response.data.financeBudgetList);
       setTotalValue(response.data.totalValue);
       setToBePaid(response.data.toBePaid);
+      setFinalizedAt(response.data.finalizedAt);
     });
     getPaymentFormatListRequest().then((response) =>
       setPaymentFormatList(response.data)
@@ -123,6 +128,24 @@ function FinancePayPage() {
   return (
     <div className="text-center">
       <div className="div-title">
+        <div className="data">
+          <PDFDownloadLink
+            document={
+              <PaymentPdf
+                client={client}
+                bikeNameAndBrand={bikeNameAndBrand}
+                plate={plate}
+                paymentList={financeBudgetList}
+                valueToBePaid={toBePaid}
+                finalizedAt={finalizedAt}
+                totalValue={totalValue}
+              />
+            }
+            fileName={client + "-pagamento.pdf"}
+          >
+            <PrintIcon />
+          </PDFDownloadLink>
+        </div>
         <p className="page-title">Pagamento do {client}</p>
         <p>
           Moto {bikeNameAndBrand}, Placa {plate}
