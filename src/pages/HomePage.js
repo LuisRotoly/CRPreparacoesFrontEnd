@@ -82,9 +82,19 @@ function HomePage() {
     return totalValue;
   }
 
+  function gotoHandlinCashList() {
+    navigate("/handlingCashList");
+  }
+
   return (
     <div className="text-center div-title">
       <div className="data">
+        <button
+          className="btn btn-outline-primary me-3"
+          onClick={() => gotoHandlinCashList()}
+        >
+          Listar por mês/ano
+        </button>
         <button
           className="btn btn-outline-primary me-3"
           onClick={() => openDebitPaymentModal()}
@@ -97,9 +107,17 @@ function HomePage() {
       </div>
       <div className="mb-3">
         <p className="page-title">Movimento do Caixa</p>
-        <ArrowBackIcon fontSize="large" onClick={() => gotoOneDayBack()} />
+        <ArrowBackIcon
+          fontSize="large"
+          role="button"
+          onClick={() => gotoOneDayBack()}
+        />
         <span className="me-3 ms-3 font-size-22">{getFormmatedDate(date)}</span>
-        <ArrowForwardIcon fontSize="large" onClick={() => gotoOneDayFoward()} />
+        <ArrowForwardIcon
+          fontSize="large"
+          role="button"
+          onClick={() => gotoOneDayFoward()}
+        />
       </div>
       <div className="align-center">
         <Table className="table-preferences">
