@@ -21,3 +21,13 @@ export async function addDebitPaymentRequest(
     paymentFormat: paymentFormat,
   });
 }
+
+export async function getCashHandlingExistentYear() {
+  return await api.get("getCashHandlingExistentYear");
+}
+
+export async function getCashHandlingListByYearAndMonth(year, month) {
+  return await api.get(
+    "getCashHandlingListByYearAndMonth?year=" + year + "&month=" + month
+  );
+}

@@ -30,6 +30,7 @@ import SingleSalePage from "./pages/singleSale/SingleSalePage";
 import SingleSaleFinancePayPage from "./pages/finance/SingleSaleFinancePayPage";
 import ViewSingleSalePage from "./pages/singleSale/ViewSingleSalePage";
 import ReportPage from "./pages/report/ReportPage";
+import HandlingCashList from "./pages/HandlingCashList";
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
             element={<SingleSaleFinancePayPage />}
           />
           <Route path="/report" element={<ReportPage />} />
+          <Route path="/handlingCashList" element={<HandlingCashList />} />
         </Route>
       </Routes>
     </div>
