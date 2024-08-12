@@ -19,6 +19,7 @@ import {
 import PrintIcon from "@mui/icons-material/Print";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PaymentPdf from "../../components/pdf/PaymentPdf";
+import { paidBudgetByIdRequest } from "../../services/budgetService";
 
 function FinancePayPage() {
   const pathname = useParams();
@@ -37,6 +38,7 @@ function FinancePayPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [notes, setNotes] = useState("");
   const [finalizedAt, setFinalizedAt] = useState("");
+  const [budgetPaid, setBudgetPaid] = useState(false);
 
   useEffect(() => {
     getFinanceBudgetByIdRequest(pathname.id).then((response) => {
@@ -47,6 +49,7 @@ function FinancePayPage() {
       setTotalValue(response.data.totalValue);
       setToBePaid(response.data.toBePaid);
       setFinalizedAt(response.data.finalizedAt);
+      setBudgetPaid(response.data.paid);
     });
     getPaymentFormatListRequest().then((response) =>
       setPaymentFormatList(response.data)
@@ -100,7 +103,9 @@ function FinancePayPage() {
   }
 
   function addNewPayment() {
-    if (isValidEntrances()) {
+    if (budgetPaid) {
+      setErrorMessage("Orçamento já está pago!");
+    } else if (isValidEntrances()) {
       addPaymentRequest(pathname.id, paymentValue, paymentFormat, notes)
         .then((_) => {
           getFinanceBudgetList();
@@ -125,10 +130,33 @@ function FinancePayPage() {
     setPaymentFormat(paymentFormatList[event.target.selectedIndex - 1]);
   }
 
+  function setBooleanBudgetIsPaid(isPaid) {
+    paidBudgetByIdRequest(pathname.id)
+      .then((_) => {
+        setBudgetPaid(isPaid);
+      })
+      .catch((e) => setErrorMessage(e.response.data.message));
+  }
+
   return (
     <div className="text-center">
       <div className="div-title">
         <div className="data">
+          {budgetPaid ? (
+            <button
+              className="btn btn-success me-3"
+              onClick={() => setBooleanBudgetIsPaid(false)}
+            >
+              Pago
+            </button>
+          ) : (
+            <button
+              className="btn btn-secondary me-3"
+              onClick={() => setBooleanBudgetIsPaid(true)}
+            >
+              Não está pago
+            </button>
+          )}
           <PDFDownloadLink
             document={
               <PaymentPdf
@@ -155,7 +183,7 @@ function FinancePayPage() {
           <span className="magin-left-30">
             Resta à Pagar R${" "}
             <span className="red-color-toBePaid">
-              {getFormmatedMoney(toBePaid)}
+              {budgetPaid ? "0.00" : getFormmatedMoney(toBePaid)}
             </span>
           </span>
         </p>

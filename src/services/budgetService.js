@@ -100,3 +100,7 @@ export async function getBudgetHistoryByBikePartIdRequest(bikePartId) {
 export async function reopenBudgetByIdRequest(id) {
   return await api.put("reopenBudget?budgetId=" + id);
 }
+
+export async function paidBudgetByIdRequest(id) {
+  return await api.put("paidBudgetById?budgetId=" + id);
+}
