@@ -5,7 +5,7 @@ import {
 } from "../services/debitPaymentService";
 import Spinner from "react-bootstrap/Spinner";
 import { Table } from "react-bootstrap";
-import { getFormmatedDate } from "../stringHelper";
+import { getFormmatedDate, getFormmatedMoney } from "../stringHelper";
 
 function HandlingCashList() {
   const [yearList, setYearList] = useState([]);
@@ -27,6 +27,8 @@ function HandlingCashList() {
   const [selectedMonth, setSelectedMonth] = useState("");
   const [cashHandlingList, setCashHandlingList] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [totalDebit, setTotalDebit] = useState(0);
+  const [totalCredit, setTotalCredit] = useState(0);
 
   useEffect(() => {
     getCashHandlingExistentYear().then((response) => {
@@ -48,8 +50,23 @@ function HandlingCashList() {
       (response) => {
         setCashHandlingList(response.data);
         setLoader(false);
+        setTotalValues(response.data);
       }
     );
+  }
+
+  function setTotalValues(cashList) {
+    let debitValue = 0;
+    let creditValue = 0;
+    cashList.forEach((element) => {
+      if (element.value >= 0) {
+        creditValue = creditValue + element.value;
+      } else {
+        debitValue = debitValue + element.value;
+      }
+    });
+    setTotalCredit(creditValue);
+    setTotalDebit(debitValue);
   }
 
   return (
@@ -136,18 +153,34 @@ function HandlingCashList() {
                     <td>{notes}</td>
                     <td>{paymentFormat.type}</td>
                     {value >= 0 ? (
-                      <td className="text-primary">R$ {value} </td>
+                      <td className="text-primary">
+                        R$ {getFormmatedMoney(value)}
+                      </td>
                     ) : (
                       <td></td>
                     )}
                     {value < 0 ? (
-                      <td className="text-danger">R$ {value} </td>
+                      <td className="text-danger">
+                        R$ {getFormmatedMoney(value)}
+                      </td>
                     ) : (
                       <td></td>
                     )}
                   </tr>
                 )
               )}
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <th className="font-size-18">Valor Total</th>
+                <td className="font-size-20 text-primary">
+                  R$ {getFormmatedMoney(totalCredit)}
+                </td>
+                <td className="font-size-20 text-danger">
+                  R$ {getFormmatedMoney(totalDebit)}
+                </td>
+              </tr>
             </tbody>
           </Table>
         </div>

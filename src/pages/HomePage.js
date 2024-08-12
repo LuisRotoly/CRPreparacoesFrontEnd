@@ -9,7 +9,11 @@ import {
   getCashHandlingListByDate,
   removeDebitPaymentByIdRequest,
 } from "../services/debitPaymentService";
-import { getFormmatedDate, getFormmatedDateDB } from "../stringHelper";
+import {
+  getFormmatedDate,
+  getFormmatedDateDB,
+  getFormmatedMoney,
+} from "../stringHelper";
 import AddNewDebitPaymentModal from "../components/modal/AddNewDebitPaymentModal";
 
 function HomePage() {
@@ -142,12 +146,16 @@ function HomePage() {
                   <td>{notes}</td>
                   <td>{paymentFormat.type}</td>
                   {value >= 0 ? (
-                    <td className="text-primary">R$ {value} </td>
+                    <td className="text-primary">
+                      R$ {getFormmatedMoney(value)}{" "}
+                    </td>
                   ) : (
                     <td></td>
                   )}
                   {value < 0 ? (
-                    <td className="text-danger">R$ {value} </td>
+                    <td className="text-danger">
+                      R$ {getFormmatedMoney(value)}{" "}
+                    </td>
                   ) : (
                     <td></td>
                   )}
@@ -170,7 +178,9 @@ function HomePage() {
       <div>
         <p className="font-size-20">
           Valor final do dia:{" "}
-          <span className="font-size-22">RS{getTotalDayCashHandling()}</span>
+          <span className="font-size-22">
+            R$ {getFormmatedMoney(getTotalDayCashHandling())}
+          </span>
         </p>
       </div>
       <AddNewDebitPaymentModal
