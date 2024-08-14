@@ -20,6 +20,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PaymentPdf from "../../components/pdf/PaymentPdf";
 import { paidBudgetByIdRequest } from "../../services/budgetService";
+import PayModal from "../../components/modal/PayModal";
 
 function FinancePayPage() {
   const pathname = useParams();
@@ -39,6 +40,7 @@ function FinancePayPage() {
   const [notes, setNotes] = useState("");
   const [finalizedAt, setFinalizedAt] = useState("");
   const [budgetPaid, setBudgetPaid] = useState(false);
+  const [payModal, setPayModal] = useState(false);
 
   useEffect(() => {
     getFinanceBudgetByIdRequest(pathname.id).then((response) => {
@@ -130,12 +132,21 @@ function FinancePayPage() {
     setPaymentFormat(paymentFormatList[event.target.selectedIndex - 1]);
   }
 
-  function setBooleanBudgetIsPaid(isPaid) {
+  function setBooleanBudgetIsPaid() {
     paidBudgetByIdRequest(pathname.id)
       .then((_) => {
-        setBudgetPaid(isPaid);
+        setBudgetPaid(!budgetPaid);
       })
       .catch((e) => setErrorMessage(e.response.data.message));
+    closePayModal();
+  }
+
+  function openPayModal() {
+    setPayModal(true);
+  }
+
+  function closePayModal() {
+    setPayModal(false);
   }
 
   return (
@@ -145,14 +156,14 @@ function FinancePayPage() {
           {budgetPaid ? (
             <button
               className="btn btn-success me-3"
-              onClick={() => setBooleanBudgetIsPaid(false)}
+              onClick={() => openPayModal()}
             >
               Pago
             </button>
           ) : (
             <button
               className="btn btn-secondary me-3"
-              onClick={() => setBooleanBudgetIsPaid(true)}
+              onClick={() => openPayModal()}
             >
               Não está pago
             </button>
@@ -269,6 +280,11 @@ function FinancePayPage() {
         close={closeDeleteModal}
         title={"Excluir o pagamento?"}
         remove={deletePayment}
+      />
+      <PayModal
+        show={payModal}
+        close={closePayModal}
+        pay={setBooleanBudgetIsPaid}
       />
     </div>
   );
